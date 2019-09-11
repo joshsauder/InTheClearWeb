@@ -1,10 +1,12 @@
 import React, {Component, createRef} from 'react';
 import '../App.css';
+import GooglePlaces from './GooglePlaces';
 
 class GoogleMap extends Component {
 
       constructor(props) {
         super(props);
+        this.state = {loaded: false}
       }
 
       GoogleMapsRef = createRef()
@@ -12,9 +14,11 @@ class GoogleMap extends Component {
       componentDidMount() {
         const googleMapsAPI = document.createElement("script")
         googleMapsAPI.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDgTUfZ58_ThjicV-8X0JBcNKIibtrr_m0&libraries=places";
+        googleMapsAPI.id = "googleMaps"
         window.document.body.appendChild(googleMapsAPI);
 
         googleMapsAPI.addEventListener("load", () => {
+          this.setState({loaded: true})
           this.googleMaps = this.createMap()
           //add createMarker here
         })
@@ -33,7 +37,10 @@ class GoogleMap extends Component {
 
       render() {
         return (
-          <div id="map" ref={this.GoogleMapsRef} />
+          <div>
+          <div className="map" ref={this.GoogleMapsRef} />
+          { this.state.loaded ? <GooglePlaces /> : null }
+          </div>
         );
       }
     

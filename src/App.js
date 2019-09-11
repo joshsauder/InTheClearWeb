@@ -1,5 +1,5 @@
 import React from 'react';
-import GoogleMap from "./components/googleMap"
+import GoogleMap from "./components/googleMap";
 
 function App() {
   return (
