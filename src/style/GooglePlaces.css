@@ -1,4 +1,4 @@
-.jumbotron {
-    background-color: #883DE8;
+.directionsJumbotron{
+    background-color: #883DE8 !important;
     position: relative;
 }

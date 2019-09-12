@@ -12,29 +12,45 @@ class GooglePlaces extends Component {
 
       componentDidMount(){
           
-          const google = this.props.google;
-          const script = document.getElementById("googleMapsAPI")
-          var input = document.getElementById('autoCompleteText');
+          var startInput = document.getElementById('locationStart');
+          var destinationInput = document.getElementById('locationEnd')
 
-          var autocomplete = new window.google.maps.places.Autocomplete(input);
+          var autocompleteStart = new window.google.maps.places.Autocomplete(startInput);
+          var autocompleteDest = new window.google.maps.places.Autocomplete(destinationInput);
 
-          window.google.maps.event.addListener(autocomplete, 'place_changed', function() {
-          var place = autocomplete.getPlace();
-          document.getElementById('altCity').value = place.name;
-          document.getElementById('lat').value = place.geometry.location.lat();
-          document.getElementById('long').value = place.geometry.location.lng();
+          window.google.maps.event.addListener(autocompleteStart, 'place_changed', function() {
+            var placeStart = autocompleteStart.getPlace();
+            document.getElementById('cityStart').value = placeStart.name;
+            document.getElementById('latStart').value = placeStart.geometry.location.lat();
+            document.getElementById('longStart').value = placeStart.geometry.location.lng();
 
-        })
+          })
+
+          window.google.maps.event.addListener(autocompleteDest, 'place_changed', function() {
+            var placeEnd = autocompleteStart.getPlace();
+            document.getElementById('cityEnd').value = placeEnd.name;
+            document.getElementById('latEnd').value = placeEnd.geometry.location.lat();
+            document.getElementById('longEnd').value = placeEnd.geometry.location.lng();
+  
+          })
       }
 
       render() {
           return (
-          <div>
-            <Jumbotron className="jumbotron">
-                <input id="autoCompleteText" type="text" size="50" placeholder="Start Location" autoComplete="on" runat="server" />
-                <input type="hidden" id="altCity" name="city2" />
-                <input type="hidden" id="lat" name="cityLat" />
-                <input type="hidden" id="long" name="cityLng" />
+          <div className="row container">
+            <Jumbotron className="directionsJumbotron ml-md-2 mt-md-2 col-md-6 col-12">
+                <div className="input-group mb-1">
+                    <input className="form-control" id="locationStart" type="text" size="50" placeholder="Start Location" autoComplete="on" runat="server" />
+                    <input type="hidden" id="cityStart" name="city2" />
+                    <input type="hidden" id="latStart" name="cityLat" />
+                    <input type="hidden" id="longStart" name="cityLng" />
+                </div>
+                <div className="input-group mb-1">
+                    <input className="form-control" id="locationEnd" type="text" size="50" placeholder="Destination Location" autoComplete="on" runat="server" />
+                    <input type="hidden" id="cityEnd" name="city2" />
+                    <input type="hidden" id="latEnd" name="cityLat" />
+                    <input type="hidden" id="longEnd" name="cityLng" />
+                </div>
             </Jumbotron>
           </div>
           )
