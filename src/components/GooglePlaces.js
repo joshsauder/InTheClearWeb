@@ -45,7 +45,7 @@ class GooglePlaces extends Component {
                     <input type="hidden" id="latStart" name="cityLat" />
                     <input type="hidden" id="longStart" name="cityLng" />
                 </div>
-                <div className="input-group mb-1">
+                <div className="input-group mb-1 mt-4">
                     <input className="form-control" id="locationEnd" type="text" size="50" placeholder="Destination Location" autoComplete="on" runat="server" />
                     <input type="hidden" id="cityEnd" name="city2" />
                     <input type="hidden" id="latEnd" name="cityLat" />

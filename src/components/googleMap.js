@@ -1,19 +1,21 @@
 import React, {Component, createRef} from 'react';
 import '../App.css';
 import GooglePlaces from './GooglePlaces';
+import dotenv from 'dotenv';
 
 class GoogleMap extends Component {
 
       constructor(props) {
         super(props);
         this.state = {loaded: false}
+        dotenv.config()
       }
 
       GoogleMapsRef = createRef()
 
       componentDidMount() {
         const googleMapsAPI = document.createElement("script")
-        googleMapsAPI.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDgTUfZ58_ThjicV-8X0JBcNKIibtrr_m0&libraries=places";
+        googleMapsAPI.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_KEY}0&libraries=places`;
         googleMapsAPI.id = "googleMaps"
         window.document.body.appendChild(googleMapsAPI);
 
