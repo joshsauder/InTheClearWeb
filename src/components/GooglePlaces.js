@@ -1,7 +1,8 @@
 import React, {Component, createRef} from 'react';
 import '../App.css';
-import '../style/GooglePlaces.css'
-import Jumbotron from 'react-bootstrap/Jumbotron'
+import '../style/GooglePlaces.css';
+import Jumbotron from 'react-bootstrap/Jumbotron';
+import logo from '../images/InTheClear.png';
 
 
 class GooglePlaces extends Component {
@@ -46,7 +47,7 @@ class GooglePlaces extends Component {
         } else if(prevState.endCoordinates !== this.state.endCoordinates){
             this.props.callbackEnd(this.state.endCoordinates);
         }
-        
+
       }
 
       handlePlacesStartSelect(){
@@ -73,7 +74,8 @@ class GooglePlaces extends Component {
           return (
           <div className="row container">
             <Jumbotron className="directionsJumbotron ml-md-2 mt-md-2 col-md-6 col-12">
-                <div className="input-group mb-1">
+                <img className="mx-auto d-block img-logo mb-1" alt="logo" src={logo}></img>
+                <div className="input-group mb-1 mt-4">
                     <input className="form-control" id="locationStart" type="text" size="50" placeholder="Start Location" autoComplete="on" runat="server" />
                     <input type="hidden" id="cityStart" name="city2" />
                     <input type="hidden" id="latStart" name="cityLat" />

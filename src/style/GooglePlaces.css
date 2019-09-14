@@ -1,4 +1,15 @@
 .directionsJumbotron{
-    background-color: #883DE8 !important;
+    background-color: #7B16F5 !important;
     position: relative;
+}
+
+@media (min-width: 576px) {
+    .jumbotron {
+        padding: 1rem !important;
+    }
+}
+
+.img-logo {
+    height: auto;
+    width: 50%;
 }
