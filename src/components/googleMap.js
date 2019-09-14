@@ -1,7 +1,6 @@
 import React, {Component, createRef} from 'react';
 import '../App.css';
 import GooglePlaces from './GooglePlaces';
-import {getDirections} from '../services/googleMaps';
 
 class GoogleMap extends Component {
 
@@ -45,8 +44,8 @@ class GoogleMap extends Component {
           this.state.startLocation.lat !== 0 && this.state.startLocation.lng !== 0){
 
             if (prevState.startLocation !== this.state.startLocation || prevState.endLocation !== this.state.endLocation){
-              let json = getDirections(this.state.startLocation, this.state.endLocation);
-              showDirections(json);
+                this.showDirections(this.state.startLocation,this.state.endLocation)
+
             }
           }
 
@@ -55,32 +54,32 @@ class GoogleMap extends Component {
 
       createMap = () =>
         new window.google.maps.Map(this.GoogleMapsRef.current, {
-          zoom: 16,
-          center: this.state.location,
+          zoom: 10,
+          center: {
+            lat: 37.3230,
+            lng: -122.0322
+          },
           disableDefaultUI: true,
         })
 
       
-      showDirections(json){
-          let polyline = json[0]["overview_polyline"]["points"]
-          var path = google.maps.geometry.encoding.decodePath(jsonData.overview_polyline.points);
+      showDirections(start, end){
+        var directionsService = new window.google.maps.DirectionsService();
+        var directionsRenderer = new window.google.maps.DirectionsRenderer();
 
-          for (var i = 0; i < path.length; i++) {
-            bounds.extend(path[i]);
+        directionsRenderer.setMap(this.googleMaps)
+        directionsService.route({
+          origin: start,
+          destination: end,
+          travelMode: 'DRIVING'
+        },
+        function(response, status) {
+          if (status === 'OK') {
+            directionsRenderer.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
           }
-
-          var polyline = new google.maps.Polyline({
-            path: path,
-            strokeColor: '#00BBFF',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            map: this.googleMaps
-              // strokeColor: "#0000FF",
-              // strokeOpacity: 1.0,
-              // strokeWeight: 2
-          });
-          polyline.setMap(this.googleMaps);
-          this.googleMaps.fitBounds(bounds);
+        })
       }
 
       callbackStart(coordinates){
