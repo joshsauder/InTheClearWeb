@@ -39,30 +39,34 @@ class GooglePlaces extends Component {
 
       }
 
+      componentDidUpdate(prevProps, prevState){
+
+        if(prevState.startCoordinates !== this.state.startCoordinates){
+            this.props.callbackStart(this.state.startCoordinates);
+        } else if(prevState.endCoordinates !== this.state.endCoordinates){
+            this.props.callbackEnd(this.state.endCoordinates);
+        }
+        
+      }
+
       handlePlacesStartSelect(){
+
         var placeStart = this.autocompleteStart.getPlace();
         document.getElementById('cityStart').value = placeStart.name;
         var lat = document.getElementById('latStart').value = placeStart.geometry.location.lat();
         var long = document.getElementById('longStart').value = placeStart.geometry.location.lng();
         this.setState({startCoordinates:{lat: lat, lng: long}})
+
       }
 
       handlePlacesEndSelect(){
 
-            var placeEnd = this.autocompleteDest.getPlace();
-            document.getElementById('cityEnd').value = placeEnd.name;
-            var lat = document.getElementById('latEnd').value = placeEnd.geometry.location.lat();
-            var long = document.getElementById('longEnd').value = placeEnd.geometry.location.lng();
-            this.setState({endCoordinates:{lat: lat, lng: long}})
+        var placeEnd = this.autocompleteDest.getPlace();
+        document.getElementById('cityEnd').value = placeEnd.name;
+        var lat = document.getElementById('latEnd').value = placeEnd.geometry.location.lat();
+        var long = document.getElementById('longEnd').value = placeEnd.geometry.location.lng();
+        this.setState({endCoordinates:{lat: lat, lng: long}})
 
-      }
-
-      componentDidUpdate(prevProps, prevState){
-            if(prevState.startCoordinates !== this.state.startCoordinates){
-                this.props.callbackStart(this.state.startCoordinates);
-            } else if(prevState.endCoordinates !== this.state.endCoordinates){
-                this.props.callbackEnd(this.state.endCoordinates);
-            }
       }
 
       render() {
