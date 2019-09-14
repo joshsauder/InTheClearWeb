@@ -8,6 +8,21 @@ class GooglePlaces extends Component {
 
     constructor(props) {
         super(props);
+        this.state ={
+            startCoordinates: {
+                lat: 37.3317,
+                lng: -122.0306
+            },
+            endCoordinates :{
+                lat: 37.3317,
+                lng: -122.0306
+            }
+
+        }
+        
+        this.handlePlacesStartSelect = this.handlePlacesStartSelect.bind(this)
+        this.handlePlacesEndSelect = this.handlePlacesEndSelect.bind(this)
+        
       }
 
       componentDidMount(){
@@ -15,24 +30,39 @@ class GooglePlaces extends Component {
           var startInput = document.getElementById('locationStart');
           var destinationInput = document.getElementById('locationEnd')
 
-          var autocompleteStart = new window.google.maps.places.Autocomplete(startInput);
-          var autocompleteDest = new window.google.maps.places.Autocomplete(destinationInput);
+          this.autocompleteStart = new window.google.maps.places.Autocomplete(startInput);
+          this.autocompleteDest = new window.google.maps.places.Autocomplete(destinationInput);
 
-          window.google.maps.event.addListener(autocompleteStart, 'place_changed', function() {
-            var placeStart = autocompleteStart.getPlace();
-            document.getElementById('cityStart').value = placeStart.name;
-            document.getElementById('latStart').value = placeStart.geometry.location.lat();
-            document.getElementById('longStart').value = placeStart.geometry.location.lng();
+          window.google.maps.event.addListener(this.autocompleteStart, 'place_changed', this.handlePlacesStartSelect)
 
-          })
+          window.google.maps.event.addListener(this.autocompleteDest, 'place_changed', this.handlePlacesEndSelect)
 
-          window.google.maps.event.addListener(autocompleteDest, 'place_changed', function() {
-            var placeEnd = autocompleteStart.getPlace();
+      }
+
+      handlePlacesStartSelect(){
+        var placeStart = this.autocompleteStart.getPlace();
+        document.getElementById('cityStart').value = placeStart.name;
+        var lat = document.getElementById('latStart').value = placeStart.geometry.location.lat();
+        var long = document.getElementById('longStart').value = placeStart.geometry.location.lng();
+        this.setState({startCoordinates:{lat: lat, lng: long}})
+      }
+
+      handlePlacesEndSelect(){
+
+            var placeEnd = this.autocompleteDest.getPlace();
             document.getElementById('cityEnd').value = placeEnd.name;
-            document.getElementById('latEnd').value = placeEnd.geometry.location.lat();
-            document.getElementById('longEnd').value = placeEnd.geometry.location.lng();
-  
-          })
+            var lat = document.getElementById('latEnd').value = placeEnd.geometry.location.lat();
+            var long = document.getElementById('longEnd').value = placeEnd.geometry.location.lng();
+            this.setState({endCoordinates:{lat: lat, lng: long}})
+
+      }
+
+      componentDidUpdate(prevProps, prevState){
+            if(prevState.startCoordinates !== this.state.startCoordinates){
+                this.props.callbackStart(this.state.startCoordinates);
+            } else if(prevState.endCoordinates !== this.state.endCoordinates){
+                this.props.callbackEnd(this.state.endCoordinates);
+            }
       }
 
       render() {
