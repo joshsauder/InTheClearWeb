@@ -2,6 +2,7 @@ var express = require('express')
 var app = express()
 var graphqlHTTP = require('express-graphql');
 var { buildSchema } = require('graphql');
+const routes = require('./routes')
 
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
@@ -21,8 +22,9 @@ app.use('/graphql', graphqlHTTP({
     schema: schema,
     rootValue: root,
     graphiql: true,
-  }));
+}));
 
+app.use('/api', routes)
 app.listen(3400, function()
 {console.log(`Server is listening on port 3400`)})
 module.exports = app;
