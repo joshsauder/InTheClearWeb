@@ -1,8 +1,10 @@
 import React, {Component, createRef} from 'react';
 import '../App.css';
 import GooglePlaces from './GooglePlaces';
+import PolylineGenerator from './PolylineGenerator';
 
-class GoogleMap extends Component {
+
+class GoogleMap extends PolylineGenerator {
 
       constructor(props) {
         super(props);
@@ -75,7 +77,11 @@ class GoogleMap extends Component {
         },
         function(response, status) {
           if (status === 'OK') {
+            let steps = response.routes[0].legs[0].steps
+            let res = this.getCityNamesAndWeather(steps)
+            let polyLine = this.generatePolyline(res[0], steps)
             directionsRenderer.setDirections(response);
+            console.log(response)
           } else {
             window.alert('Directions request failed due to ' + status);
           }
