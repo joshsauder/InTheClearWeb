@@ -2,6 +2,7 @@ import React, {Component, createRef} from 'react';
 import '../App.css';
 import GooglePlaces from './GooglePlaces';
 import PolylineGenerator from './PolylineGenerator';
+import Axios from '../../../server/node_modules/axios';
 
 
 class GoogleMap extends PolylineGenerator {
@@ -27,8 +28,7 @@ class GoogleMap extends PolylineGenerator {
 
       componentDidMount() {
         const googleMapsAPI = document.createElement("script")
-        googleMapsAPI.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS}&libraries=places`;
-        console.log(googleMapsAPI.src);
+        googleMapsAPI.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS}&libraries=places,geometry`;
         googleMapsAPI.id = "googleMaps"
         window.document.body.appendChild(googleMapsAPI);
 
@@ -66,26 +66,12 @@ class GoogleMap extends PolylineGenerator {
 
       
       showDirections(start, end){
-        var directionsService = new window.google.maps.DirectionsService();
-        var directionsRenderer = new window.google.maps.DirectionsRenderer();
+          this.generatePolyline(start, end, this.googleMaps).then(directionsData => {
+            var polyline = directionsData[0]
 
-        directionsRenderer.setMap(this.googleMaps)
-        directionsService.route({
-          origin: start,
-          destination: end,
-          travelMode: 'DRIVING'
-        },
-        function(response, status) {
-          if (status === 'OK') {
-            let steps = response.routes[0].legs[0].steps
-            let res = this.getCityNamesAndWeather(steps)
-            let polyLine = this.generatePolyline(res[0], steps)
-            directionsRenderer.setDirections(response);
-            console.log(response)
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
-        })
+            polyline.setMap(this.googleMaps)
+            this.googleMaps.fitBounds(directionsData[1])
+          });
       }
 
       callbackStart(coordinates){
