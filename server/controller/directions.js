@@ -16,8 +16,9 @@ exports.getDirections = function(req, res) {
     
 }
 
-function getCityNamesAndWeather(steps){
+exports.getCityNamesAndWeather = function(req, res){
     let stepObj = {List: []}
+    const steps = req.body.steps
     for (var step in steps) {
         var data = {}
         data["lat"] = step.endLocation.lat
@@ -26,7 +27,7 @@ function getCityNamesAndWeather(steps){
     }
     axios.all([getWeather(stepObj), getLocationNames(stepObj)])
     .then(axios.spread(function (weather, location){
-        return [weather, location];
+        res.send({weather: weather, names: location})
     }))
 }
 
@@ -35,7 +36,7 @@ function getWeather(params){
     return axios.post(url, params);
 }
 
-function getLocationNames(){
+function getLocationNames(params){
     let url = `https://${process.env.AWS_KEY}.execute-api.us-east-1.amazonaws.com/Prod/reveresegeocode`
     return axios.post(url, params)
 }
