@@ -11,11 +11,16 @@ class PolylineGenerator extends Component {
 
 
     generatePolyline(start, end, map){
+        var path;
         return axios.get(`http://localhost:3400/api/directions/${start.lat},${start.lng}/${end.lat},${end.lng}`)
         .then(response => {
+            path = window.google.maps.geometry.encoding.decodePath(response.data.points);
 
-            console.log(response.data)
-            var path = window.google.maps.geometry.encoding.decodePath(response.data.points);
+            delete response.data.points
+            return axios.post("http://localhost:3400/api/directions/info", response.data)
+        })
+        .then(response => {
+            console.log(response)
             var bounds = new window.google.maps.LatLngBounds();
 
             for (var i = 0; i < path.length; i++) {
@@ -31,22 +36,15 @@ class PolylineGenerator extends Component {
                 fillOpacity: 0.35,
                 map: map
               });
-              console.log(polyline)
               return [polyline, bounds]
         }).catch(error => {
             console.log(error)
         })
     }
 
-    // getWeather(params){
-    //     let url = ""
-    //     return axios.post(url, params);
-    // }
-
-    // getLocationNames(){
-    //     let url = ""
-    //     return axios.post(url, params)
-    // }
+    getWeatherInfo(steps){
+        return axios.post("http://localhost:3400/api/directions/info", steps)
+    }
 
 
 }

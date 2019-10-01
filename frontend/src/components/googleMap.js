@@ -2,8 +2,6 @@ import React, {Component, createRef} from 'react';
 import '../App.css';
 import GooglePlaces from './GooglePlaces';
 import PolylineGenerator from './PolylineGenerator';
-import Axios from '../../../server/node_modules/axios';
-
 
 class GoogleMap extends PolylineGenerator {
 
