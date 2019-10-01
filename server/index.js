@@ -4,6 +4,8 @@ var graphqlHTTP = require('express-graphql');
 var { buildSchema } = require('graphql');
 const routes = require('./routes')
 var cors = require('cors')
+const bodyParser = require('body-parser')
+
 
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
@@ -20,6 +22,12 @@ var root = {
 };
 
 app.use(cors());
+app.use(
+    bodyParser.urlencoded({
+      extended: true
+    })
+  )
+app.use(bodyParser.json())
 
 app.use('/graphql', graphqlHTTP({
     schema: schema,
