@@ -1,4 +1,4 @@
-import React, {Component, createRef} from 'react';
+import React, {Component} from 'react';
 import '../App.css';
 import '../style/GooglePlaces.css';
 import Jumbotron from 'react-bootstrap/Jumbotron';
