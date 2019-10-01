@@ -10,7 +10,7 @@ exports.getDirections = function(req, res) {
 
     axios.get(url)
     .then(function(response){
-        res.send(response.data.routes[0].overview_polyline);
+        res.send({points: response.data.routes[0].overview_polyline.points, steps:response.data.routes[0].legs[0].steps});
     }).catch(error => {console.log(error)})
 
     
