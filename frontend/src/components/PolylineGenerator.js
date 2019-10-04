@@ -17,7 +17,7 @@ class PolylineGenerator extends Component {
         .then(response => {
             path = window.google.maps.geometry.encoding.decodePath(response.data.points);
             steps = response.data.steps
-            weatherPerStep(steps, path)
+            this.weatherPerStep(steps, path)
             delete response.data.points
             return axios.post("http://localhost:3400/api/directions/info", response.data)
         })
