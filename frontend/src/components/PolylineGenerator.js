@@ -64,12 +64,13 @@ class PolylineGenerator extends Component {
 
         console.log(path[i].lat(), step.end_location.lat)
         console.log(path[i])
-        while(Math.abs(path[i].lat() - step.end_location.lat) > 0.001 || Math.abs(path[i].lng() - step.end_location.lng ) > 0.001 ){
-
+        while(Math.abs(path[i].lat() - step.end_location.lat) >= 0.01 || Math.abs(path[i].lng() - step.end_location.lng ) >= 0.01 ){
             tempPath.push(path[i])
             i += 1
         }
-
+        if (i != 0){
+            i -= 1
+        }
         return ([i, tempPath])
     }
 
