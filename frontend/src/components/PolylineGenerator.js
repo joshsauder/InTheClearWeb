@@ -17,7 +17,7 @@ class PolylineGenerator extends Component {
         .then(response => {
             path = window.google.maps.geometry.encoding.decodePath(response.data.points);
             steps = response.data.steps
-            this.weatherPerStep(steps, path)
+            this.weatherPerStep(steps, path, map)
             delete response.data.points
             return axios.post("http://localhost:3400/api/directions/info", response.data)
         })
@@ -30,16 +30,7 @@ class PolylineGenerator extends Component {
 
               }
             
-              var polyline = new window.google.maps.Polyline({
-                path: path,
-                strokeColor: '#FF0000',
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: '#FF0000',
-                fillOpacity: 0.35,
-                map: map
-              });
-              return [polyline, bounds]
+              return [bounds]
         }).catch(error => {
             console.log(error)
         })
@@ -50,28 +41,36 @@ class PolylineGenerator extends Component {
     }
 
 
-    weatherPerStep(steps, path){
+    weatherPerStep(steps, path, map){
         let i = 0;
         let numSegs = []
         steps.forEach(step => {
-            let ret = determineSegCount(step, path, i)
+            let ret = this.determineSegCount(step, path, i)
             i = ret[0]
-            numSegs.push(ret[1])
+            var polyline = new window.google.maps.Polyline({
+                path: ret[1],
+                strokeColor: '#FF0000',
+                strokeOpacity: 1,
+                strokeWeight: 2,
+            });
+            polyline.setMap(map)
         })
     }
 
     determineSegCount(step, path, index){
 
-        let i = index
-        let numberSegs = 1
+        let tempPath = []
+        var i = index
 
-        while(abs(path[i].lat - step.end_location.lat) > 0.3 || abs(path[i].lng - step.end_location.lng )> 0.3 ){
+        console.log(path[i].lat(), step.end_location.lat)
+        console.log(path[i])
+        while(Math.abs(path[i].lat() - step.end_location.lat) > 0.001 || Math.abs(path[i].lng() - step.end_location.lng ) > 0.001 ){
 
-            numberSegs += 1
+            tempPath.push(path[i])
             i += 1
         }
 
-        return ([i, numberSegs])
+        return ([i, tempPath])
     }
 
 }

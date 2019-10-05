@@ -65,10 +65,7 @@ class GoogleMap extends PolylineGenerator {
       
       showDirections(start, end){
           this.generatePolyline(start, end, this.googleMaps).then(directionsData => {
-            var polyline = directionsData[0]
-
-            polyline.setMap(this.googleMaps)
-            this.googleMaps.fitBounds(directionsData[1])
+            this.googleMaps.fitBounds(directionsData[0])
           });
       }
 
