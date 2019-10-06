@@ -17,12 +17,14 @@ class PolylineGenerator extends Component {
         .then(response => {
             path = window.google.maps.geometry.encoding.decodePath(response.data.points);
             steps = response.data.steps
-            this.weatherPerStep(steps, path, map)
             delete response.data.points
             return axios.post("http://localhost:3400/api/directions/info", response.data)
         })
         .then(response => {
-            console.log(response)
+            var weather = response.data.weather
+            this.weatherPerStep(steps, path, weather, map)
+            
+
             var bounds = new window.google.maps.LatLngBounds();
 
             for (var i = 0; i < path.length; i++) {
@@ -41,20 +43,49 @@ class PolylineGenerator extends Component {
     }
 
 
-    weatherPerStep(steps, path, map){
+    weatherPerStep(steps, path, weather, map){
         let i = 0;
-        let numSegs = []
-        steps.forEach(step => {
+        var strokeColor =''
+        steps.forEach((step, index) => {
             let ret = this.determineSegCount(step, path, i)
             i = ret[0]
+            switch(weather[index].Condition){
+                case "rain": 
+                    strokeColor = rainSeg;
+                    break;
+                case "danger":
+                    strokeColor = stormSeg;
+                    break;
+                case "snow":
+                case "sleet":
+                    strokeColor = snowSeg;
+                    break;
+                case "cloudy":
+                case "partly-cloudy-day":
+                case "partly-cloudy-night":
+                    strokeColor = cloudSeg;
+                    break;
+                default: 
+                    strokeColor = sunSeg;
+                    break;
+            }
+
             var polyline = new window.google.maps.Polyline({
                 path: ret[1],
-                strokeColor: '#FF0000',
+                strokeColor: strokeColor,
                 strokeOpacity: 1,
                 strokeWeight: 2,
             });
             polyline.setMap(map)
         })
+
+        var polyline = new window.google.maps.Polyline({ 
+            path: path.slice(i, path.length),
+            strokeColor: strokeColor,
+            strokeOpacity: 1,
+            strokeWeight: 2,
+        });
+        polyline.setMap(map)
     }
 
     determineSegCount(step, path, index){
@@ -62,8 +93,6 @@ class PolylineGenerator extends Component {
         let tempPath = []
         var i = index
 
-        console.log(path[i].lat(), step.end_location.lat)
-        console.log(path[i])
         while(Math.abs(path[i].lat() - step.end_location.lat) >= 0.01 || Math.abs(path[i].lng() - step.end_location.lng ) >= 0.01 ){
             tempPath.push(path[i])
             i += 1
