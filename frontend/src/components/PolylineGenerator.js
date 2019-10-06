@@ -98,7 +98,7 @@ class PolylineGenerator extends Component {
             path: path,
             strokeColor: color,
             strokeOpacity: 1,
-            strokeWeight: 2,
+            strokeWeight: 6,
         });
 
         return polyline
