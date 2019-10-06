@@ -69,22 +69,12 @@ class PolylineGenerator extends Component {
                     strokeColor = sunSeg;
                     break;
             }
-
-            var polyline = new window.google.maps.Polyline({
-                path: ret[1],
-                strokeColor: strokeColor,
-                strokeOpacity: 1,
-                strokeWeight: 2,
-            });
+            
+            var polyline = this.newPolyline(ret[1], strokeColor)
             polyline.setMap(map)
         })
 
-        var polyline = new window.google.maps.Polyline({ 
-            path: path.slice(i, path.length),
-            strokeColor: strokeColor,
-            strokeOpacity: 1,
-            strokeWeight: 2,
-        });
+        var polyline = this.newPolyline(path.slice(i, path.length), strokeColor)
         polyline.setMap(map)
     }
 
@@ -101,6 +91,17 @@ class PolylineGenerator extends Component {
             i -= 1
         }
         return ([i, tempPath])
+    }
+
+    newPolyline(path, color){
+        var polyline = new window.google.maps.Polyline({
+            path: path,
+            strokeColor: color,
+            strokeOpacity: 1,
+            strokeWeight: 2,
+        });
+
+        return polyline
     }
 
 }
