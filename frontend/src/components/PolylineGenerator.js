@@ -83,7 +83,7 @@ class PolylineGenerator extends Component {
         let tempPath = []
         var i = index
 
-        while(Math.abs(path[i].lat() - step.end_location.lat) >= 0.01 || Math.abs(path[i].lng() - step.end_location.lng ) >= 0.01 ){
+        while(Math.abs(path[i].lat() - step.end_location.lat) >= 0.1 || Math.abs(path[i].lng() - step.end_location.lng ) >= 0.1 ){
             tempPath.push(path[i])
             i += 1
         }
