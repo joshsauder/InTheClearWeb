@@ -1,21 +1,53 @@
 import React, {Component} from 'react';
 import Jumbotron from 'react-bootstrap/Jumbotron';
-import Card from 'react-bootstrap/Card'
-import '../style/CityData.css'
+import Card from 'react-bootstrap/Card';
+import '../style/CityData.css';
+import cloudy from '../images/cloud.png';
+import cloudNight from '../images/CloudyNight.png';
+import danger from '../images/danger.png';
+import night from '../images/Night.png';
+import partlyCloudy from '../images/partlyCloudy.png';
+import rain from '../images/rain.png';
+import snow from '../images/snow.png';
+import sun from '../images/sun.png';
 
 function RenderCityData(props){
 
     return( 
         <div className="menuScroll">
             {props.city.map((city, index) => 
-                <Card body key={index}>
-                    <div className="col-6">{city}</div>
-                    <div className="col-6">{props.weather[index].Condition}</div>
+                <Card key={index}>
+                    <Card.Body className="row"> 
+                        <div className="col-6">{city}</div>
+                        <div className="col-6"><img className="mx-auto d-block img-fluid" src={determineIcon(props.weather[index].Condition)} /></div>
+                    </Card.Body>
                 </Card>
             )}
         </div>
     )
 
+}
+
+function determineIcon(condition){
+    switch(condition){
+        case "rain": 
+            return rain;
+        case "danger":
+            return danger;
+        case "snow":
+        case "sleet":
+            return snow;
+        case "cloudy":
+            return cloudy;
+        case "partly-cloudy-day":
+            return partlyCloudy;
+        case "partly-cloudy-night":
+            return cloudNight;
+        case "clear-night":
+            return night;
+        default: 
+            return sun;
+    }
 }
 
 class CityData extends Component {
