@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 
-const snowSeg = '#40C4FF'
-const rainSeg = '#4CAF50'
-const sunSeg = '#FFEE58'
-const cloudSeg = '#BDBDBD'
-const stormSeg = '8BC34A'
+const snowSeg = '#1E88E5'
+const rainSeg = '#43A047'
+const sunSeg = '#FBC02D'
+const cloudSeg = '#616161'
+const stormSeg = '#E53935'
 
 class PolylineGenerator extends Component {
 
