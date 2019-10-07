@@ -18,7 +18,15 @@ function RenderCityData(props){
             {props.city.map((city, index) => 
                 <Card key={index}>
                     <Card.Body className="row"> 
-                        <div className="col-6">{city}</div>
+                        <div className="col-6">
+                            <div className="row">
+                                <div className="col-12 text-left">{city}</div>
+                            </div>
+                            <div className="row">
+                                <div className="col-8 text-left">{props.weather[index].Description}</div>   
+                                <div className="col-4 text-left">{Math.round(props.weather[index].Temperature)}&deg;</div>
+                            </div>
+                        </div>
                         <div className="col-6"><img className="mx-auto d-block img-fluid" src={determineIcon(props.weather[index].Condition)} /></div>
                     </Card.Body>
                 </Card>
