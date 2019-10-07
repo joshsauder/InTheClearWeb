@@ -2,3 +2,8 @@
     background-color: #7B16F5 !important;
     position: relative;
 }
+
+.menuScroll{
+    height: 300px;
+    overflow-y: scroll;
+}

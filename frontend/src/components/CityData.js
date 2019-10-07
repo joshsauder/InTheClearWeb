@@ -6,9 +6,9 @@ import '../style/CityData.css'
 function RenderCityData(props){
 
     return( 
-        <div>
+        <div className="menuScroll">
             {props.city.map((city, index) => 
-                <Card body>
+                <Card body key={index}>
                     <div className="col-6">{city}</div>
                     <div className="col-6">{props.weather[index].Condition}</div>
                 </Card>
@@ -28,7 +28,7 @@ class CityData extends Component {
     render(){
         return(
             <div className="row container">
-                <Jumbotron className = "ml-md-2 mt-md-2 col-md-6 col-12 cityDataJumbotron">
+                <Jumbotron className = "ml-md-2 col-md-6 col-12 cityDataJumbotron">
                     <RenderCityData city={this.props.city} weather={this.props.weather}/>
                 </Jumbotron>
             </div>
