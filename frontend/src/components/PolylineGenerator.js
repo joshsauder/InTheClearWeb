@@ -9,6 +9,12 @@ const stormSeg = '#E53935'
 
 class PolylineGenerator extends Component {
 
+    constructor(props){
+        super(props)
+
+        this.polylineArray = []
+    }
+
 
     generatePolyline(start, end, map){
         var path;
@@ -31,8 +37,7 @@ class PolylineGenerator extends Component {
                 bounds.extend(path[i]);
 
               }
-            
-              return [bounds]
+              return bounds
         }).catch(error => {
             console.log(error)
         })
@@ -46,6 +51,7 @@ class PolylineGenerator extends Component {
     weatherPerStep(steps, path, weather, map){
         let i = 0;
         var strokeColor =''
+        var polylineArray = []
         steps.forEach((step, index) => {
             let ret = this.determineSegCount(step, path, i)
             i = ret[0]
@@ -76,6 +82,7 @@ class PolylineGenerator extends Component {
 
         var polyline = this.newPolyline(path.slice(i, path.length), strokeColor)
         polyline.setMap(map)
+
     }
 
     determineSegCount(step, path, index){
@@ -100,6 +107,8 @@ class PolylineGenerator extends Component {
             strokeOpacity: 1,
             strokeWeight: 6,
         });
+
+        this.polylineArray.push(polyline)
 
         return polyline
     }

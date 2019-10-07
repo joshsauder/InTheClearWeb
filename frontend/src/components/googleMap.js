@@ -16,7 +16,9 @@ class GoogleMap extends PolylineGenerator {
           endLocation: {
             lat: 0,
             lng: 0
-          }
+          },
+          startMarker: null,
+          endMarker: null
         }
         this.callbackStart = this.callbackStart.bind(this);
         this.callbackEnd = this.callbackEnd.bind(this);
@@ -33,8 +35,6 @@ class GoogleMap extends PolylineGenerator {
         googleMapsAPI.addEventListener("load", () => {
           this.setState({loaded: true})
           this.googleMaps = this.createMap()
-          this.markerStart = null;
-          this.markerEnd = null;
         })
       }
 
@@ -64,40 +64,47 @@ class GoogleMap extends PolylineGenerator {
 
       
       showDirections(start, end){
+          this.polylineArray.forEach(line => {
+            line.setMap(null)
+          })
+          this.polylineArray = []
           this.generatePolyline(start, end, this.googleMaps).then(directionsData => {
-            this.googleMaps.fitBounds(directionsData[0])
+            this.googleMaps.fitBounds(directionsData)
+            
           });
       }
 
       callbackStart(coordinates){
           this.setState({startLocation: coordinates});
+          if(this.state.markerStart){ this.state.markerStart.setMap(null); }
 
           var newCoordinates = new window.google.maps.LatLng(coordinates.lat, coordinates.lng);
 
-          this.markerStart = new window.google.maps.Marker({
+          this.state.markerStart = new window.google.maps.Marker({
             position: newCoordinates,
             map: this.googleMaps,
             title: "Start Location",
             animation: window.google.maps.Animation.DROP
           })
           this.googleMaps.setCenter(newCoordinates)
-          this.markerStart.setMap(this.googleMaps)
+          this.state.markerStart.setMap(this.googleMaps)
 
       }
 
       callbackEnd(coordinates){
         this.setState({endLocation: coordinates});
+        if(this.state.markerEnd){ this.state.markerEnd.setMap(null); }
 
         var newCoordinates = new window.google.maps.LatLng(coordinates.lat, coordinates.lng);
 
-        this.markerEnd = new window.google.maps.Marker({
+        this.state.markerEnd = new window.google.maps.Marker({
           position: newCoordinates,
           title: "End Location",
           animation: window.google.maps.Animation.DROP
         })
 
         this.googleMaps.setCenter(newCoordinates)
-        this.markerEnd.setMap(this.googleMaps)
+        this.state.markerEnd.setMap(this.googleMaps)
 
       }
 
