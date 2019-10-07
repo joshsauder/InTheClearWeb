@@ -51,7 +51,7 @@ class PolylineGenerator extends Component {
     weatherPerStep(steps, path, weather, map){
         let i = 0;
         var strokeColor =''
-        var polylineArray = []
+
         steps.forEach((step, index) => {
             let ret = this.determineSegCount(step, path, i)
             i = ret[0]
@@ -76,12 +76,10 @@ class PolylineGenerator extends Component {
                     break;
             }
             
-            var polyline = this.newPolyline(ret[1], strokeColor)
-            polyline.setMap(map)
+            this.newPolyline(ret[1], strokeColor, map)
         })
 
-        var polyline = this.newPolyline(path.slice(i, path.length), strokeColor)
-        polyline.setMap(map)
+        this.newPolyline(path.slice(i, path.length), strokeColor, map)
 
     }
 
@@ -100,7 +98,7 @@ class PolylineGenerator extends Component {
         return ([i, tempPath])
     }
 
-    newPolyline(path, color){
+    newPolyline(path, color, map){
         var polyline = new window.google.maps.Polyline({
             path: path,
             strokeColor: color,
@@ -109,8 +107,7 @@ class PolylineGenerator extends Component {
         });
 
         this.polylineArray.push(polyline)
-
-        return polyline
+        polyline.setMap(map)
     }
 
 }
