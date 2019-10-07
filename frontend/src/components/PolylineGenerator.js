@@ -28,6 +28,7 @@ class PolylineGenerator extends Component {
         })
         .then(response => {
             var weather = response.data.weather
+            var cities = response.data.locations
             this.weatherPerStep(steps, path, weather, map)
             
 
@@ -37,7 +38,7 @@ class PolylineGenerator extends Component {
                 bounds.extend(path[i]);
 
               }
-              return bounds
+              return [bounds, weather, cities]
         }).catch(error => {
             console.log(error)
         })

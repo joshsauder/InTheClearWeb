@@ -2,6 +2,7 @@ import React, {Component, createRef} from 'react';
 import '../App.css';
 import GooglePlaces from './GooglePlaces';
 import PolylineGenerator from './PolylineGenerator';
+import CityData from './CityData'
 
 class GoogleMap extends PolylineGenerator {
 
@@ -18,10 +19,13 @@ class GoogleMap extends PolylineGenerator {
             lng: 0
           },
           startMarker: null,
-          endMarker: null
+          endMarker: null,
+          cities: [],
+          weather:[]
         }
         this.callbackStart = this.callbackStart.bind(this);
         this.callbackEnd = this.callbackEnd.bind(this);
+        this.showDirections = this.showDirections.bind(this);
       }
 
       GoogleMapsRef = createRef()
@@ -69,7 +73,11 @@ class GoogleMap extends PolylineGenerator {
           })
           this.polylineArray = []
           this.generatePolyline(start, end, this.googleMaps).then(directionsData => {
-            this.googleMaps.fitBounds(directionsData)
+            this.googleMaps.fitBounds(directionsData[0])
+            this.setState({
+              cities: directionsData[2],
+              weather: directionsData[1]
+            })
             
           });
       }
@@ -112,8 +120,9 @@ class GoogleMap extends PolylineGenerator {
       render() {
         return (
           <div>
-          <div className="map" ref={this.GoogleMapsRef} />
-          { this.state.loaded ? <GooglePlaces callbackStart={this.callbackStart} callbackEnd={this.callbackEnd} /> : null }
+            <div className="map" ref={this.GoogleMapsRef} />
+              { this.state.loaded ? <GooglePlaces callbackStart={this.callbackStart} callbackEnd={this.callbackEnd} /> : null }
+              {this.state.cities.length > 0 ? <CityData city={this.state.cities} weather={this.state.weather}/> : null}
           </div>
         );
       }
