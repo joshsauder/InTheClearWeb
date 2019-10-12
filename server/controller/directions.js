@@ -1,5 +1,5 @@
-require('dotenv').config()
-import axios from 'axios';
+require('dotenv').config();
+const axios = require('axios')
 
 exports.getDirections = function(req, res) {
     const start = req.params.start

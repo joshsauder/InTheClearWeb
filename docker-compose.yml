@@ -1,22 +1,26 @@
-version: "3"
+version: '3'
 services:
-    frontend:
-        container_name: intheclear_frontend
-        build:
-            context: ./frontend
-            dockerfile: Dockerfile
-        image: joshs/intheclear_frontend
-        ports:
-            - "3000:3000"
-        volumes:
-            - ./frontend:/src/app
-    backend:
-        container_name: intheclear_server
-        build:
-            context: ./server
-            dockerfile: Dockerfile
-        image: joshs/intheclear_frontend
-        ports:
-            - "3400:3400"
-        volumes:
-            - ./server:/src/app
+  server:
+    build:
+      context: ./server/
+    command: /usr/app/node_modules/.bin/nodemon src/index.js
+    volumes:
+      - ./server/:/usr/app
+      - /usr/app/node_modules
+    ports:
+      - "3400:3400"
+    # env_file: ./server/.env # TODO - uncomment this to auto-load your .env file!
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+  client:
+    build:
+      context: ./frontend/
+    command: npm start
+    volumes:
+      - ./frontend/:/usr/app
+      - /usr/app/node_modules
+    links:
+      - server
+    ports:
+      - "3000:3000"
