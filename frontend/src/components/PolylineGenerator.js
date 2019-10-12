@@ -19,12 +19,12 @@ class PolylineGenerator extends Component {
     generatePolyline(start, end, map){
         var path;
         var steps
-        return axios.get(`http://localhost:3400/api/directions/${start.lat},${start.lng}/${end.lat},${end.lng}`)
+        return axios.get(`/api/directions/${start.lat},${start.lng}/${end.lat},${end.lng}`)
         .then(response => {
             path = window.google.maps.geometry.encoding.decodePath(response.data.points);
             steps = response.data.steps
             delete response.data.points
-            return axios.post("http://localhost:3400/api/directions/info", response.data)
+            return axios.post("/api/directions/info", response.data)
         })
         .then(response => {
             var weather = response.data.weather
@@ -54,7 +54,7 @@ class PolylineGenerator extends Component {
     }
 
     getWeatherInfo(steps){
-        return axios.post("http://localhost:3400/api/directions/info", steps)
+        return axios.post("/api/directions/info", steps)
     }
 
 

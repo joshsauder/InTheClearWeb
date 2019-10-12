@@ -76,8 +76,6 @@ class GoogleMap extends PolylineGenerator {
             this.setState({
               cityData: directionsData[1]
             })
-            console.log(this.state.cityData.length)
-            
           });
       }
 
