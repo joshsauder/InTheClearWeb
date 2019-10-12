@@ -1,0 +1,22 @@
+version: "3"
+services:
+    frontend:
+        container_name: intheclear_frontend
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+        image: joshs/intheclear_frontend
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./frontend:/src/app
+    backend:
+        container_name: intheclear_server
+        build:
+            context: ./server
+            dockerfile: Dockerfile
+        image: joshs/intheclear_frontend
+        ports:
+            - "3400:3400"
+        volumes:
+            - ./server:/src/app
