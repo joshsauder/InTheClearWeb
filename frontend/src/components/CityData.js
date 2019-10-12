@@ -21,11 +21,11 @@ function RenderCityData(props){
                     <Card.Body className="row"> 
                         <div className="col-6 text-white">
                             <div className="row">
-                                <div className="col-12 text-left">{city.city}</div>
+                                <div className="col-12 text-left lead">{city.city}</div>
                             </div>
                             <div className="row">
-                                <div className="col-8 text-left">{city.weather.Description}</div>   
-                                <div className="col-4 text-left">{Math.round(city.weather.Temperature)}&deg;</div>
+                                <div className="col-8 text-left lead">{city.weather.Description}</div>   
+                                <div className="col-4 text-left lead">{Math.round(city.weather.Temperature)}&deg;</div>
                             </div>
                         </div>
                         <div className="col-6"><img className="mx-auto d-block img-fluid img-white" src={determineIcon(city.weather.Condition)[0]} /></div>
