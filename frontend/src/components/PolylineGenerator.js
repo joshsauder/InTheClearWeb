@@ -36,9 +36,18 @@ class PolylineGenerator extends Component {
 
             for (var i = 0; i < path.length; i++) {
                 bounds.extend(path[i]);
+            }
 
-              }
-              return [bounds, weather, cities]
+            var cityWeather = [];
+            var cityTemp = []
+            cities.forEach((city, index) => {
+                let obj = {city: city, weather: weather[index]}
+                if(!cityTemp.includes(city)){
+                    cityTemp.push(city)
+                    cityWeather.push(obj)
+                }
+            })
+            return [bounds, cityWeather]
         }).catch(error => {
             console.log(error)
         })

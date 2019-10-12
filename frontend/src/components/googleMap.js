@@ -20,8 +20,7 @@ class GoogleMap extends PolylineGenerator {
           },
           startMarker: null,
           endMarker: null,
-          cities: [],
-          weather:[]
+          cityData: []
         }
         this.callbackStart = this.callbackStart.bind(this);
         this.callbackEnd = this.callbackEnd.bind(this);
@@ -75,9 +74,9 @@ class GoogleMap extends PolylineGenerator {
           this.generatePolyline(start, end, this.googleMaps).then(directionsData => {
             this.googleMaps.fitBounds(directionsData[0])
             this.setState({
-              cities: directionsData[2],
-              weather: directionsData[1]
+              cityData: directionsData[1]
             })
+            console.log(this.state.cityData.length)
             
           });
       }
@@ -122,7 +121,7 @@ class GoogleMap extends PolylineGenerator {
           <div>
             <div className="map" ref={this.GoogleMapsRef} />
               { this.state.loaded ? <GooglePlaces callbackStart={this.callbackStart} callbackEnd={this.callbackEnd} /> : null }
-              {this.state.cities.length > 0 ? <CityData city={this.state.cities} weather={this.state.weather}/> : null}
+              {this.state.cityData.length > 0 ? <CityData cityData={this.state.cityData}/> : null}
           </div>
         );
       }

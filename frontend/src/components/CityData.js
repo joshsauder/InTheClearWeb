@@ -16,19 +16,19 @@ function RenderCityData(props){
 
     return( 
         <div className="menuScroll">
-            {props.city.map((city, index) => 
-                <Card key={index} className={`${determineIcon(props.weather[index].Condition)[1]} mb-3 shadow rounded`} >
+            {props.cityData.map((city, index) => 
+                <Card key={index} className={`${determineIcon(city.weather.Condition)[1]} mb-3 shadow rounded`} >
                     <Card.Body className="row"> 
                         <div className="col-6 text-white">
                             <div className="row">
-                                <div className="col-12 text-left">{city}</div>
+                                <div className="col-12 text-left">{city.city}</div>
                             </div>
                             <div className="row">
-                                <div className="col-8 text-left">{props.weather[index].Description}</div>   
-                                <div className="col-4 text-left">{Math.round(props.weather[index].Temperature)}&deg;</div>
+                                <div className="col-8 text-left">{city.weather.Description}</div>   
+                                <div className="col-4 text-left">{Math.round(city.weather.Temperature)}&deg;</div>
                             </div>
                         </div>
-                        <div className="col-6"><img className="mx-auto d-block img-fluid img-white" src={determineIcon(props.weather[index].Condition)[0]} /></div>
+                        <div className="col-6"><img className="mx-auto d-block img-fluid img-white" src={determineIcon(city.weather.Condition)[0]} /></div>
                     </Card.Body>
                 </Card>
             )}
@@ -70,7 +70,7 @@ class CityData extends Component {
         return(
             <div className="row container">
                 <Jumbotron className = "ml-md-2 col-md-6 col-12 cityDataJumbotron">
-                    <RenderCityData city={this.props.city} weather={this.props.weather}/>
+                    <RenderCityData cityData={this.props.cityData}/>
                 </Jumbotron>
             </div>
         )
