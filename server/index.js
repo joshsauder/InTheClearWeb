@@ -6,7 +6,7 @@ const routes = require('./routes')
 var cors = require('cors')
 const bodyParser = require('body-parser')
 
-
+var port = process.env.PORT || 3400;
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
   type Query {
@@ -33,6 +33,6 @@ app.use('/graphql', graphqlHTTP({
 }));
 
 app.use('/api', routes)
-app.listen(3400, function()
+app.listen(port, function()
 {console.log(`Server is listening on port 3400`)})
 module.exports = app;
