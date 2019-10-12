@@ -11,14 +11,15 @@ import rain from '../images/rain.png';
 import snow from '../images/snow.png';
 import sun from '../images/sun.png';
 
+
 function RenderCityData(props){
 
     return( 
         <div className="menuScroll">
             {props.city.map((city, index) => 
-                <Card key={index}>
+                <Card key={index} className={`${determineIcon(props.weather[index].Condition)[1]} mb-3 shadow rounded`} >
                     <Card.Body className="row"> 
-                        <div className="col-6">
+                        <div className="col-6 text-white">
                             <div className="row">
                                 <div className="col-12 text-left">{city}</div>
                             </div>
@@ -27,7 +28,7 @@ function RenderCityData(props){
                                 <div className="col-4 text-left">{Math.round(props.weather[index].Temperature)}&deg;</div>
                             </div>
                         </div>
-                        <div className="col-6"><img className="mx-auto d-block img-fluid" src={determineIcon(props.weather[index].Condition)} /></div>
+                        <div className="col-6"><img className="mx-auto d-block img-fluid img-white" src={determineIcon(props.weather[index].Condition)[0]} /></div>
                     </Card.Body>
                 </Card>
             )}
@@ -39,22 +40,22 @@ function RenderCityData(props){
 function determineIcon(condition){
     switch(condition){
         case "rain": 
-            return rain;
+            return [rain, "rainCell"];
         case "danger":
-            return danger;
+            return [danger, "stormCell"];
         case "snow":
         case "sleet":
-            return snow;
+            return [snow, "snowCell"];
         case "cloudy":
-            return cloudy;
+            return [cloudy, "cloudCell"];
         case "partly-cloudy-day":
-            return partlyCloudy;
+            return [partlyCloudy, "cloudCell"];
         case "partly-cloudy-night":
-            return cloudNight;
+            return [cloudNight, "cloudCell"];
         case "clear-night":
-            return night;
+            return [night, "nightCell"];
         default: 
-            return sun;
+            return [sun, "sunCell"];
     }
 }
 

@@ -11,3 +11,35 @@
 .img-fluid{
     max-width: 40% !important;
 }
+
+.img-white{
+    filter: invert(100%)
+}
+
+text-white{
+    color: white;
+}
+
+.card.rounded{
+    border-radius: 1rem!important;
+}
+
+.snowCell.card{
+    background-color: #1E88E5;
+}
+.rainCell.card{
+    background-color: #43A047;
+}
+.sunCell.card{
+    background-color: #FBC02D;
+}
+.cloudCell.card{
+    background-color: #616161;
+}
+.stormCell.card{
+    background-color: #E53935;
+}
+
+.nightCell.card{
+    background-color: #424242;
+}
