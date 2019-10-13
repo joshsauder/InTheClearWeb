@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js --exec babel-node --presets babel-preset-env",
-    "test": "test"
+    "test": "test",
+    "run": "node index.js"
   },
   "author": "Josh",
   "license": "ISC",
