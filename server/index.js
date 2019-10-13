@@ -8,10 +8,6 @@ var port = process.env.PORT || 3400;
 
 app.use(cors());
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("frontend/build"));
-}
-
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
