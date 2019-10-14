@@ -1,6 +1,24 @@
 import React, {Component} from 'react';
 import {Modal, Button} from "react-bootstrap"
 import '../style/TripStops.css'
+import {sortableContainer, sortableElement} from 'react-sortable-hoc';
+import arrayMove from 'array-move';
+
+const SortableItem = sortableElement(({value}) => <p>{value}</p>);
+
+const SortableList = sortableContainer(({items}) => {
+  return(
+      <div>
+        {items.map((value, index) => 
+            <SortableItem 
+                key={index}
+                index={index}
+                value={value.name}
+            />
+        )}
+      </div>
+  );
+});
 
 class TripStops extends Component {
 
@@ -35,6 +53,12 @@ class TripStops extends Component {
         this.stopInput.value = ""
     }
 
+    onSortEnd = ({oldIndex, newIndex}) => {
+        this.setState(({stops}) => ({
+          stops: arrayMove(stops, oldIndex, newIndex),
+        }));
+      };
+
 
     render(){
         return(
@@ -44,9 +68,11 @@ class TripStops extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <p>{this.props.start}</p>
-                    {this.state.stops.map((stop) =>
-                        <p key={stop.name}>{stop.name}</p>
-                    )}
+                        <SortableList
+                            items={this.state.stops}
+                            onSortEnd={this.onSortEnd}
+                            useDragHandle
+                         />
                     <p>{this.props.end}</p>
                     <input className="form-control" id="stopLocation" type="text" size="50" placeholder="tripStop" autoComplete="on" runat="server" />
                 </Modal.Body>
