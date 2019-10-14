@@ -3,6 +3,7 @@ import '../App.css';
 import GooglePlaces from './GooglePlaces';
 import PolylineGenerator from './PolylineGenerator';
 import CityData from './CityData'
+import TripStops from './TripStops'
 
 class GoogleMap extends PolylineGenerator {
 
@@ -20,7 +21,8 @@ class GoogleMap extends PolylineGenerator {
           },
           startMarker: null,
           endMarker: null,
-          cityData: []
+          cityData: [],
+          showStopModal: false
         }
         this.callbackStart = this.callbackStart.bind(this);
         this.callbackEnd = this.callbackEnd.bind(this);
@@ -67,16 +69,18 @@ class GoogleMap extends PolylineGenerator {
 
       
       showDirections(start, end){
-          this.polylineArray.forEach(line => {
-            line.setMap(null)
-          })
-          this.polylineArray = []
-          this.generatePolyline(start, end, this.googleMaps).then(directionsData => {
-            this.googleMaps.fitBounds(directionsData[0])
-            this.setState({
-              cityData: directionsData[1]
-            })
-          });
+          // this.polylineArray.forEach(line => {
+          //   line.setMap(null)
+          // })
+          // this.polylineArray = []
+          // this.generatePolyline(start, end, this.googleMaps).then(directionsData => {
+          //   this.googleMaps.fitBounds(directionsData[0])
+          //   this.setState({
+          //     cityData: directionsData[1]
+          //   })
+          // });
+
+        this.setState({showStopModal: true})
       }
 
       callbackStart(coordinates){
@@ -115,11 +119,13 @@ class GoogleMap extends PolylineGenerator {
 
 
       render() {
+        let modalClose = () => this.setState({ showStopModal: false });
         return (
           <div>
             <div className="map" ref={this.GoogleMapsRef} />
               { this.state.loaded ? <GooglePlaces callbackStart={this.callbackStart} callbackEnd={this.callbackEnd} /> : null }
               {this.state.cityData.length > 0 ? <CityData cityData={this.state.cityData}/> : null}
+              { this.state.loaded ? <TripStops show={this.state.showStopModal} hide={modalClose} /> : null }
           </div>
         );
       }

@@ -53,9 +53,9 @@ class GooglePlaces extends Component {
       handlePlacesStartSelect(){
 
         var placeStart = this.autocompleteStart.getPlace();
-        document.getElementById('cityStart').value = placeStart.name;
-        var lat = document.getElementById('latStart').value = placeStart.geometry.location.lat();
-        var long = document.getElementById('longStart').value = placeStart.geometry.location.lng();
+        var lat = placeStart.geometry.location.lat();
+        var long = placeStart.geometry.location.lng();
+        console.log(lat)
         this.setState({startCoordinates:{lat: lat, lng: long}})
 
       }
@@ -63,9 +63,8 @@ class GooglePlaces extends Component {
       handlePlacesEndSelect(){
 
         var placeEnd = this.autocompleteDest.getPlace();
-        document.getElementById('cityEnd').value = placeEnd.name;
-        var lat = document.getElementById('latEnd').value = placeEnd.geometry.location.lat();
-        var long = document.getElementById('longEnd').value = placeEnd.geometry.location.lng();
+        var lat = placeEnd.geometry.location.lat();
+        var long =  placeEnd.geometry.location.lng();
         this.setState({endCoordinates:{lat: lat, lng: long}})
 
       }
@@ -77,15 +76,9 @@ class GooglePlaces extends Component {
                 <img className="mx-auto d-block img-logo mb-1" alt="logo" src={logo}></img>
                 <div className="input-group mb-1 mt-4">
                     <input className="form-control" id="locationStart" type="text" size="50" placeholder="Start Location" autoComplete="on" runat="server" />
-                    <input type="hidden" id="cityStart" name="city2" />
-                    <input type="hidden" id="latStart" name="cityLat" />
-                    <input type="hidden" id="longStart" name="cityLng" />
                 </div>
                 <div className="input-group mb-1 mt-4">
                     <input className="form-control" id="locationEnd" type="text" size="50" placeholder="Destination Location" autoComplete="on" runat="server" />
-                    <input type="hidden" id="cityEnd" name="city2" />
-                    <input type="hidden" id="latEnd" name="cityLat" />
-                    <input type="hidden" id="longEnd" name="cityLng" />
                 </div>
             </Jumbotron>
           </div>
