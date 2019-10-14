@@ -12,11 +12,13 @@ class GooglePlaces extends Component {
         this.state ={
             startCoordinates: {
                 lat: 37.3317,
-                lng: -122.0306
+                lng: -122.0306,
+                name: "Apple HQ"
             },
             endCoordinates :{
                 lat: 37.3317,
-                lng: -122.0306
+                lng: -122.0306,
+                name: "Apple HQ"
             }
 
         }
@@ -55,8 +57,7 @@ class GooglePlaces extends Component {
         var placeStart = this.autocompleteStart.getPlace();
         var lat = placeStart.geometry.location.lat();
         var long = placeStart.geometry.location.lng();
-        console.log(lat)
-        this.setState({startCoordinates:{lat: lat, lng: long}})
+        this.setState({startCoordinates:{lat: lat, lng: long, name: placeStart.name}})
 
       }
 
@@ -65,7 +66,7 @@ class GooglePlaces extends Component {
         var placeEnd = this.autocompleteDest.getPlace();
         var lat = placeEnd.geometry.location.lat();
         var long =  placeEnd.geometry.location.lng();
-        this.setState({endCoordinates:{lat: lat, lng: long}})
+        this.setState({endCoordinates:{lat: lat, lng: long, name: placeEnd.name}})
 
       }
 

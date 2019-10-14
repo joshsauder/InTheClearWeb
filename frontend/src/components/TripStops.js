@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Modal} from "react-bootstrap"
+import {Modal, Button} from "react-bootstrap"
 import '../style/TripStops.css'
 
 class TripStops extends Component {
@@ -16,10 +16,9 @@ class TripStops extends Component {
     componentDidUpdate(prevProps, prevState){
 
         if(this.props.show == true){
-            var stopInput = document.getElementById('stopLocation');
-            console.log(stopInput)
+            this.stopInput = document.getElementById('stopLocation');
 
-            this.autocompleteStop = new window.google.maps.places.Autocomplete(stopInput);
+            this.autocompleteStop = new window.google.maps.places.Autocomplete(this.stopInput);
 
             window.google.maps.event.addListener(this.autocompleteStop, 'place_changed', this.handlePlacesStopSelect)
         }
@@ -28,9 +27,12 @@ class TripStops extends Component {
     handlePlacesStopSelect(){
 
         var placeStop = this.autocompleteStop.getPlace();
-        var stops = this.state.stops
-        this.setState({stops: stops.push(placeStop)})
 
+        this.setState(prevState => ({
+            stops: [...prevState.stops, placeStop]
+        }))
+
+        this.stopInput.value = ""
     }
 
 
@@ -41,11 +43,16 @@ class TripStops extends Component {
                     <Modal.Title>Trip Stops</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {this.state.stops.map(stop =>
-                        <p>{stop}</p>
+                    <p>{this.props.start}</p>
+                    {this.state.stops.map((stop) =>
+                        <p key={stop.name}>{stop.name}</p>
                     )}
+                    <p>{this.props.end}</p>
                     <input className="form-control" id="stopLocation" type="text" size="50" placeholder="tripStop" autoComplete="on" runat="server" />
                 </Modal.Body>
+                <Modal.Footer>
+                    <Button className="darkPurple">Set Stops</Button>
+                </Modal.Footer>
             </Modal>
         )
     }

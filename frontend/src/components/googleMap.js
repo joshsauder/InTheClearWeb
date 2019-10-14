@@ -13,11 +13,13 @@ class GoogleMap extends PolylineGenerator {
           loaded: false, 
           startLocation:{
             lat: 0,
-            lng: 0
+            lng: 0,
+            name: ""
           },
           endLocation: {
             lat: 0,
-            lng: 0
+            lng: 0,
+            name: ""
           },
           startMarker: null,
           endMarker: null,
@@ -125,7 +127,7 @@ class GoogleMap extends PolylineGenerator {
             <div className="map" ref={this.GoogleMapsRef} />
               { this.state.loaded ? <GooglePlaces callbackStart={this.callbackStart} callbackEnd={this.callbackEnd} /> : null }
               {this.state.cityData.length > 0 ? <CityData cityData={this.state.cityData}/> : null}
-              { this.state.loaded ? <TripStops show={this.state.showStopModal} hide={modalClose} /> : null }
+              { this.state.loaded ? <TripStops show={this.state.showStopModal} hide={modalClose} start={this.state.startLocation.name} end={this.state.endLocation.name} /> : null }
           </div>
         );
       }
