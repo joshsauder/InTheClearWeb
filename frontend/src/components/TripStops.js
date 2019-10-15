@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import {Modal, Button} from "react-bootstrap"
 import '../style/TripStops.css'
-import {sortableContainer, sortableElement} from 'react-sortable-hoc';
+import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc';
 import arrayMove from 'array-move';
+import dragImg from '../images/align-justify-solid.svg'
+const DragHandle = sortableHandle(() => <span><img className="dragImage" src={dragImg}></img></span>);
 
-const SortableItem = sortableElement(({value}) => <p>{value}</p>);
+const SortableItem = sortableElement(({value}) => <p><DragHandle /> {value}</p>);
 
 const SortableList = sortableContainer(({items}) => {
   return(
-      <div>
+      <div className="boxedItem" >
         {items.map((value, index) => 
             <SortableItem 
                 key={index}
@@ -62,21 +64,26 @@ class TripStops extends Component {
 
     render(){
         return(
-            <Modal show = {this.props.show} onHide={this.props.hide}>
+            <Modal className="modalPurple" show = {this.props.show} onHide={this.props.hide}>
                 <Modal.Header closeButton>
                     <Modal.Title>Trip Stops</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>{this.props.start}</p>
+                    <div className="boxedItem">
+                        <p>{this.props.start}</p>
+                    </div>
                         <SortableList
                             items={this.state.stops}
                             onSortEnd={this.onSortEnd}
+                            useDragHandle
                          />
-                    <p>{this.props.end}</p>
+                    <div className="boxedItem">
+                        <p>{this.props.end}</p>
+                    </div>
                     <input className="form-control" id="stopLocation" type="text" size="50" placeholder="tripStop" autoComplete="on" runat="server" />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button className="darkPurple">Set Stops</Button>
+                    <Button>Set Stops</Button>
                 </Modal.Footer>
             </Modal>
         )
