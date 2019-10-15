@@ -1,4 +1,4 @@
-div.pac-container {
+div.pac-container, p {
     z-index: 10000 !important;
 }
 
@@ -6,4 +6,8 @@ div.pac-container {
     color: #ffffff,;
     background-color: #7B16F5;
     border-color: #7B16F5;
+}
+
+.sortItem{
+    z-index: 10000;
 }

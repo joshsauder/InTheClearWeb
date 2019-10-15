@@ -71,7 +71,6 @@ class TripStops extends Component {
                         <SortableList
                             items={this.state.stops}
                             onSortEnd={this.onSortEnd}
-                            useDragHandle
                          />
                     <p>{this.props.end}</p>
                     <input className="form-control" id="stopLocation" type="text" size="50" placeholder="tripStop" autoComplete="on" runat="server" />
