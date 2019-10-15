@@ -51,7 +51,7 @@ class GoogleMap extends PolylineGenerator {
           this.state.startLocation.lat !== 0 && this.state.startLocation.lng !== 0){
 
             if (prevState.startLocation !== this.state.startLocation || prevState.endLocation !== this.state.endLocation){
-                this.showDirections(this.state.startLocation,this.state.endLocation)
+                this.showModal()
 
             }
           }
@@ -69,21 +69,25 @@ class GoogleMap extends PolylineGenerator {
           disableDefaultUI: true,
         })
 
-      
-      showDirections(start, end){
-          // this.polylineArray.forEach(line => {
-          //   line.setMap(null)
-          // })
-          // this.polylineArray = []
-          // this.generatePolyline(start, end, this.googleMaps).then(directionsData => {
-          //   this.googleMaps.fitBounds(directionsData[0])
-          //   this.setState({
-          //     cityData: directionsData[1]
-          //   })
-          // });
-
+      showModal(){
         this.setState({showStopModal: true})
       }
+
+      showDirections(stops){
+          this.polylineArray.forEach(line => {
+            line.setMap(null)
+          })
+          this.polylineArray = []
+          this.generatePolyline(this.state.startLocation, this.state.endLocation, this.googleMaps).then(directionsData => {
+            this.googleMaps.fitBounds(directionsData[0])
+            this.setState({
+              cityData: directionsData[1]
+            })
+          });
+
+      }
+
+
 
       callbackStart(coordinates){
           this.setState({startLocation: coordinates});
@@ -127,7 +131,7 @@ class GoogleMap extends PolylineGenerator {
             <div className="map" ref={this.GoogleMapsRef} />
               { this.state.loaded ? <GooglePlaces callbackStart={this.callbackStart} callbackEnd={this.callbackEnd} /> : null }
               {this.state.cityData.length > 0 ? <CityData cityData={this.state.cityData}/> : null}
-              { this.state.loaded ? <TripStops show={this.state.showStopModal} hide={modalClose} start={this.state.startLocation.name} end={this.state.endLocation.name} /> : null }
+              { this.state.loaded ? <TripStops show={this.state.showStopModal} hide={modalClose} start={this.state.startLocation.name} end={this.state.endLocation.name} callback={this.showDirections} /> : null }
           </div>
         );
       }

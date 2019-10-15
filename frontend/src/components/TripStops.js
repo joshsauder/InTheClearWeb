@@ -31,6 +31,7 @@ class TripStops extends Component {
             stops: []
         }
         this.handlePlacesStopSelect = this.handlePlacesStopSelect.bind(this)
+        this.onSubmit = this.onSubmit.bind(this)
     }
 
     componentDidUpdate(prevProps, prevState){
@@ -59,7 +60,11 @@ class TripStops extends Component {
         this.setState(({stops}) => ({
           stops: arrayMove(stops, oldIndex, newIndex),
         }));
-      };
+    };
+
+    onSubmit(){
+        return this.props.callback(this.state.stops)
+    }
 
 
     render(){
@@ -83,7 +88,7 @@ class TripStops extends Component {
                     <input className="form-control" id="stopLocation" type="text" size="50" placeholder="tripStop" autoComplete="on" runat="server" />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button>Set Stops</Button>
+                    <Button onClick={this.onSubmit}>Set Stops</Button>
                 </Modal.Footer>
             </Modal>
         )
