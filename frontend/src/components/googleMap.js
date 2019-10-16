@@ -78,7 +78,7 @@ class GoogleMap extends PolylineGenerator {
             line.setMap(null)
           })
           this.polylineArray = []
-          this.generatePolyline(this.state.startLocation, this.state.endLocation, this.googleMaps).then(directionsData => {
+          this.createPolylineAndWeatherData([this.state.startLocation, stops, this.state.endLocation], this.googleMaps).then(directionsData => {
             this.googleMaps.fitBounds(directionsData[0])
             this.setState({
               cityData: directionsData[1]

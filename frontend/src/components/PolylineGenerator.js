@@ -15,8 +15,25 @@ class PolylineGenerator extends Component {
         this.polylineArray = []
     }
 
+    createPolylineAndWeatherData(stops, map){
+        var bounds = new window.google.maps.LatLngBounds();
+        var cityWeather = []
+        return this.generatePolyline(stops[0], stops[1], map, bounds).then(directionsData => {
+            bounds = directionsData[0]
+            cityWeather = cityWeather.concat(directionsData[1])
+            console.log(cityWeather)
 
-    generatePolyline(start, end, map){
+            stops.shift()
+            console.log(stops)
+            if(stops.length > 1){
+                return this.createPolylineAndWeatherData(stops, map)
+            }
+            return [bounds, cityWeather]
+        })
+    }
+
+
+    generatePolyline(start, end, map, bounds){
         var path;
         var steps
         return axios.get(`/api/directions/${start.lat},${start.lng}/${end.lat},${end.lng}`)
@@ -30,9 +47,6 @@ class PolylineGenerator extends Component {
             var weather = response.data.weather
             var cities = response.data.locations
             this.weatherPerStep(steps, path, weather, map)
-            
-
-            var bounds = new window.google.maps.LatLngBounds();
 
             for (var i = 0; i < path.length; i++) {
                 bounds.extend(path[i]);
