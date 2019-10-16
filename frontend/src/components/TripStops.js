@@ -49,8 +49,9 @@ class TripStops extends Component {
 
         var placeStop = this.autocompleteStop.getPlace();
 
+        var data = {lat: placeStop.geometry.location.lat(), lng: placeStop.geometry.location.lng(), name: placeStop.name}
         this.setState(prevState => ({
-            stops: [...prevState.stops, placeStop]
+            stops: [...prevState.stops, data]
         }))
 
         this.stopInput.value = ""
