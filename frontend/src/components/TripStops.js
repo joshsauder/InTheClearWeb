@@ -3,19 +3,22 @@ import {Modal, Button} from "react-bootstrap"
 import '../style/TripStops.css'
 import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc';
 import arrayMove from 'array-move';
-import dragImg from '../images/align-justify-solid.svg'
-const DragHandle = sortableHandle(() => <span><img className="dragImage" src={dragImg}></img></span>);
+import dragImg from '../images/align-justify-solid.svg';
+import trashImg from '../images/trash-alt-solid.svg';
 
-const SortableItem = sortableElement(({value}) => <p><DragHandle /> {value}</p>);
+const DragHandle = sortableHandle(() => <span className="spanText"><img className="dragImage" src={dragImg}></img></span>);
+const TrashHandle = ({onRemove, index}) => <button className="col-auto mr-2" onClick={() => onRemove(index)}><img src={trashImg} className="dragImage" /></button>
+const SortableItem = sortableElement(({value, index, onRemove}) => <div className="boxedItem row sortItem mb-2"><DragHandle /><span className="col-4 mr-auto spanText">{value}</span><TrashHandle onRemove={onRemove} index={index}/></div>);
 
-const SortableList = sortableContainer(({items}) => {
+const SortableList = sortableContainer(({items, onRemove}) => {
   return(
-      <div className="boxedItem" >
+      <div>
         {items.map((value, index) => 
             <SortableItem 
                 key={index}
                 index={index}
                 value={value.name}
+                onRemove={onRemove}
             />
         )}
       </div>
@@ -31,6 +34,7 @@ class TripStops extends Component {
             stops: []
         }
         this.handlePlacesStopSelect = this.handlePlacesStopSelect.bind(this)
+        this.handlePlacesRemove = this.handlePlacesRemove.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
     }
 
@@ -57,6 +61,16 @@ class TripStops extends Component {
         this.stopInput.value = ""
     }
 
+    handlePlacesRemove(index){
+        this.setState(function(prevState){
+            prevState.stops.splice(index, 1)
+            console.log(prevState.stops)
+            return{
+                stops: prevState.stops
+            }
+        })
+    }
+
     onSortEnd = ({oldIndex, newIndex}) => {
         this.setState(({stops}) => ({
           stops: arrayMove(stops, oldIndex, newIndex),
@@ -75,18 +89,23 @@ class TripStops extends Component {
                     <Modal.Title>Trip Stops</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="boxedItem">
-                        <p>{this.props.start}</p>
-                    </div>
+                    <div className="container">
+                        <h3>Current Route</h3>
+                        <div className="row boxedItem mb-2">
+                            <span className="spanText">{this.props.start}</span>
+                        </div>
                         <SortableList
                             items={this.state.stops}
                             onSortEnd={this.onSortEnd}
+                            onRemove={this.handlePlacesRemove}
                             useDragHandle
-                         />
-                    <div className="boxedItem">
-                        <p>{this.props.end}</p>
+                        />
+                        <div className="row boxedItem mb-2">
+                            <span className="spanText">{this.props.end}</span>
+                        </div>
+                        <h3>Add Trip Stop</h3>
+                        <input className="form-control" id="stopLocation" type="text" size="50" placeholder="Stop Location" autoComplete="on" runat="server" />
                     </div>
-                    <input className="form-control" id="stopLocation" type="text" size="50" placeholder="tripStop" autoComplete="on" runat="server" />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.onSubmit}>Set Stops</Button>

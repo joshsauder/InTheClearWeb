@@ -29,6 +29,7 @@ class GoogleMap extends PolylineGenerator {
         this.callbackStart = this.callbackStart.bind(this);
         this.callbackEnd = this.callbackEnd.bind(this);
         this.showDirections = this.showDirections.bind(this);
+        this.polylineArray = []
       }
 
       GoogleMapsRef = createRef()
@@ -73,17 +74,19 @@ class GoogleMap extends PolylineGenerator {
         this.setState({showStopModal: true})
       }
 
-      showDirections(stops){
+      async showDirections(stops){
+        this.setState({showStopModal: false})
           this.polylineArray.forEach(line => {
             line.setMap(null)
           })
           this.polylineArray = []
-          this.createPolylineAndWeatherData([this.state.startLocation, stops, this.state.endLocation], this.googleMaps).then(directionsData => {
-            this.googleMaps.fitBounds(directionsData[0])
-            this.setState({
-              cityData: directionsData[1]
-            })
-          });
+          var bounds = new window.google.maps.LatLngBounds();
+          var directionsData = await this.createPolylineAndWeatherData([this.state.startLocation, ...stops, this.state.endLocation], this.googleMaps, bounds)
+          console.log(directionsData)
+          this.googleMaps.fitBounds(directionsData[0])
+          this.setState({
+            cityData: directionsData[1]
+          })
 
       }
 
