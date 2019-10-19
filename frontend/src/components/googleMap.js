@@ -3,6 +3,7 @@ import '../App.css';
 import GooglePlaces from './GooglePlaces';
 import PolylineGenerator from './PolylineGenerator';
 import CityData from './CityData'
+import TripStops from './TripStops'
 
 class GoogleMap extends PolylineGenerator {
 
@@ -12,19 +13,23 @@ class GoogleMap extends PolylineGenerator {
           loaded: false, 
           startLocation:{
             lat: 0,
-            lng: 0
+            lng: 0,
+            name: ""
           },
           endLocation: {
             lat: 0,
-            lng: 0
+            lng: 0,
+            name: ""
           },
           startMarker: null,
           endMarker: null,
-          cityData: []
+          cityData: [],
+          showStopModal: false
         }
         this.callbackStart = this.callbackStart.bind(this);
         this.callbackEnd = this.callbackEnd.bind(this);
         this.showDirections = this.showDirections.bind(this);
+        this.polylineArray = []
       }
 
       GoogleMapsRef = createRef()
@@ -47,7 +52,7 @@ class GoogleMap extends PolylineGenerator {
           this.state.startLocation.lat !== 0 && this.state.startLocation.lng !== 0){
 
             if (prevState.startLocation !== this.state.startLocation || prevState.endLocation !== this.state.endLocation){
-                this.showDirections(this.state.startLocation,this.state.endLocation)
+                this.showModal()
 
             }
           }
@@ -65,19 +70,27 @@ class GoogleMap extends PolylineGenerator {
           disableDefaultUI: true,
         })
 
-      
-      showDirections(start, end){
+      showModal(){
+        this.setState({showStopModal: true})
+      }
+
+      async showDirections(stops){
+        this.setState({showStopModal: false})
           this.polylineArray.forEach(line => {
             line.setMap(null)
           })
           this.polylineArray = []
-          this.generatePolyline(start, end, this.googleMaps).then(directionsData => {
-            this.googleMaps.fitBounds(directionsData[0])
-            this.setState({
-              cityData: directionsData[1]
-            })
-          });
+          var bounds = new window.google.maps.LatLngBounds();
+          var directionsData = await this.createPolylineAndWeatherData([this.state.startLocation, ...stops, this.state.endLocation], this.googleMaps, bounds)
+          console.log(directionsData)
+          this.googleMaps.fitBounds(directionsData[0])
+          this.setState({
+            cityData: directionsData[1]
+          })
+
       }
+
+
 
       callbackStart(coordinates){
           this.setState({startLocation: coordinates});
@@ -115,11 +128,13 @@ class GoogleMap extends PolylineGenerator {
 
 
       render() {
+        let modalClose = () => this.setState({ showStopModal: false });
         return (
           <div>
             <div className="map" ref={this.GoogleMapsRef} />
               { this.state.loaded ? <GooglePlaces callbackStart={this.callbackStart} callbackEnd={this.callbackEnd} /> : null }
               {this.state.cityData.length > 0 ? <CityData cityData={this.state.cityData}/> : null}
+              { this.state.loaded ? <TripStops show={this.state.showStopModal} hide={modalClose} start={this.state.startLocation.name} end={this.state.endLocation.name} callback={this.showDirections} /> : null }
           </div>
         );
       }

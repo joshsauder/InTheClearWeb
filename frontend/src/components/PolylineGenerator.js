@@ -12,45 +12,53 @@ class PolylineGenerator extends Component {
     constructor(props){
         super(props)
 
-        this.polylineArray = []
+        this.cityWeather =[]
+        
+    }
+
+    async createPolylineAndWeatherData(stops, map, bounds){
+
+        await this.generatePolyline(stops[0], stops[1], map, bounds)   
+
+        stops.shift()
+        if(stops.length > 1){
+            await this.createPolylineAndWeatherData(stops, map, bounds)   
+        }
+
+        return [bounds, this.cityWeather]
     }
 
 
-    generatePolyline(start, end, map){
+    async generatePolyline(start, end, map, bounds){
         var path;
         var steps
-        return axios.get(`/api/directions/${start.lat},${start.lng}/${end.lat},${end.lng}`)
-        .then(response => {
+        try {
+            const response = await axios.get(`/api/directions/${start.lat},${start.lng}/${end.lat},${end.lng}`);
             path = window.google.maps.geometry.encoding.decodePath(response.data.points);
-            steps = response.data.steps
-            delete response.data.points
-            return axios.post("/api/directions/info", response.data)
-        })
-        .then(response => {
-            var weather = response.data.weather
-            var cities = response.data.locations
-            this.weatherPerStep(steps, path, weather, map)
-            
+            steps = response.data.steps;
+            delete response.data.points;
 
-            var bounds = new window.google.maps.LatLngBounds();
+            const response_1 = await axios.post("/api/directions/info", response.data);
+            var weather = response_1.data.weather;
+            var cities = response_1.data.locations;
 
+            this.weatherPerStep(steps, path, weather, map);
             for (var i = 0; i < path.length; i++) {
                 bounds.extend(path[i]);
             }
 
-            var cityWeather = [];
-            var cityTemp = []
+            var cityTemp = [];
             cities.forEach((city, index) => {
-                let obj = {city: city, weather: weather[index]}
-                if(!cityTemp.includes(city)){
-                    cityTemp.push(city)
-                    cityWeather.push(obj)
+                let obj = { city: city, weather: weather[index] };
+                if (!cityTemp.includes(city)) {
+                    cityTemp.push(city);
+                    this.cityWeather.push(obj);
                 }
-            })
-            return [bounds, cityWeather]
-        }).catch(error => {
-            console.log(error)
-        })
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
 
     getWeatherInfo(steps){
