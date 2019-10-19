@@ -73,7 +73,7 @@ class GooglePlaces extends Component {
       render() {
           return (
           <div className="row container">
-            <Jumbotron className="directionsJumbotron ml-md-2 mt-md-2 col-md-6 col-12">
+            <Jumbotron className="directionsJumbotron ml-md-2 mt-md-2 col-5">
                 <img className="mx-auto d-block img-logo mb-1" alt="logo" src={logo}></img>
                 <div className="input-group mb-1 mt-4">
                     <input className="form-control" id="locationStart" type="text" size="50" placeholder="Start Location" autoComplete="on" runat="server" />

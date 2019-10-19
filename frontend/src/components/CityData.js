@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Jumbotron from 'react-bootstrap/Jumbotron';
+import {Jumbotron, Spinner} from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import '../style/CityData.css';
 import cloudy from '../images/cloud.png';
@@ -19,7 +19,7 @@ function RenderCityData(props){
             {props.cityData.map((city, index) => 
                 <Card key={index} className={`${determineIcon(city.weather.Condition)[1]} mb-3 shadow rounded`} >
                     <Card.Body className="row"> 
-                        <div className="col-6 text-white">
+                        <div className="col-7 text-white">
                             <div className="row">
                                 <div className="col-12 text-left lead">{city.city}</div>
                             </div>
@@ -28,7 +28,7 @@ function RenderCityData(props){
                                 <div className="col-4 text-left lead">{Math.round(city.weather.Temperature)}&deg;</div>
                             </div>
                         </div>
-                        <div className="col-6"><img className="mx-auto d-block img-fluid img-white" src={determineIcon(city.weather.Condition)[0]} /></div>
+                        <div className="col-5"><img className="mx-auto d-block img-fluid img-white" src={determineIcon(city.weather.Condition)[0]} /></div>
                     </Card.Body>
                 </Card>
             )}
@@ -69,8 +69,12 @@ class CityData extends Component {
     render(){
         return(
             <div className="row container">
-                <Jumbotron className = "ml-md-2 col-md-6 col-12 cityDataJumbotron">
-                    <RenderCityData cityData={this.props.cityData}/>
+                <Jumbotron className = "ml-md-2 col-5 cityDataJumbotron">
+                    {this.props.cityData.length > 0 ? 
+                    <RenderCityData cityData={this.props.cityData}/> :
+                    <div className="d-flex justify-content-center">
+                        <Spinner animation="border" variant="light" />
+                    </div> }
                 </Jumbotron>
             </div>
         )

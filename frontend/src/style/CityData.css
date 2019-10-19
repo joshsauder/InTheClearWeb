@@ -9,7 +9,7 @@
 }
 
 .img-fluid{
-    max-width: 40% !important;
+    max-width: 55% !important;
 }
 
 .img-white{
@@ -42,4 +42,8 @@ text-white{
 
 .nightCell.card{
     background-color: #424242;
+}
+
+.lead{
+    font-size: 1rem !important;
 }

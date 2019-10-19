@@ -11,6 +11,7 @@ class GoogleMap extends PolylineGenerator {
         super(props);
         this.state = {
           loaded: false, 
+          showCityData: false,
           startLocation:{
             lat: 0,
             lng: 0,
@@ -75,7 +76,7 @@ class GoogleMap extends PolylineGenerator {
       }
 
       async showDirections(stops){
-        this.setState({showStopModal: false})
+        this.setState({showStopModal: false, showCityData: true})
           this.polylineArray.forEach(line => {
             line.setMap(null)
           })
@@ -133,7 +134,7 @@ class GoogleMap extends PolylineGenerator {
           <div>
             <div className="map" ref={this.GoogleMapsRef} />
               { this.state.loaded ? <GooglePlaces callbackStart={this.callbackStart} callbackEnd={this.callbackEnd} /> : null }
-              {this.state.cityData.length > 0 ? <CityData cityData={this.state.cityData}/> : null}
+              {this.state.showCityData ? <CityData cityData={this.state.cityData}/> : null}
               { this.state.loaded ? <TripStops show={this.state.showStopModal} hide={modalClose} start={this.state.startLocation.name} end={this.state.endLocation.name} callback={this.showDirections} /> : null }
           </div>
         );
