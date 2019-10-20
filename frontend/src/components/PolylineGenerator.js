@@ -13,6 +13,8 @@ class PolylineGenerator extends Component {
         super(props)
 
         this.cityWeather =[]
+        this.duration = 0
+        this.distance = 0
         
     }
 
@@ -25,7 +27,7 @@ class PolylineGenerator extends Component {
             await this.createPolylineAndWeatherData(stops, map, bounds)   
         }
 
-        return [bounds, this.cityWeather]
+        return [bounds, this.cityWeather, this.duration, this.distance]
     }
 
 
@@ -46,6 +48,9 @@ class PolylineGenerator extends Component {
             for (var i = 0; i < path.length; i++) {
                 bounds.extend(path[i]);
             }
+
+            this.duration += steps.duration.value
+            this.distance += steps.distance.value
 
             var cityTemp = [];
             cities.forEach((city, index) => {

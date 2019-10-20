@@ -90,7 +90,7 @@ class TripStops extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="container">
-                        <h4>Current Route</h4>
+                        <h4 className="row">Current Route</h4>
                         <div className="row boxedItem mb-2">
                             <span className="spanText">{this.props.start}</span>
                         </div>
@@ -103,7 +103,7 @@ class TripStops extends Component {
                         <div className="row boxedItem mb-2">
                             <span className="spanText">{this.props.end}</span>
                         </div>
-                        <div className="row mt-4">
+                        <div className="row mt-5">
                             <input className="form-control" id="stopLocation" type="text" size="50" placeholder="Add Trip Stop" autoComplete="on" runat="server" />
                         </div>
                     </div>

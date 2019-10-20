@@ -14,25 +14,33 @@ import sun from '../images/sun.png';
 
 function RenderCityData(props){
 
-    return( 
-        <div className="menuScroll">
-            {props.cityData.map((city, index) => 
-                <Card key={index} className={`${determineIcon(city.weather.Condition)[1]} mb-3 shadow rounded`} >
-                    <Card.Body className="row"> 
-                        <div className="col-7 text-white">
-                            <div className="row">
-                                <div className="col-12 text-left lead">{city.city}</div>
+    return(
+        <div>
+            <Card>
+                <Card.Body>
+                    <div className="lead">Distance: {props.cityData.distance}</div>
+                    <div className="lead">Duration: {props.cityData.duration}</div>
+                </Card.Body>
+            </Card>
+            <div className="menuScroll">
+                {props.cityData.tripStops.map((city, index) => 
+                    <Card key={index} className={`${determineIcon(city.weather.Condition)[1]} mb-3 shadow rounded`} >
+                        <Card.Body className="row"> 
+                            <div className="col-7 text-white">
+                                <div className="row">
+                                    <div className="col-12 text-left lead">{city.city}</div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-8 text-left lead">{city.weather.Description}</div>   
+                                    <div className="col-4 text-left lead">{Math.round(city.weather.Temperature)}&deg;</div>
+                                </div>
                             </div>
-                            <div className="row">
-                                <div className="col-8 text-left lead">{city.weather.Description}</div>   
-                                <div className="col-4 text-left lead">{Math.round(city.weather.Temperature)}&deg;</div>
-                            </div>
-                        </div>
-                        <div className="col-5"><img className="mx-auto d-block img-fluid img-white" src={determineIcon(city.weather.Condition)[0]} /></div>
-                    </Card.Body>
-                </Card>
-            )}
-        </div>
+                            <div className="col-5"><img className="mx-auto d-block img-fluid img-white" src={determineIcon(city.weather.Condition)[0]} /></div>
+                        </Card.Body>
+                    </Card>
+                )}
+            </div>
+        </div> 
     )
 
 }
@@ -70,7 +78,7 @@ class CityData extends Component {
         return(
             <div className="row container">
                 <Jumbotron className = "ml-md-2 col-5 cityDataJumbotron">
-                    {this.props.cityData.length > 0 ? 
+                    {this.props.cityData.tripData.length > 0 ? 
                     <RenderCityData cityData={this.props.cityData}/> :
                     <div className="d-flex justify-content-center">
                         <Spinner animation="border" variant="light" />

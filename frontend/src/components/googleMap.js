@@ -2,8 +2,9 @@ import React, {Component, createRef} from 'react';
 import '../App.css';
 import GooglePlaces from './GooglePlaces';
 import PolylineGenerator from './PolylineGenerator';
-import CityData from './CityData'
-import TripStops from './TripStops'
+import CityData from './CityData';
+import TripStops from './TripStops';
+import {TripsModel} from '../models/trips';
 
 class GoogleMap extends PolylineGenerator {
 
@@ -12,19 +13,9 @@ class GoogleMap extends PolylineGenerator {
         this.state = {
           loaded: false, 
           showCityData: false,
-          startLocation:{
-            lat: 0,
-            lng: 0,
-            name: ""
-          },
-          endLocation: {
-            lat: 0,
-            lng: 0,
-            name: ""
-          },
           startMarker: null,
           endMarker: null,
-          cityData: [],
+          tripData: new TripsModel(),
           showStopModal: false
         }
         this.callbackStart = this.callbackStart.bind(this);
@@ -48,11 +39,12 @@ class GoogleMap extends PolylineGenerator {
       }
 
       componentDidUpdate(prevProps, prevState){
+        console.log(prevState.tripData)
+        console.log(this.state.tripData)
 
-        if(this.state.endLocation.lat !== 0 && this.state.endLocation.lng !== 0 && 
-          this.state.startLocation.lat !== 0 && this.state.startLocation.lng !== 0){
-
-            if (prevState.startLocation !== this.state.startLocation || prevState.endLocation !== this.state.endLocation){
+        if(this.state.tripData.endLocation.lat !== 0 && this.state.tripData.endLocation.lng !== 0 && 
+          this.state.tripData.startLocation.lat !== 0 && this.state.tripData.startLocation.lng !== 0){
+            if (prevState.tripData.startLocation !== this.state.tripData.startLocation || prevState.tripData.endLocation !== this.state.tripData.endLocation){
                 this.showModal()
 
             }
@@ -82,11 +74,13 @@ class GoogleMap extends PolylineGenerator {
           })
           this.polylineArray = []
           var bounds = new window.google.maps.LatLngBounds();
-          var directionsData = await this.createPolylineAndWeatherData([this.state.startLocation, ...stops, this.state.endLocation], this.googleMaps, bounds)
+          var directionsData = await this.createPolylineAndWeatherData([this.state.tripData.startLocation, ...stops, this.state.tripData.endLocation], this.googleMaps, bounds)
           console.log(directionsData)
           this.googleMaps.fitBounds(directionsData[0])
           this.setState({
-            cityData: directionsData[1]
+            cityData: directionsData[1],
+            duration: directionsData[2],
+            distance: directionsData[3]
           })
 
       }
@@ -94,7 +88,10 @@ class GoogleMap extends PolylineGenerator {
 
 
       callbackStart(coordinates){
-          this.setState({startLocation: coordinates});
+          var tripData = Object.assign({}, this.state.tripData)
+          tripData.startLocation = coordinates
+          this.setState({tripData: tripData});
+
           if(this.state.markerStart){ this.state.markerStart.setMap(null); }
 
           var newCoordinates = new window.google.maps.LatLng(coordinates.lat, coordinates.lng);
@@ -111,7 +108,10 @@ class GoogleMap extends PolylineGenerator {
       }
 
       callbackEnd(coordinates){
-        this.setState({endLocation: coordinates});
+        var tripData = Object.assign({}, this.state.tripData)
+        tripData.endLocation = coordinates
+        this.setState({tripData: tripData});
+
         if(this.state.markerEnd){ this.state.markerEnd.setMap(null); }
 
         var newCoordinates = new window.google.maps.LatLng(coordinates.lat, coordinates.lng);
@@ -134,8 +134,8 @@ class GoogleMap extends PolylineGenerator {
           <div>
             <div className="map" ref={this.GoogleMapsRef} />
               { this.state.loaded ? <GooglePlaces callbackStart={this.callbackStart} callbackEnd={this.callbackEnd} /> : null }
-              {this.state.showCityData ? <CityData cityData={this.state.cityData}/> : null}
-              { this.state.loaded ? <TripStops show={this.state.showStopModal} hide={modalClose} start={this.state.startLocation.name} end={this.state.endLocation.name} callback={this.showDirections} /> : null }
+              { this.state.showCityData ? <CityData cityData={this.state.tripData}/> : null}
+              { this.state.loaded ? <TripStops show={this.state.showStopModal} hide={modalClose} start={this.state.tripData.startLocation.name} end={this.state.tripData.endLocation.name} callback={this.showDirections} /> : null }
           </div>
         );
       }
