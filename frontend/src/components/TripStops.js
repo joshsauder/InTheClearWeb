@@ -64,7 +64,6 @@ class TripStops extends Component {
     handlePlacesRemove(index){
         this.setState(function(prevState){
             prevState.stops.splice(index, 1)
-            console.log(prevState.stops)
             return{
                 stops: prevState.stops
             }

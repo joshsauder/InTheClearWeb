@@ -39,8 +39,6 @@ class GoogleMap extends PolylineGenerator {
       }
 
       componentDidUpdate(prevProps, prevState){
-        console.log(prevState.tripData)
-        console.log(this.state.tripData)
 
         if(this.state.tripData.endLocation.lat !== 0 && this.state.tripData.endLocation.lng !== 0 && 
           this.state.tripData.startLocation.lat !== 0 && this.state.tripData.startLocation.lng !== 0){
@@ -75,12 +73,15 @@ class GoogleMap extends PolylineGenerator {
           this.polylineArray = []
           var bounds = new window.google.maps.LatLngBounds();
           var directionsData = await this.createPolylineAndWeatherData([this.state.tripData.startLocation, ...stops, this.state.tripData.endLocation], this.googleMaps, bounds)
-          console.log(directionsData)
+  
           this.googleMaps.fitBounds(directionsData[0])
+          var tripData = Object.assign({}, this.state.tripData)
+
+          tripData.tripData = directionsData[1]
+          tripData.duration = directionsData[2]
+          tripData.distance = directionsData[3]
           this.setState({
-            cityData: directionsData[1],
-            duration: directionsData[2],
-            distance: directionsData[3]
+            tripData: tripData
           })
 
       }

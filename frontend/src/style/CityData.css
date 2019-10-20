@@ -12,6 +12,11 @@
     max-width: 55% !important;
 }
 
+.arrow-img {
+    max-width: 4%;
+    height: auto;
+}
+
 .img-white{
     filter: invert(100%)
 }

@@ -49,9 +49,6 @@ class PolylineGenerator extends Component {
                 bounds.extend(path[i]);
             }
 
-            this.duration += steps.duration.value
-            this.distance += steps.distance.value
-
             var cityTemp = [];
             cities.forEach((city, index) => {
                 let obj = { city: city, weather: weather[index] };
@@ -98,6 +95,8 @@ class PolylineGenerator extends Component {
                     strokeColor = sunSeg;
                     break;
             }
+            this.duration += step.duration.value
+            this.distance += step.distance.value
             
             this.newPolyline(ret[1], strokeColor, map)
         })

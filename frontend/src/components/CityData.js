@@ -10,20 +10,30 @@ import partlyCloudy from '../images/partlyCloudy.png';
 import rain from '../images/rain.png';
 import snow from '../images/snow.png';
 import sun from '../images/sun.png';
+import arrow from '../images/arrow-right-solid.svg'
 
 
 function RenderCityData(props){
 
+    let distance = Math.round(props.cityData.distance/1609.344)
+
+    let min = Math.round(props.cityData.duration / 60)
+    let hour = Math.round(props.cityData.duration / 3600)
+
+    let hourString = hour > 0 ? `${hour}hr` : ""
+    let minString = min > 0 ? `${min}min` : ""
+
     return(
         <div>
-            <Card>
+            <Card className="mb-2 shadow rounded">
                 <Card.Body>
-                    <div className="lead">Distance: {props.cityData.distance}</div>
-                    <div className="lead">Duration: {props.cityData.duration}</div>
+                    <div className="lead row col-12"><b>{props.cityData.startLocation.name}</b><img src={arrow} className="d-block arrow-img ml-2 mr-2"></img><b>{props.cityData.endLocation.name}</b></div>
+                    <div className="lead">Distance: {distance} miles</div>
+                    <div className="lead">Driving Time: {hourString} {minString}</div>
                 </Card.Body>
             </Card>
             <div className="menuScroll">
-                {props.cityData.tripStops.map((city, index) => 
+                {props.cityData.tripData.map((city, index) => 
                     <Card key={index} className={`${determineIcon(city.weather.Condition)[1]} mb-3 shadow rounded`} >
                         <Card.Body className="row"> 
                             <div className="col-7 text-white">
