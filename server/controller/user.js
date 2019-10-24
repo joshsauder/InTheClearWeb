@@ -22,7 +22,7 @@ exports.signInUser = function(req, res){
         if(err) res.status(500).send("User does not exist")
 
         user.comparePassword(userAuth.password, function(err, isMatch){
-            if(err){ res.status(500).send("Incorrect Password") }
+            if(!isMatch){ res.status(500).send("Incorrect Password") }
             else{
                 res.send("success")
             }
