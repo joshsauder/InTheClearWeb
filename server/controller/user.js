@@ -5,6 +5,7 @@ exports.createUser = function(req, res){
 
     let newUser = new user(req.body);
 
+    //save the new user
     newUser.save((err, user) => {
         if(err){
             res.status(500).send("Error create user")
@@ -18,9 +19,11 @@ exports.signInUser = function(req, res){
 
     let userAuth = new user(req.body);
 
+    //find user
     user.findOne({ username: userAuth.username}, function(err, user){
         if(err) res.status(500).send("User does not exist")
 
+        //compare password
         user.comparePassword(userAuth.password, function(err, isMatch){
             if(!isMatch){ res.status(500).send("Incorrect Password") }
             else{
