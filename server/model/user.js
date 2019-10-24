@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt')
 const schema = mongoose.Schema;
-const userSchema = require('../model/user')
 
 const SALT_FACTOR = 10
 
@@ -13,16 +13,18 @@ var userSchema = new schema({
     updatedAt: Date
 })
 
-userSchema.pre(save, function(next){
+userSchema.pre('save', function(next){
+
+    var user = this
 
     //handle date
     var date = new Date()
 
     this.updatedAt = date;
-    if(!this.createdAt){ this.createdAt = date }
+    if(!user.createdAt){ user.createdAt = date }
 
     //process and hash password
-    if(!this.isModified('password')) {return next()}
+    if(!user.isModified('password')) {return next()}
 
     bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
         if (err) return next(err);
@@ -31,7 +33,7 @@ userSchema.pre(save, function(next){
         bcrypt.hash(user.password, salt, function(err, hash) {
             if (err) return next(err);
 
-            this.password = hash;
+            user.password = hash;
             next();
         });
     });
@@ -45,6 +47,4 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
     });
 };
 
-var user = mongoose.model('User', userSchema);
-
-module.exports = user;
+module.exports = mongoose.model('User', userSchema)

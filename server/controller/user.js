@@ -1,17 +1,16 @@
 const mongoose = require('mongoose')
 const user = require('../model/user')
 
-const userSchema = mongoose.model('User', user)
-
 exports.createUser = function(req, res){
 
-    let newUser = new userSchema(req.body);
+    let newUser = new user(req.body);
+    console.log(newUser)
 
     newUser.save((err, user) => {
         if(err){
-            res.send(err)
+            res.status(400).send("Error create user")
         }
-        res.send("success")
+        else {res.send("success")}
     })
 
 }
