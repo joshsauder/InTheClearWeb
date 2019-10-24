@@ -11,7 +11,10 @@ exports.getDirections = function(req, res) {
     axios.get(url)
     .then(function(response){
         res.send({points: response.data.routes[0].overview_polyline.points, steps:response.data.routes[0].legs[0].steps});
-    }).catch(error => {console.log(error)})
+    }).catch(error => {
+        console.log(error)
+        res.status(500).send("Error getting directions.")
+    })
 
     
 }
@@ -40,7 +43,9 @@ exports.getCityNamesAndWeather = function(req, res){
     axios.all([getWeather(stepObj), getLocationNames(stepObj)])
     .then(axios.spread(function (weather, location){
         res.send({weather: weather.data, locations: location.data})
-    }))
+    })).catch(err =>{
+        res.status(500).send("Error getting weather and city data.")
+    })
 }
 
 function getWeather(params){
