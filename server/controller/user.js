@@ -16,16 +16,16 @@ exports.createUser = function(req, res){
 
 exports.signInUser = function(req, res){
 
-    let user = new user(req.body);
+    let userAuth = new user(req.body);
 
-    user.findOne({ userName: user.username}), function(err, user){
+    user.findOne({ username: userAuth.username}, function(err, user){
         if(err) res.status(500).send("User does not exist")
 
-        user.comparePassword(user.password, function(err, isMatch){
+        user.comparePassword(userAuth.password, function(err, isMatch){
             if(err){ res.status(500).send("Incorrect Password") }
             else{
                 res.send("success")
             }
         })
-    }
+    })
 }
