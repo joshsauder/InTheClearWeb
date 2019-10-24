@@ -3,6 +3,7 @@ var app = express()
 const routes = require('./routes')
 var cors = require('cors')
 const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 
 var port = process.env.PORT || 3400;
 
@@ -10,6 +11,8 @@ app.use(cors());
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+
+mongoose.connect("mongodb://127.0.0.1:27017")
 
 app.use('/api', routes)
 app.listen(port, function()
