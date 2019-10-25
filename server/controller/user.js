@@ -27,7 +27,7 @@ exports.signInUser = function(req, res){
         user.comparePassword(userAuth.password, function(err, isMatch){
             if(!isMatch){ res.status(500).send("Incorrect Password") }
             else{
-                res.send("success")
+                res.json({api_KEY: process.env.GOOGLE_MAPS_FRONTEND_KEY})
             }
         })
     })
