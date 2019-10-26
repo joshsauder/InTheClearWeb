@@ -12,7 +12,7 @@ app.use(cors());
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
-mongoose.connect("mongodb://127.0.0.1:27017/User", { useNewUrlParser: true, useUnifiedTopology: true,})
+mongoose.connect(`mongodb+srv://joshsauder:${process.env.MONGODB_KEY}@birdhouse1-ipdrb.mongodb.net/test?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true,})
 .then(() => console.log("Connected to MongoDB"))
 .catch(err => {
     console.log(err)
