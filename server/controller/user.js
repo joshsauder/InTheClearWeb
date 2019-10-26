@@ -6,7 +6,7 @@ exports.createUser = function(req, res){
     let newUser = new user(req.body);
 
     //save the new user
-    newUser.save((err, user) => {
+    newUser.save((err) => {
         if(err){
             res.status(500).send("Error create user")
         }
