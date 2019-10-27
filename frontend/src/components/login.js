@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Card, Button} from 'react-bootstrap'
+import {Redirect} from 'react-router-dom'
 
 class Login extends Component {
 
@@ -7,13 +8,20 @@ class Login extends Component {
         super(props)
     }
 
+    onSubmit = () => {
+
+        let auth = true
+        if(auth){
+            return <Redirect to="/" />
+        }
+    }
 
     render(){
         return(
             <Card>
                 <Card.Header>Login</Card.Header>
                 <Card.Body>
-                    <form>
+                    <form onSubmit={this.onSubmit}>
                         <div className="form-group">
                             <label htmlFor="username">Username</label>
                             <input id="username" className="form-control"></input>
