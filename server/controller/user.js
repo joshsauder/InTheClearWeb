@@ -33,6 +33,7 @@ exports.signInUser = function(req, res){
             else{
 
                 const payload = {username: userAuth.username}
+                //create token
                 const token = jwt.sign(payload, secret, {
                     expiresIn: '1h'
                   });
@@ -51,7 +52,8 @@ exports.updateUser = function(req, res){
 
     User.updateOne({ username: req.params.username}, updatedUser, function(err, user){
 
-        if(err) res.status(500).send("Issue updating user!")
+        //if err or not modified send error
+        if(err) res.status(500).send("Server error")
         else{
             res.send("success")
         }
@@ -66,6 +68,7 @@ exports.checkAuth = function(req, res){
     req.headers['x-access-token'] ||
     req.cookies.token;
 
+    //verify token is there and valid
     if(!token){
         res.status(401).send("No token... Unauthorized.")
     } else{
