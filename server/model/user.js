@@ -1,10 +1,9 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt')
-const schema = mongoose.Schema;
+import { Schema, model } from 'mongoose';
+import { genSalt, hash as _hash, compare } from 'bcrypt';
 
 const SALT_FACTOR = 10
 
-var userSchema = new schema({
+var userSchema = new Schema({
     name: String,
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
@@ -26,11 +25,11 @@ userSchema.pre('save', function(next){
     //process and hash password
     if(!user.isModified('password')) {return next()}
 
-    bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
+    genSalt(SALT_FACTOR, function(err, salt) {
         if (err) return next(err);
 
         //hash password
-        bcrypt.hash(user.password, salt, function(err, hash) {
+        _hash(user.password, salt, function(err, hash) {
             if (err) return next(err);
 
             user.password = hash;
@@ -42,10 +41,10 @@ userSchema.pre('save', function(next){
 
 userSchema.methods.comparePassword = function(candidatePassword, cb) {
     //compare submitted password with the actual password
-    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+    compare(candidatePassword, this.password, function(err, isMatch) {
         if (err) return cb(err);
         cb(null, isMatch);
     });
 };
 
-module.exports = mongoose.model('users', userSchema)
+module.exports = model('users', userSchema)
