@@ -38,9 +38,9 @@ exports.signInUser = function(req, res){
                   });
                 console.log(token)
                 res.cookie('token', token, { httpOnly: true })
-                res.json({api_KEY: process.env.GOOGLE_MAPS_FRONTEND_KEY})
                 //send frontend api key on callback since the key will be exposed in .env on frontend.
                 //https://create-react-app.dev/docs/adding-custom-environment-variables/
+                res.json({api_KEY: process.env.GOOGLE_MAPS_FRONTEND_KEY})
             }
         })
     })
