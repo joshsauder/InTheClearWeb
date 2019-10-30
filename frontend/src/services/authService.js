@@ -7,14 +7,14 @@ export default function withAuth(AuthComponent){
     return class extends Component {
         constructor(){
             super()
-            this.setState = {
+            this.state = {
                 redirect: false,
                 loading: true
             }
         }
 
         componentDidMount() {
-            Axios.get("/secret")
+            Axios.get('/api/user/auth')
             .then(res=> {
                 if(res.status === 200){
                     this.setState({loading: false})
