@@ -12,7 +12,7 @@ router.post('/directions/info', getCityNamesAndWeather)
 router.post('/user', createUser)
 router.post('/user/auth', signInUser)
 router.put('/user/:username', updateUser)
-router.post('/user/secret', checkAuth)
+router.get('/user/auth', checkAuth)
 
 router.post('/locations', addLocation)
 
