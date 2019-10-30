@@ -28,6 +28,7 @@ export default function withAuth(AuthComponent){
         }
         
         render(){
+            //if not authenticated redirect to login... else grant access
             if(this.state.loading){
                 return null;
             }

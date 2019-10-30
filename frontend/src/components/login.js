@@ -25,13 +25,12 @@ class Login extends Component {
     onSubmit = (event) => {
 
         event.preventDefault();
-        console.log(this.state)
 
         const loginObj = {
             username: this.state.username, 
             password: this.state.password
         }
-        
+
         Axios.post('api/user/auth', loginObj)
         .then(res => {
             if(res.status == 200){
