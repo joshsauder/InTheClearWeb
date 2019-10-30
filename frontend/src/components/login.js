@@ -39,6 +39,7 @@ class Login extends Component {
         Axios.post('api/user/auth', loginObj)
         .then(res => {
             if(res.status == 200){
+                //go to main page since access is granted
                 this.props.history.push('/')
             }
         }).catch(err => {
@@ -58,11 +59,10 @@ class Login extends Component {
             email: this.state.email
         }
 
-        console.log(userObj)
-
         Axios.post('api/user', userObj)
         .then(res => {
             if(res.status == 200){
+                //show login form
                 this.setState({login: true})
             }
         }).catch(err => {
@@ -71,7 +71,9 @@ class Login extends Component {
     }
 
     handleNewUser = (event) => {
+        //prevent default to prevent form submission
         event.preventDefault()
+        //show register form
         this.setState({login: false})
     }
 
