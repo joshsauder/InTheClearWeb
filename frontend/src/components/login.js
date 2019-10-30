@@ -7,6 +7,7 @@ class Login extends Component {
     constructor(props){
         super(props)
         this.state = {
+            name: "",
             username: "",
             password: "",
             email: "",
@@ -16,6 +17,7 @@ class Login extends Component {
         this.handleInputChange = this.handleInputChange.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
         this.submitNewUser = this.submitNewUser.bind(this)
+        this.handleNewUser = this.handleNewUser.bind(this)
     }
 
     handleInputChange = (event) => {
@@ -50,10 +52,13 @@ class Login extends Component {
         event.preventDefault();
 
         const userObj = {
+            name: this.state.name,
             username: this.state.username, 
             password: this.state.password,
             email: this.state.email
         }
+
+        console.log(userObj)
 
         Axios.post('api/user', userObj)
         .then(res => {
@@ -65,7 +70,8 @@ class Login extends Component {
         })
     }
 
-    handleNewUser = () => {
+    handleNewUser = (event) => {
+        event.preventDefault()
         this.setState({login: false})
     }
 
@@ -85,10 +91,14 @@ class Login extends Component {
                             <input name="password" className="form-control" defaultValue={this.state.password} onChange={this.handleInputChange}></input>
                         </div>
                         <Button type="submit">Submit</Button>
-                        <Button onClick={() => {this.handleNewUser}}>Register</Button>
+                        <Button type="button" onClick={this.handleNewUser}>Register</Button>
                     </form>
                     :
                     <form onSubmit={this.submitNewUser}>
+                        <div className="form-group">
+                            <label htmlFor="username">Name</label>
+                            <input name="name" className="form-control" defaultValue={this.state.name} onChange={this.handleInputChange}></input>
+                        </div>
                         <div className="form-group">
                             <label htmlFor="username">Username</label>
                             <input name="username" className="form-control" defaultValue={this.state.username} onChange={this.handleInputChange}></input>
