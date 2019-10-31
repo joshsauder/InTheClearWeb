@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import {Card, Button} from 'react-bootstrap'
+import LoginContainer from './loginContainer'
 import Axios from 'axios';
+import "../style/login.css"
 
 class Login extends Component {
 
@@ -13,11 +15,6 @@ class Login extends Component {
             email: "",
             login: true
         }
-
-        this.handleInputChange = this.handleInputChange.bind(this)
-        this.onSubmit = this.onSubmit.bind(this)
-        this.submitNewUser = this.submitNewUser.bind(this)
-        this.handleNewUser = this.handleNewUser.bind(this)
     }
 
     handleInputChange = (event) => {
@@ -79,46 +76,52 @@ class Login extends Component {
 
     render(){
         return(
-            <Card>
-                <Card.Header>Login</Card.Header>
-                <Card.Body>
-                {this.state.login ?
-                    <form onSubmit={this.onSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="username">Username</label>
-                            <input name="username" className="form-control" defaultValue={this.state.username} onChange={this.handleInputChange}></input>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="password">Password</label>
-                            <input name="password" className="form-control" defaultValue={this.state.password} onChange={this.handleInputChange}></input>
-                        </div>
-                        <Button type="submit">Submit</Button>
-                        <Button type="button" onClick={this.handleNewUser}>Register</Button>
-                    </form>
-                    :
-                    <form onSubmit={this.submitNewUser}>
-                        <div className="form-group">
-                            <label htmlFor="username">Name</label>
-                            <input name="name" className="form-control" defaultValue={this.state.name} onChange={this.handleInputChange}></input>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="username">Username</label>
-                            <input name="username" className="form-control" defaultValue={this.state.username} onChange={this.handleInputChange}></input>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="password">Password</label>
-                            <input name="password" className="form-control" defaultValue={this.state.password} onChange={this.handleInputChange}></input>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="email">Email Adress</label>
-                            <input name="email" className="form-control" defaultValue={this.state.password} onChange={this.handleInputChange}></input>
-                            <small className="form-text text-muted">We will never share nor spam your Email Address</small>
-                        </div>
-                        <Button type="submit">Submit</Button>
-                    </form>
-                }
-                </Card.Body>
-            </Card>
+            <LoginContainer>
+            <div className="container">
+                <div className="row justify-content-md-center mt-5">
+                    <Card className="col-6">
+                        <Card.Header className="headerFont">{this.state.login ? "Login" : "Register" }</Card.Header>
+                        <Card.Body>
+                        {this.state.login ?
+                            <form onSubmit={this.onSubmit}>
+                                <div className="form-group">
+                                    <label htmlFor="username">Username</label>
+                                    <input name="username" className="form-control" defaultValue={this.state.username} onChange={this.handleInputChange}></input>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="password">Password</label>
+                                    <input name="password" className="form-control" defaultValue={this.state.password} onChange={this.handleInputChange}></input>
+                                </div>
+                                <Button type="submit">Submit</Button>
+                                <Button type="button" onClick={this.handleNewUser} className="ml-2">Register</Button>
+                            </form>
+                            :
+                            <form onSubmit={this.submitNewUser}>
+                                <div className="form-group">
+                                    <label htmlFor="username">Name</label>
+                                    <input name="name" className="form-control" defaultValue={this.state.name} onChange={this.handleInputChange}></input>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="username">Username</label>
+                                    <input name="username" className="form-control" defaultValue={this.state.username} onChange={this.handleInputChange}></input>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="password">Password</label>
+                                    <input name="password" className="form-control" defaultValue={this.state.password} onChange={this.handleInputChange}></input>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="email">Email Adress</label>
+                                    <input name="email" className="form-control" defaultValue={this.state.password} onChange={this.handleInputChange}></input>
+                                    <small className="form-text text-muted">We will never share nor spam your Email Address</small>
+                                </div>
+                                <Button type="submit">Submit</Button>
+                            </form>
+                        }
+                        </Card.Body>
+                    </Card>
+                </div>
+            </div>
+            </LoginContainer>
         )
     }
 } 
