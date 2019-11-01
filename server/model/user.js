@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose';
-import { genSalt, hash as _hash, compare } from 'bcrypt';
+const { Schema, model } = require('mongoose');
+const { genSalt, hash, compare } = require('bcrypt');
 
 const SALT_FACTOR = 10
 
@@ -29,7 +29,7 @@ userSchema.pre('save', function(next){
         if (err) return next(err);
 
         //hash password
-        _hash(user.password, salt, function(err, hash) {
+        hash(user.password, salt, function(err, hash) {
             if (err) return next(err);
 
             user.password = hash;
