@@ -34,4 +34,6 @@ label {
     background-color: #7B16F5 !important;
     color: white;
     border-radius: 1rem !important;
+    max-height: 50vh;
+    overflow: scroll
 }
