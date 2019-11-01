@@ -79,7 +79,7 @@ class Login extends Component {
             <LoginContainer>
             <div className="container">
                 <div className="row justify-content-md-center mt-5">
-                    <Card className="col-6">
+                    <Card className="col-5">
                         <Card.Header className="headerFont">{this.state.login ? "Login" : "Register" }</Card.Header>
                         <Card.Body>
                         {this.state.login ?
@@ -90,7 +90,7 @@ class Login extends Component {
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="password">Password</label>
-                                    <input name="password" className="form-control" defaultValue={this.state.password} onChange={this.handleInputChange}></input>
+                                    <input name="password" type="password" className="form-control" defaultValue={this.state.password} onChange={this.handleInputChange}></input>
                                 </div>
                                 <Button type="submit">Submit</Button>
                                 <Button type="button" onClick={this.handleNewUser} className="ml-2">Register</Button>
