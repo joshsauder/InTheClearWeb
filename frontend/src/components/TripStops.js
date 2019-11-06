@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {Modal, Button} from "react-bootstrap"
 import '../style/TripStops.css'
+import 'flatpickr/dist/themes/material_green.css'
 import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc';
 import arrayMove from 'array-move';
+import datePicker from 'react-flatpickr'
 import dragImg from '../images/align-justify-solid.svg';
 import trashImg from '../images/trash-alt-solid.svg';
 
