@@ -2,10 +2,9 @@ const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
 var locationSchema = new schema({
-    cit: String,
-    county: String,
-    state: String,
-    country: String,
+    city: String,
+    condition: String,
+    severe: Number,
     createdAt: Date
 })
 

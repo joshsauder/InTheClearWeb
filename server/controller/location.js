@@ -3,7 +3,7 @@ const location = require('../model/locations')
 
 exports.addLocation = function(req, res){
 
-    const locations = req.body.locations.map(loc => {
+    const locations = req.body.map(loc => {
         return(new location(loc))
 
     })

@@ -5,6 +5,7 @@ import PolylineGenerator from './PolylineGenerator';
 import CityData from './CityData';
 import TripStops from './TripStops';
 import {TripsModel} from '../models/trips';
+import Axios from 'axios';
 
 class GoogleMap extends PolylineGenerator {
 
@@ -80,6 +81,7 @@ class GoogleMap extends PolylineGenerator {
           tripData.tripData = directionsData[1]
           tripData.duration = directionsData[2]
           tripData.distance = directionsData[3]
+          this.postStops(tripData.tripData)
           this.setState({
             tripData: tripData
           })
@@ -87,6 +89,18 @@ class GoogleMap extends PolylineGenerator {
       }
 
 
+      postStops = (tripData) => {
+        const data = tripData.map(trip => {
+          return {
+            city: trip.city,
+            condition: trip.weather.Description,
+            severe: trip.weather.severe
+          }
+        })
+        Axios.post('/api/locations', data).catch(err => {
+          console.log(err)
+        })
+      }
 
       callbackStart(coordinates){
           var tripData = Object.assign({}, this.state.tripData)
