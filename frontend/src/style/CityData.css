@@ -30,23 +30,23 @@ text-white{
 }
 
 .snowCell.card{
-    background-color: #1E88E5;
+    background-color: #1E88E5!important;
 }
 .rainCell.card{
-    background-color: #43A047;
+    background-color: #43A047!important;
 }
 .sunCell.card{
-    background-color: #FBC02D;
+    background-color: #FBC02D!important;
 }
 .cloudCell.card{
-    background-color: #616161;
+    background-color: #616161!important;
 }
 .stormCell.card{
-    background-color: #E53935;
+    background-color: #E53935!important;
 }
 
 .nightCell.card{
-    background-color: #424242;
+    background-color: #424242!important;
 }
 
 .lead{
