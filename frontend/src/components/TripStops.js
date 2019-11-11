@@ -4,15 +4,26 @@ import '../style/TripStops.css'
 import 'flatpickr/dist/themes/material_green.css'
 import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc';
 import arrayMove from 'array-move';
-import datePicker from 'react-flatpickr'
+import Flatpickr from 'react-flatpickr'
 import dragImg from '../images/align-justify-solid.svg';
 import trashImg from '../images/trash-alt-solid.svg';
 
 const DragHandle = sortableHandle(() => <span className="spanText"><img className="dragImage" src={dragImg}></img></span>);
 const TrashHandle = ({onRemove, index}) => <button className="col-auto mr-2" onClick={() => onRemove(index)}><img src={trashImg} className="dragImage" /></button>
-const SortableItem = sortableElement(({value, index, onRemove}) => <div className="boxedItem row sortItem mb-2"><DragHandle /><span className="col-4 mr-auto spanText">{value}</span><TrashHandle onRemove={onRemove} index={index}/></div>);
+const SortableItem = sortableElement(({value, index, onRemove, date, handleDate}) => {
+    return(
+    <div className="boxedItem row sortItem mb-2">
+        <DragHandle />
+        <span className="col-4 mr-auto spanText">{value}</span>
+        <Flatpickr data-enable-time
+        value={date}
+        onChange={date => {handleDate(date)}} />
+        <TrashHandle onRemove={onRemove} index={index}/>
+    </div>
+    )
+});
 
-const SortableList = sortableContainer(({items, onRemove}) => {
+const SortableList = sortableContainer(({items, onRemove, date, handleDate}) => {
   return(
       <div>
         {items.map((value, index) => 
@@ -21,6 +32,8 @@ const SortableList = sortableContainer(({items, onRemove}) => {
                 index={index}
                 value={value.name}
                 onRemove={onRemove}
+                date={date}
+                handleDate={handleDate}
             />
         )}
       </div>
@@ -33,7 +46,8 @@ class TripStops extends Component {
         super(props)
 
         this.state = {
-            stops: []
+            stops: [],
+            date: new Date()
         }
         this.handlePlacesStopSelect = this.handlePlacesStopSelect.bind(this)
         this.handlePlacesRemove = this.handlePlacesRemove.bind(this)
@@ -82,6 +96,10 @@ class TripStops extends Component {
         return this.props.callback(this.state.stops)
     }
 
+    handleDate = (date) => {
+        this.setState({date: date})
+    }
+
 
     render(){
         return(
@@ -99,6 +117,8 @@ class TripStops extends Component {
                             items={this.state.stops}
                             onSortEnd={this.onSortEnd}
                             onRemove={this.handlePlacesRemove}
+                            date={this.state.date}
+                            handleDate={this.handleDate}
                             useDragHandle
                         />
                         <div className="row boxedItem mb-2">
