@@ -33,7 +33,7 @@ class Login extends Component {
             password: this.state.password
         }
 
-        Axios.post('api/user/auth', loginObj)
+        Axios.post('api/user/auth', loginObj, {withCredentials: true})
         .then(res => {
             if(res.status == 200){
                 //go to main page since access is granted

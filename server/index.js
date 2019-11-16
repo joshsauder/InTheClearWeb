@@ -8,7 +8,12 @@ const cookieParser = require('cookie-parser')
 
 var port = process.env.PORT || 3400;
 
-app.use(cors());
+const corsOptions = {
+    origin: 'http://intheclear.s3-website-us-east-1.amazonaws.com',
+    credentials: true
+}
+
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
