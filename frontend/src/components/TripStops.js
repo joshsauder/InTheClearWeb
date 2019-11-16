@@ -17,7 +17,7 @@ const SortableItem = sortableElement(({value, index, onRemove, date, handleDate}
         <span className="col-4 mr-auto spanText">{value}</span>
         <Flatpickr data-enable-time
         value={date}
-        onChange={date => {handleDate(date)}} />
+        onChange={date => {handleDate(date, index++)}} />
         <TrashHandle onRemove={onRemove} index={index}/>
     </div>
     )
@@ -32,7 +32,7 @@ const SortableList = sortableContainer(({items, onRemove, date, handleDate}) => 
                 index={index}
                 value={value.name}
                 onRemove={onRemove}
-                date={date}
+                date={date[index+1]}
                 handleDate={handleDate}
             />
         )}
@@ -47,9 +47,9 @@ class TripStops extends Component {
 
         this.state = {
             stops: [],
-            date: new Date()
+            date: [new Date()]
         }
-        this.handlePlacesStopSelect = this.handlePlacesStopSelect.bind(this)
+
         this.handlePlacesRemove = this.handlePlacesRemove.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
     }
@@ -62,16 +62,21 @@ class TripStops extends Component {
             this.autocompleteStop = new window.google.maps.places.Autocomplete(this.stopInput);
 
             window.google.maps.event.addListener(this.autocompleteStop, 'place_changed', this.handlePlacesStopSelect)
+
         }
+
     }
 
-    handlePlacesStopSelect(){
+    handlePlacesStopSelect = () => {
 
         var placeStop = this.autocompleteStop.getPlace();
 
         var data = {lat: placeStop.geometry.location.lat(), lng: placeStop.geometry.location.lng(), name: placeStop.name}
+        var date = data ? new Date() : null
+        
         this.setState(prevState => ({
-            stops: [...prevState.stops, data]
+            stops: [...prevState.stops, data],
+            date: [...prevState.date, date]
         }))
 
         this.stopInput.value = ""
@@ -96,8 +101,12 @@ class TripStops extends Component {
         return this.props.callback(this.state.stops)
     }
 
-    handleDate = (date) => {
-        this.setState({date: date})
+    handleDate = (date, index) => {
+
+        var dateArr = this.state.date
+        dateArr[index] = date
+
+        this.setState({date: dateArr})
     }
 
 
@@ -111,7 +120,10 @@ class TripStops extends Component {
                     <div className="container">
                         <h4 className="row">Current Route</h4>
                         <div className="row boxedItem mb-2">
-                            <span className="spanText">{this.props.start}</span>
+                            <span className="col-4 mr-auto spanText">{this.props.start}</span>
+                            <Flatpickr data-enable-time
+                            value={this.state.date[0]}
+                            onChange={date => {this.handleDate(date, 0)}} />
                         </div>
                         <SortableList
                             items={this.state.stops}
