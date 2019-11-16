@@ -50,8 +50,6 @@ class TripStops extends Component {
             date: [new Date()]
         }
 
-        this.handlePlacesRemove = this.handlePlacesRemove.bind(this)
-        this.onSubmit = this.onSubmit.bind(this)
     }
 
     componentDidUpdate(prevProps, prevState){
@@ -82,7 +80,7 @@ class TripStops extends Component {
         this.stopInput.value = ""
     }
 
-    handlePlacesRemove(index){
+    handlePlacesRemove = (index) => {
         this.setState(function(prevState){
             prevState.stops.splice(index, 1)
             return{
@@ -97,7 +95,7 @@ class TripStops extends Component {
         }));
     };
 
-    onSubmit(){
+    onSubmit = () => {
         return this.props.callback(this.state.stops)
     }
 

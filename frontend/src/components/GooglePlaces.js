@@ -23,9 +23,6 @@ class GooglePlaces extends Component {
 
         }
         
-        this.handlePlacesStartSelect = this.handlePlacesStartSelect.bind(this)
-        this.handlePlacesEndSelect = this.handlePlacesEndSelect.bind(this)
-        
       }
 
       componentDidMount(){
@@ -52,7 +49,7 @@ class GooglePlaces extends Component {
 
       }
 
-      handlePlacesStartSelect(){
+      handlePlacesStartSelect = () => {
 
         var placeStart = this.autocompleteStart.getPlace();
         var lat = placeStart.geometry.location.lat();
@@ -61,7 +58,7 @@ class GooglePlaces extends Component {
 
       }
 
-      handlePlacesEndSelect(){
+      handlePlacesEndSelect = () => {
 
         var placeEnd = this.autocompleteDest.getPlace();
         var lat = placeEnd.geometry.location.lat();

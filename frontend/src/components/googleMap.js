@@ -19,8 +19,6 @@ class GoogleMap extends PolylineGenerator {
           tripData: new TripsModel(),
           showStopModal: false
         }
-        this.callbackStart = this.callbackStart.bind(this);
-        this.callbackEnd = this.callbackEnd.bind(this);
         this.showDirections = this.showDirections.bind(this);
         this.polylineArray = []
       }
@@ -102,7 +100,7 @@ class GoogleMap extends PolylineGenerator {
         })
       }
 
-      callbackStart(coordinates){
+      callbackStart = (coordinates) => {
           var tripData = Object.assign({}, this.state.tripData)
           tripData.startLocation = coordinates
           this.setState({tripData: tripData});
@@ -122,7 +120,7 @@ class GoogleMap extends PolylineGenerator {
 
       }
 
-      callbackEnd(coordinates){
+      callbackEnd = (coordinates) => {
         var tripData = Object.assign({}, this.state.tripData)
         tripData.endLocation = coordinates
         this.setState({tripData: tripData});
