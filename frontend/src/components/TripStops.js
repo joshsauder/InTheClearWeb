@@ -101,12 +101,17 @@ class TripStops extends Component {
         return this.props.callback(this.state.stops)
     }
 
-    handleDate = (date, index) => {
+    handleDate = (dateItem, index) => {
 
-        var dateArr = this.state.date
-        dateArr[index] = date
-
-        this.setState({date: dateArr})
+        this.setState(({date}) => ({
+            date: date.map((item, i) => {
+                if(i === index){
+                    return dateItem;
+                }else {
+                    return item;
+                }
+            })
+        }))
     }
 
 
