@@ -24,6 +24,14 @@ exports.getCityNamesAndWeather = function(req, res){
     const steps = req.body.steps
 
     var time = Math.round(new Date(req.body.date).getTime()/1000)
+
+    //add initial location
+    var data = {}
+    data["lat"] = steps[0].start_location.lat
+    data["long"] = steps[0].start_location.lng
+    data["time"] = time
+    stepObj.List.push(data);
+
     //add each step
     steps.forEach(step => {
         var data = {}
