@@ -47,22 +47,25 @@ class TripStops extends Component {
 
         this.state = {
             stops: [],
-            date: [new Date()]
+            date: []
         }
 
     }
 
     componentDidUpdate(prevProps, prevState){
 
-        if(this.props.show == true){
+        if(this.props.show == true && this.state.date.length === 0){
+            this.setInitialDate()
             this.stopInput = document.getElementById('stopLocation');
-
             this.autocompleteStop = new window.google.maps.places.Autocomplete(this.stopInput);
-
             window.google.maps.event.addListener(this.autocompleteStop, 'place_changed', this.handlePlacesStopSelect)
 
         }
 
+    }
+
+    setInitialDate = () => {
+        this.setState({date: [new Date()]})
     }
 
     handlePlacesStopSelect = () => {
@@ -96,7 +99,7 @@ class TripStops extends Component {
     };
 
     onSubmit = () => {
-        return this.props.callback(this.state.stops)
+        return this.props.callback(this.state.stops, this.state.date)
     }
 
     handleDate = (dateItem, index) => {

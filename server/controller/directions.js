@@ -22,23 +22,19 @@ exports.getDirections = function(req, res) {
 exports.getCityNamesAndWeather = function(req, res){
     let stepObj = {List: []}
     const steps = req.body.steps
-    let time = Math.round(new Date().getTime()/1000)
 
-    //add start location
-    var data = {}
-    data["lat"] = steps[0].start_location.lat
-    data["long"] = steps[0].start_location.lng
-    data["time"] = time 
-
+    var time = Math.round(new Date(req.body.date).getTime()/1000)
     //add each step
     steps.forEach(step => {
         var data = {}
         data["lat"] = step.end_location.lat
         data["long"] = step.end_location.lng
-        data["time"] = time + step.duration.value
+        time += step.duration.value
+        data["time"] = time
         stepObj.List.push(data);
         
     });
+
 
     axios.all([getWeather(stepObj), getLocationNames(stepObj)])
     .then(axios.spread(function (weather, location){

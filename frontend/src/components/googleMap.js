@@ -64,14 +64,14 @@ class GoogleMap extends PolylineGenerator {
         this.setState({showStopModal: true})
       }
 
-      async showDirections(stops){
-        this.setState({showStopModal: false, showCityData: true})
+      async showDirections(stops, dates){
+          this.setState({showStopModal: false, showCityData: true})
           this.polylineArray.forEach(line => {
             line.setMap(null)
           })
           this.polylineArray = []
           var bounds = new window.google.maps.LatLngBounds();
-          var directionsData = await this.createPolylineAndWeatherData([this.state.tripData.startLocation, ...stops, this.state.tripData.endLocation], this.googleMaps, bounds)
+          var directionsData = await this.createPolylineAndWeatherData([this.state.tripData.startLocation, ...stops, this.state.tripData.endLocation], this.googleMaps, bounds, dates)
   
           this.googleMaps.fitBounds(directionsData[0])
           var tripData = Object.assign({}, this.state.tripData)

@@ -18,29 +18,28 @@ class PolylineGenerator extends Component {
         
     }
 
-    async createPolylineAndWeatherData(stops, map, bounds){
+    async createPolylineAndWeatherData(stops, map, bounds, dates){
 
-        await this.generatePolyline(stops[0], stops[1], map, bounds)   
+        await this.generatePolyline(stops[0], stops[1], map, bounds, dates.shift())   
 
         stops.shift()
         if(stops.length > 1){
-            await this.createPolylineAndWeatherData(stops, map, bounds)   
+            await this.createPolylineAndWeatherData(stops, map, bounds, dates)   
         }
 
         return [bounds, this.cityWeather, this.duration, this.distance]
     }
 
 
-    async generatePolyline(start, end, map, bounds){
+    async generatePolyline(start, end, map, bounds, date){
         var path;
         var steps
         try {
             const response = await axios.get(`/api/directions/${start.lat},${start.lng}/${end.lat},${end.lng}`);
             path = window.google.maps.geometry.encoding.decodePath(response.data.points);
             steps = response.data.steps;
-            delete response.data.points;
 
-            const response_1 = await axios.post("/api/directions/info", response.data);
+            const response_1 = await axios.post("/api/directions/info", {steps: steps, date: date});
             var weather = response_1.data.weather;
             var cities = response_1.data.locations;
 
