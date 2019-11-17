@@ -55,8 +55,10 @@ class TripStops extends Component {
     componentDidUpdate(prevProps, prevState){
 
         if(this.props.show == true && this.state.date.length === 0){
+            //set initial state for date
             this.setInitialDate()
-            
+
+            //add listener to input
             this.stopInput = document.getElementById('stopLocation');
             this.autocompleteStop = new window.google.maps.places.Autocomplete(this.stopInput);
             window.google.maps.event.addListener(this.autocompleteStop, 'place_changed', this.handlePlacesStopSelect)
