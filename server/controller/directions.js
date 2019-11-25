@@ -54,7 +54,7 @@ exports.getCityNamesAndWeather = function(req, res){
 
 exports.getTripTimes = function(req, res){
     var locations = req.body.locations
-    var url = process.env.HERE_MAPS_TIMES
+    var url = `https://route.api.here.com/routing/7.2/calculateroute.json?app_id=${process.env.HERE_APPID}&app_code=${process.env.HERE_APPCODE}`
 
     locations.forEach((location, index) => {
         url += `&waypoint${index}=geo!${location.lat},${location.long}`
