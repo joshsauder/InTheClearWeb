@@ -52,6 +52,23 @@ exports.getCityNamesAndWeather = function(req, res){
     })
 }
 
+exports.getTripTimes = function(locations){
+    var url = process.env.HERE_MAPS_TIMES
+    locations.forEach((location, index) => {
+        url += `&waypoint${index}=geo!${location.lat},${location.long}`
+    })
+    url += "&mode=fastest;car;"
+
+    var stops = ""
+    axios.get(url)
+    .then(response => {
+        var stops = response.data.route[0]["leg"]
+        res.send(stops)
+    }).catch(err => {
+        res.status(500).send("Error getting trip times")
+    })
+}
+
 function getWeather(params){
     let url = `https://${process.env.AWS_KEY}.execute-api.us-east-1.amazonaws.com/Prod/weather`
     return axios.post(url, params);
