@@ -52,14 +52,15 @@ exports.getCityNamesAndWeather = function(req, res){
     })
 }
 
-exports.getTripTimes = function(locations){
+exports.getTripTimes = function(req, res){
+    var locations = req.body.locations
     var url = process.env.HERE_MAPS_TIMES
+
     locations.forEach((location, index) => {
         url += `&waypoint${index}=geo!${location.lat},${location.long}`
     })
     url += "&mode=fastest;car;"
 
-    var stops = ""
     axios.get(url)
     .then(response => {
         var stops = response.data.route[0]["leg"]
