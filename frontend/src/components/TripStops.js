@@ -7,6 +7,7 @@ import arrayMove from 'array-move';
 import Flatpickr from 'react-flatpickr'
 import dragImg from '../images/align-justify-solid.svg';
 import trashImg from '../images/trash-alt-solid.svg';
+import axios from '../../../server/node_modules/axios';
 
 const DragHandle = sortableHandle(() => <span className="spanText"><img className="dragImage" src={dragImg}></img></span>);
 const TrashHandle = ({onRemove, index}) => <button className="col-auto mr-2" onClick={() => onRemove(index)}><img src={trashImg} className="dragImage" /></button>
@@ -17,7 +18,7 @@ const SortableItem = sortableElement(({value, index, onRemove, date, handleDate}
         <span className="col-4 mr-auto spanText">{value}</span>
         <Flatpickr data-enable-time
         value={date}
-        onChange={date => {handleDate(date, index++)}} />
+        onChange={date => {handleDate(date)}} />
         <TrashHandle onRemove={onRemove} index={index}/>
     </div>
     )
@@ -26,15 +27,18 @@ const SortableItem = sortableElement(({value, index, onRemove, date, handleDate}
 const SortableList = sortableContainer(({items, onRemove, date, handleDate}) => {
   return(
       <div>
-        {items.map((value, index) => 
+        {items.map((value, index) => {
+            if(index < items.length -1){
             <SortableItem 
                 key={index}
                 index={index}
                 value={value.name}
                 onRemove={onRemove}
-                date={date[index+1]}
+                date={date[index]}
                 handleDate={handleDate}
             />
+            }
+        }
         )}
       </div>
   );
@@ -63,12 +67,27 @@ class TripStops extends Component {
             this.autocompleteStop = new window.google.maps.places.Autocomplete(this.stopInput);
             window.google.maps.event.addListener(this.autocompleteStop, 'place_changed', this.handlePlacesStopSelect)
 
+            this.state.stops.push([this.props.start, this.props.end])
+
+        }
+
+        if(this.prevState.stops != this.state.stops){
+            this.determineTravelTimes()
         }
 
     }
 
     setInitialDate = () => {
         this.setState({date: [new Date()]})
+    }
+
+    determineTravelTimes = () => {
+        axios.post("/api/directions/tripTimes", this.state.stops)
+        .then(res => {
+            console.log(res)
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
     handlePlacesStopSelect = () => {
@@ -128,12 +147,6 @@ class TripStops extends Component {
                 <Modal.Body>
                     <div className="container">
                         <h4 className="row">Current Route</h4>
-                        <div className="row boxedItem mb-2">
-                            <span className="col-4 mr-auto spanText">{this.props.start}</span>
-                            <Flatpickr data-enable-time
-                            value={this.state.date[0]}
-                            onChange={date => {this.handleDate(date, 0)}} />
-                        </div>
                         <SortableList
                             items={this.state.stops}
                             onSortEnd={this.onSortEnd}
@@ -143,7 +156,7 @@ class TripStops extends Component {
                             useDragHandle
                         />
                         <div className="row boxedItem mb-2">
-                            <span className="spanText">{this.props.end}</span>
+                            <span className="spanText">{this.state.stops[this.state.stops.length-1]}</span>
                         </div>
                         <div className="row mt-5">
                             <input className="form-control" id="stopLocation" type="text" size="50" placeholder="Add Trip Stop" autoComplete="on" runat="server" />

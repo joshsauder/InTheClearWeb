@@ -58,7 +58,7 @@ exports.getTripTimes = function(req, res){
 
     //create url
     locations.forEach((location, index) => {
-        url += `waypoint${index}=${location.lat}%2C${location.long}&`
+        url += `waypoint${index}=${location.lat}%2C${location.lng}&`
     })
     url += `mode=fastest;car&app_id=${process.env.HERE_APPID}&app_code=${process.env.HERE_APPCODE}`
 
