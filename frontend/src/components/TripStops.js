@@ -11,35 +11,36 @@ import axios from '../../../server/node_modules/axios';
 
 const DragHandle = sortableHandle(() => <span className="spanText"><img className="dragImage" src={dragImg}></img></span>);
 const TrashHandle = ({onRemove, index}) => <button className="col-auto mr-2" onClick={() => onRemove(index)}><img src={trashImg} className="dragImage" /></button>
-const SortableItem = sortableElement(({value, index, onRemove, date, handleDate}) => {
+const SortableItem = sortableElement(({value, index, onRemove, date, minTime, handleDate}) => {
     return(
-    <div className="boxedItem row sortItem mb-2">
-        <DragHandle />
-        <span className="col-4 mr-auto spanText">{value}</span>
-        <Flatpickr data-enable-time
-        value={date}
-        onChange={date => {handleDate(date)}} />
-        <TrashHandle onRemove={onRemove} index={index}/>
-    </div>
+        <div className="boxedItem row sortItem mb-2">
+            <DragHandle />
+            <span className="col-4 mr-auto spanText">{value}</span>
+            <span>Arrival Time: {minTime}</span>
+            <Flatpickr data-enable-time
+            value={date}
+            onChange={date => {handleDate(date)}} />
+            <TrashHandle onRemove={onRemove} index={index}/>
+        </div>
     )
 });
 
-const SortableList = sortableContainer(({items, onRemove, date, handleDate}) => {
+const SortableList = sortableContainer(({items, onRemove, date, minTimes, handleDate}) => {
   return(
       <div>
         {items.map((value, index) => {
-            if(index < items.length -1){
-                return(
-                    <SortableItem 
-                        key={index}
-                        index={index}
-                        value={value.name}
-                        onRemove={onRemove}
-                        date={date[index]}
-                        handleDate={handleDate}
-                    />
-                )
-            }
+            const minTime = minTimes[index] ? minTimes[index].toTimeString() : ""
+            return(
+                <SortableItem 
+                    key={index}
+                    index={index}
+                    value={value.name}
+                    onRemove={onRemove}
+                    date={date[index]}
+                    minTime={minTime}
+                    handleDate={handleDate}
+                />
+            )
         }
         )}
       </div>
@@ -54,7 +55,8 @@ class TripStops extends Component {
         this.state = {
             stops: [],
             date: [],
-            tripsTimes: []
+            minDate: [],
+            travelTimes: []
         }
 
     }
@@ -73,9 +75,7 @@ class TripStops extends Component {
         }
 
         if(this.props.show && prevState.stops != this.state.stops){
-            console.log(this.props.start)
-            console.log(this.state.stops)
-            this.determineTravelTimes()
+            this.getTravelTimes()
         }
 
     }
@@ -87,13 +87,28 @@ class TripStops extends Component {
         })
     }
 
-    determineTravelTimes = () => {
+    getTravelTimes = () => {
         axios.post("/api/directions/tripTimes", [...this.state.stops, this.props.end])
         .then(res => {
-            this.setState({tripsTimes: res.data})
+            const times = res.data.map(time => {
+                return time.time
+            });
+            this.setState({travelTimes: times})
+            this.determineTravelTimes()
         }).catch(err => {
             console.log(err)
         })
+    }
+
+    determineTravelTimes = () => {
+        var arrivalTimes = this.state.date.map((date, index) => {
+            if(index < this.state.travelTimes.length){
+                var dateObj = new Date();
+                console.log(new Date(dateObj.getTime() + (this.state.travelTimes[index]) * 1000))
+                return new Date(dateObj.getTime() + (this.state.travelTimes[index] * 1000))
+            }
+        })
+        this.setState({minDate: arrivalTimes})
     }
 
     handlePlacesStopSelect = () => {
@@ -158,6 +173,7 @@ class TripStops extends Component {
                             onSortEnd={this.onSortEnd}
                             onRemove={this.handlePlacesRemove}
                             date={this.state.date}
+                            minTimes={this.state.minDate}
                             handleDate={this.handleDate}
                             useDragHandle
                         />
