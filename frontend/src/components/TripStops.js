@@ -29,14 +29,16 @@ const SortableList = sortableContainer(({items, onRemove, date, handleDate}) => 
       <div>
         {items.map((value, index) => {
             if(index < items.length -1){
-            <SortableItem 
-                key={index}
-                index={index}
-                value={value.name}
-                onRemove={onRemove}
-                date={date[index]}
-                handleDate={handleDate}
-            />
+                return(
+                    <SortableItem 
+                        key={index}
+                        index={index}
+                        value={value.name}
+                        onRemove={onRemove}
+                        date={date[index]}
+                        handleDate={handleDate}
+                    />
+                )
             }
         }
         )}
@@ -51,7 +53,8 @@ class TripStops extends Component {
 
         this.state = {
             stops: [],
-            date: []
+            date: [],
+            tripsTimes: []
         }
 
     }
@@ -60,31 +63,34 @@ class TripStops extends Component {
 
         if(this.props.show == true && this.state.date.length === 0){
             //set initial state for date
-            this.setInitialDate()
+            this.setInitialDateAndStops()
 
             //add listener to input
             this.stopInput = document.getElementById('stopLocation');
             this.autocompleteStop = new window.google.maps.places.Autocomplete(this.stopInput);
             window.google.maps.event.addListener(this.autocompleteStop, 'place_changed', this.handlePlacesStopSelect)
 
-            this.state.stops.push([this.props.start, this.props.end])
-
         }
 
-        if(this.prevState.stops != this.state.stops){
+        if(this.props.show && prevState.stops != this.state.stops){
+            console.log(this.props.start)
+            console.log(this.state.stops)
             this.determineTravelTimes()
         }
 
     }
 
-    setInitialDate = () => {
-        this.setState({date: [new Date()]})
+    setInitialDateAndStops = () => {
+        this.setState({
+            date: [new Date()],
+            stops: [this.props.start]
+        })
     }
 
     determineTravelTimes = () => {
-        axios.post("/api/directions/tripTimes", this.state.stops)
+        axios.post("/api/directions/tripTimes", [...this.state.stops, this.props.end])
         .then(res => {
-            console.log(res)
+            this.setState({tripsTimes: res.data})
         }).catch(err => {
             console.log(err)
         })
@@ -156,7 +162,7 @@ class TripStops extends Component {
                             useDragHandle
                         />
                         <div className="row boxedItem mb-2">
-                            <span className="spanText">{this.state.stops[this.state.stops.length-1]}</span>
+                            <span className="spanText">{this.props.end.name}</span>
                         </div>
                         <div className="row mt-5">
                             <input className="form-control" id="stopLocation" type="text" size="50" placeholder="Add Trip Stop" autoComplete="on" runat="server" />

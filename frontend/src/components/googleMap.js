@@ -148,7 +148,7 @@ class GoogleMap extends PolylineGenerator {
             <div className="map" ref={this.GoogleMapsRef} />
               { this.state.loaded ? <GooglePlaces callbackStart={this.callbackStart} callbackEnd={this.callbackEnd} /> : null }
               { this.state.showCityData ? <CityData cityData={this.state.tripData}/> : null}
-              { this.state.loaded ? <TripStops show={this.state.showStopModal} hide={modalClose} start={this.state.tripData.startLocation.name} end={this.state.tripData.endLocation.name} callback={this.showDirections} /> : null }
+              { this.state.loaded ? <TripStops show={this.state.showStopModal} hide={modalClose} start={this.state.tripData.startLocation} end={this.state.tripData.endLocation} callback={this.showDirections} /> : null }
           </div>
         );
       }
