@@ -18,6 +18,10 @@ describe('User', () => {
             .then(() => done())
         });
 
+        /*
+        Test create user
+        Should return a 200
+        */
         it( 'Save new user', (done) =>{
 
             const testUser = {
@@ -35,6 +39,10 @@ describe('User', () => {
             });
         });
 
+        /*
+        Test create user without password
+        Should not return a 200 
+        */
         it('Save user without required', (done) => {
             const testUser = {
                 name: "testUser",
@@ -71,6 +79,10 @@ describe('User', () => {
             .then(() => done())
         })
 
+        /*
+        Test auth when password is correct
+        Should return a 200 and cookie
+        */
         it('Test auth with correct password', (done) => {
             const testSignInUser = {
                 username: "testUser",
@@ -88,6 +100,10 @@ describe('User', () => {
             })
         })
 
+        /*
+        Test auth when password is incorrect
+        Should not return a 200 and cookie
+        */
         it('Test auth with incorrect password', (done) => {
 
             const testSignInUser = {
@@ -100,10 +116,72 @@ describe('User', () => {
             .send(testSignInUser)
             .end((err, res) => {
                 res.should.not.have.status(200)
+                chai.expect(res).to.not.have.cookie('token')
                 done();
             })
         })
     })
 
-   
+    describe("Test Update User", () => {
+
+        //create test user
+        const testUser = {
+            name: "testUser",
+            username: "testUser",
+            password: "test",
+            email: "test@gmail.com"
+        }
+
+        before((done) => {
+            user.create(testUser)
+            .then(() => done())
+        })
+
+        after((done) => {
+            user.findOneAndDelete({"name": "testUser"})
+            .then(() => done())
+        })
+
+        /*
+        Test update username
+        */
+        it('Test update user password', (done) => {
+
+            const updatedTestUser = {
+                name: "testUser",
+                username: "testUser",
+                password: "test3",
+                email: "test@gmail.com"
+            }
+            
+            chai.request(app)
+            .put('/api/user/testUser')
+            .send(updatedTestUser)
+            .end((err, res) => {
+                res.should.have.status(200)
+                done();
+            })
+        })
+ 
+        /*
+        Test update username since username is given a request param
+        */
+        it('Test Update Username', (done) => {
+            const updatedTestUser = {
+                name: "testUser",
+                username: "testUsers",
+                password: "test3",
+                email: "test@gmail.com"
+            }
+
+            chai.request(app)
+            .put('/api/user/testUser')
+            .send(updatedTestUser)
+            .end((err, res) => {
+                res.should.have.status(200)
+                done();
+            })
+        })
+
+    })
 });
