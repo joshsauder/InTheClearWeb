@@ -39,7 +39,6 @@ const SortableList = sortableContainer(({items, onRemove, date, minTimes, handle
         {items.map((value, index) => {
             var options = { weekday: 'short', hour: 'numeric', minute: 'numeric', timeZoneName: 'short'}
             var minTime = minTimes[index] ? minTimes[index].toLocaleDateString('en-US', options) : ""
-            console.log(minTimes)
             return(
                 <SortableItem 
                     key={index}
@@ -182,7 +181,6 @@ class TripStops extends Component {
     render(){
         var options = { weekday: 'short', hour: 'numeric', minute: 'numeric', timeZoneName: 'short'}
         var minTime = this.state.minDate[this.state.minDate.length-1] ? this.state.minDate[this.state.minDate.length-1].toLocaleDateString('en-US', options) : ""
-        console.log(this.state.minDate)
         return(
             <Modal className="modalPurple" show = {this.props.show} onHide={this.props.hide}>
                 <Modal.Header closeButton>

@@ -13,6 +13,8 @@ class PolylineGenerator extends Component {
         super(props)
 
         this.cityWeather =[]
+        //prevent duplicate cities
+        this.cityTemp = []
         this.duration = 0
         this.distance = 0
         
@@ -48,11 +50,10 @@ class PolylineGenerator extends Component {
                 bounds.extend(path[i]);
             }
 
-            var cityTemp = [];
             cities.forEach((city, index) => {
                 let obj = { city: city, weather: weather[index] };
-                if (!cityTemp.includes(city)) {
-                    cityTemp.push(city);
+                if (!this.cityTemp.includes(city)) {
+                    this.cityTemp.push(city);
                     this.cityWeather.push(obj);
                 }
             });
