@@ -81,10 +81,13 @@ class TripStops extends Component {
             this.stopInput = document.getElementById('stopLocation');
             this.autocompleteStop = new window.google.maps.places.Autocomplete(this.stopInput);
             window.google.maps.event.addListener(this.autocompleteStop, 'place_changed', this.handlePlacesStopSelect)
+            //get inital travel times
+            this.getTravelTimes()
 
         }
 
         if(this.props.show && prevState.stops != this.state.stops){
+            //on remove or reorder get travel times
             this.getTravelTimes()
         }
 
@@ -147,14 +150,12 @@ class TripStops extends Component {
                 stops: prevState.stops
             }
         })
-        this.getTravelTimes()
     }
 
     onSortEnd = ({oldIndex, newIndex}) => {
         this.setState(({stops}) => ({
           stops: arrayMove(stops, oldIndex, newIndex),
         }));
-        this.getTravelTimes()
     };
 
     onSubmit = () => {
@@ -173,11 +174,15 @@ class TripStops extends Component {
                 }
             })
         }))
+        //on date change get travel times
         this.getTravelTimes()
     }
 
 
     render(){
+        var options = { weekday: 'short', hour: 'numeric', minute: 'numeric', timeZoneName: 'short'}
+        var minTime = this.state.minDate[this.state.minDate.length-1] ? this.state.minDate[this.state.minDate.length-1].toLocaleDateString('en-US', options) : ""
+        console.log(this.state.minDate)
         return(
             <Modal className="modalPurple" show = {this.props.show} onHide={this.props.hide}>
                 <Modal.Header closeButton>
@@ -203,7 +208,8 @@ class TripStops extends Component {
                             useDragHandle
                         />
                         <div className="row boxedItem mb-2">
-                            <span className="spanText">{this.props.end.name}</span>
+                            <span className="spanText mr-2">{this.props.end.name}</span>
+                            <span className="spanText">Departure Time: {minTime}</span>
                         </div>
                         <div className="row mt-5">
                             <input className="form-control" id="stopLocation" type="text" size="50" placeholder="Add Trip Stop" autoComplete="on" runat="server" />
