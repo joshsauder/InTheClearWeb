@@ -207,10 +207,13 @@ class TripStops extends Component {
                             handleDate={this.handleDate}
                             useDragHandle
                         />
+                        {minTime !== "" &&
                         <div className="row boxedItem mb-2">
                             <span className="spanText mr-2">{this.props.end.name}</span>
                             <span className="spanText">Departure Time: {minTime}</span>
+                            
                         </div>
+                        }
                         <div className="row mt-5">
                             <input className="form-control" id="stopLocation" type="text" size="50" placeholder="Add Trip Stop" autoComplete="on" runat="server" />
                         </div>
