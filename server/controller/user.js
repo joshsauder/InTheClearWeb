@@ -11,7 +11,7 @@ exports.createUser = function(req, res){
     //save the new user
     newUser.save((err) => {
         if(err){
-            res.status(500).send("Error creating user")
+            res.status(400).send("Error creating user")
         }
         else {res.send("success")}
     })

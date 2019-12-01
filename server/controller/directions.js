@@ -15,7 +15,6 @@ exports.getDirections = function(req, res) {
         console.log(error)
         res.status(500).send("Error getting directions.")
     })
-
     
 }
 
