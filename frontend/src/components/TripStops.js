@@ -9,17 +9,25 @@ import dragImg from '../images/align-justify-solid.svg';
 import trashImg from '../images/trash-alt-solid.svg';
 import axios from '../../../server/node_modules/axios';
 
-const DragHandle = sortableHandle(() => <span className="spanText"><img className="dragImage" src={dragImg}></img></span>);
-const TrashHandle = ({onRemove, index}) => <button className="col-auto mr-2" onClick={() => onRemove(index)}><img src={trashImg} className="dragImage" /></button>
+const DragHandle = sortableHandle(() => <span className="col-1 mt-2"><img className="dragImage" src={dragImg}></img></span>);
+const TrashHandle = ({onRemove, index}) => <button className="col-1 mr-1" onClick={() => onRemove(index)}><img src={trashImg} className="dragImage" /></button>
 const SortableItem = sortableElement(({value, index, onRemove, date, minTime, handleDate}) => {
     return(
         <div className="boxedItem row sortItem mb-2">
             <DragHandle />
-            <span className="col-4 mr-auto spanText">{value}</span>
-            <span>Arrival Time: {minTime}</span>
-            <Flatpickr data-enable-time
-            value={date}
-            onChange={date => {handleDate(date)}} />
+            <span className="col-3 mt-1">{value}</span>
+            <div className="col-6 cellFontSize">
+                <div className="row">
+                <span className="col">Arrival Time: {minTime}</span>
+                <div className="w-100"></div>
+                <div className="col">
+                <span className="d-inline-block">Departure Time:</span>
+                <Flatpickr data-enable-time
+                value={date}
+                onChange={date => {handleDate(date)}} />
+                </div>
+                </div>
+            </div>
             <TrashHandle onRemove={onRemove} index={index}/>
         </div>
     )
@@ -29,7 +37,8 @@ const SortableList = sortableContainer(({items, onRemove, date, minTimes, handle
   return(
       <div>
         {items.map((value, index) => {
-            const minTime = minTimes[index] ? minTimes[index].toTimeString() : ""
+            var options = { weekday: 'short', hour: 'numeric', minute: 'numeric', timeZoneName: 'short'}
+            const minTime = minTimes[index] ? minTimes[index].toLocaleDateString('en-US', options) : ""
             return(
                 <SortableItem 
                     key={index}

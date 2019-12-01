@@ -39,4 +39,10 @@ button {
     margin-bottom: 3px;
     padding-right: 7px;
     opacity: 0.6;
+    display: flex;
+    align-items: center;
+}
+
+.cellFontSize {
+    font-size: 0.65rem;
 }
