@@ -97,6 +97,7 @@ class TripStops extends Component {
     }
 
     getTravelTimes = () => {
+        //get travel times
         axios.post("/api/directions/tripTimes", [...this.state.stops, this.props.end])
         .then(res => {
             const times = res.data.map(time => {
@@ -110,10 +111,10 @@ class TripStops extends Component {
     }
 
     determineTravelTimes = () => {
+        //for each travel time, determine exact arrival time
         var arrivalTimes = this.state.date.map((date, index) => {
             if(index < this.state.travelTimes.length){
                 var dateObj = new Date();
-                console.log(new Date(dateObj.getTime() + (this.state.travelTimes[index]) * 1000))
                 return new Date(dateObj.getTime() + (this.state.travelTimes[index] * 1000))
             }
         })
@@ -124,6 +125,7 @@ class TripStops extends Component {
 
         var placeStop = this.autocompleteStop.getPlace();
 
+        //format the stop and create new date object
         var data = {lat: placeStop.geometry.location.lat(), lng: placeStop.geometry.location.lng(), name: placeStop.name}
         var date = data ? new Date() : null
         
@@ -137,6 +139,7 @@ class TripStops extends Component {
 
     handlePlacesRemove = (index) => {
         this.setState(function(prevState){
+            //remove single stop at index
             prevState.stops.splice(index, 1)
             return{
                 stops: prevState.stops
@@ -158,6 +161,7 @@ class TripStops extends Component {
 
         this.setState(({date}) => ({
             date: date.map((item, i) => {
+                //if index == i, return inputted date, else return orig item
                 if(i === index){
                     return dateItem;
                 }else {

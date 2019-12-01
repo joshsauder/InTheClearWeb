@@ -71,11 +71,13 @@ class GoogleMap extends PolylineGenerator {
           })
           this.polylineArray = []
           var bounds = new window.google.maps.LatLngBounds();
+          //get directions with times
           var directionsData = await this.createPolylineAndWeatherData(stops, this.googleMaps, bounds, dates)
   
           this.googleMaps.fitBounds(directionsData[0])
           var tripData = Object.assign({}, this.state.tripData)
 
+          //set trip data
           tripData.tripData = directionsData[1]
           tripData.duration = directionsData[2]
           tripData.distance = directionsData[3]
@@ -88,6 +90,7 @@ class GoogleMap extends PolylineGenerator {
 
 
       postStops = (tripData) => {
+        //save each stop
         const data = tripData.map(trip => {
           return {
             city: trip.city,
