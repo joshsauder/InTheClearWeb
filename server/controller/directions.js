@@ -53,7 +53,7 @@ exports.getCityNamesAndWeather = function(req, res){
 }
 
 exports.getTripTimes = function(req, res){
-    var locations = req.body.locations
+    var locations = req.body
     var url = "https://route.api.here.com/routing/7.2/calculateroute.json?"
 
     //create url
@@ -65,7 +65,9 @@ exports.getTripTimes = function(req, res){
     axios.get(url)
     .then(response => {
         //get trip times
-        var stops = response.data.response.route[0]["leg"]
+        var stops = response.data.response.route[0]["leg"].map(leg => {
+            return {pos: leg.start.mappedPosition, time: leg.travelTime}
+        })
         res.send(stops)
     }).catch(err => {
         res.status(500).send("Error getting trip times" + err)

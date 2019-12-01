@@ -24,7 +24,7 @@ const SortableItem = sortableElement(({value, index, onRemove, date, minTime, ha
                 <span className="d-inline-block">Departure Time:</span>
                 <Flatpickr data-enable-time
                 value={date}
-                onChange={date => {handleDate(date)}} />
+                onChange={(date, index) => {handleDate(date, index++)}} />
                 </div>
                 </div>
             </div>
@@ -36,16 +36,17 @@ const SortableItem = sortableElement(({value, index, onRemove, date, minTime, ha
 const SortableList = sortableContainer(({items, onRemove, date, minTimes, handleDate}) => {
   return(
       <div>
-        {items.slice(1).map((value, index) => {
+        {items.map((value, index) => {
             var options = { weekday: 'short', hour: 'numeric', minute: 'numeric', timeZoneName: 'short'}
-            const minTime = minTimes[index] ? minTimes[index].toLocaleDateString('en-US', options) : ""
+            var minTime = minTimes[index] ? minTimes[index].toLocaleDateString('en-US', options) : ""
+            console.log(minTimes)
             return(
                 <SortableItem 
                     key={index}
                     index={index}
                     value={value.name}
                     onRemove={onRemove}
-                    date={date[index]}
+                    date={date[index+1]}
                     minTime={minTime}
                     handleDate={handleDate}
                 />
@@ -74,7 +75,7 @@ class TripStops extends Component {
 
         if(this.props.show == true && this.state.date.length === 0){
             //set initial state for date
-            this.setInitialDateAndStops()
+            this.setInitialDate()
 
             //add listener to input
             this.stopInput = document.getElementById('stopLocation');
@@ -89,16 +90,15 @@ class TripStops extends Component {
 
     }
 
-    setInitialDateAndStops = () => {
+    setInitialDate = () => {
         this.setState({
-            date: [new Date()],
-            stops: [this.props.start]
+            date: [new Date()]
         })
     }
 
     getTravelTimes = () => {
         //get travel times
-        axios.post("/api/directions/tripTimes", [...this.state.stops, this.props.end])
+        axios.post("/api/directions/tripTimes", [this.props.start, ...this.state.stops, this.props.end])
         .then(res => {
             const times = res.data.map(time => {
                 return time.time
@@ -112,10 +112,12 @@ class TripStops extends Component {
 
     determineTravelTimes = () => {
         //for each travel time, determine exact arrival time
+        var timeOffset = 0
         var arrivalTimes = this.state.date.map((date, index) => {
             if(index < this.state.travelTimes.length){
+                timeOffset += this.state.travelTimes[index] * 1000
                 var dateObj = new Date();
-                return new Date(dateObj.getTime() + (this.state.travelTimes[index] * 1000))
+                return new Date(dateObj.getTime() + timeOffset)
             }
         })
         this.setState({minDate: arrivalTimes})
@@ -145,16 +147,18 @@ class TripStops extends Component {
                 stops: prevState.stops
             }
         })
+        this.getTravelTimes()
     }
 
     onSortEnd = ({oldIndex, newIndex}) => {
         this.setState(({stops}) => ({
           stops: arrayMove(stops, oldIndex, newIndex),
         }));
+        this.getTravelTimes()
     };
 
     onSubmit = () => {
-        return this.props.callback([...this.state.stops, this.props.end], this.state.date)
+        return this.props.callback([this.props.start, ...this.state.stops, this.props.end], this.state.date)
     }
 
     handleDate = (dateItem, index) => {
@@ -169,6 +173,7 @@ class TripStops extends Component {
                 }
             })
         }))
+        this.getTravelTimes()
     }
 
 
