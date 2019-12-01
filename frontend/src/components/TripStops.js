@@ -36,7 +36,7 @@ const SortableItem = sortableElement(({value, index, onRemove, date, minTime, ha
 const SortableList = sortableContainer(({items, onRemove, date, minTimes, handleDate}) => {
   return(
       <div>
-        {items.map((value, index) => {
+        {items.slice(1).map((value, index) => {
             var options = { weekday: 'short', hour: 'numeric', minute: 'numeric', timeZoneName: 'short'}
             const minTime = minTimes[index] ? minTimes[index].toLocaleDateString('en-US', options) : ""
             return(
@@ -177,6 +177,13 @@ class TripStops extends Component {
                 <Modal.Body>
                     <div className="container">
                         <h4 className="row">Current Route</h4>
+                        <div className="row boxedItem mb-2">
+                            <span className="spanText mr-2">{this.props.start.name}</span>
+                            <span className="spanText mr-2">Departure Time:</span>
+                            <Flatpickr data-enable-time
+                            value={this.state.date[0]}
+                            onChange={date => {this.handleDate(date)}} />
+                        </div>
                         <SortableList
                             items={this.state.stops}
                             onSortEnd={this.onSortEnd}
