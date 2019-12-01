@@ -151,7 +151,7 @@ class TripStops extends Component {
     };
 
     onSubmit = () => {
-        return this.props.callback(this.state.stops, this.state.date)
+        return this.props.callback([...this.state.stops, this.props.end], this.state.date)
     }
 
     handleDate = (dateItem, index) => {
