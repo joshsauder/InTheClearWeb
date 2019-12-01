@@ -184,4 +184,30 @@ describe('User', () => {
         })
 
     })
+
+    describe('Test Password Hashing', () => {
+         //create test user
+         const testUser = {
+            name: "testUser",
+            username: "testUser",
+            password: "test",
+            email: "test@gmail.com"
+        }
+
+        after((done) => {
+            user.findOneAndDelete({"name": "testUser"})
+            .then(() => done())
+        })
+
+        /*
+        Need to check that password is being hashed on save
+        */
+        it('Test password is hashed', (done) => {
+            const newUser = user(testUser);
+            newUser.save((err) => {
+                chai.expect(newUser.password).to.not.equal(testUser.password)
+                done()
+            })
+        })
+    })
 });
