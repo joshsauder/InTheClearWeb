@@ -12,7 +12,7 @@ describe("Login Component", () => {
     test("Renders", () => {
         const render = shallow(<App />)
 
-        expect(wrapper.exists()).toBe(true);
+        expect(render.exists()).toBe(true);
 
         render.unmount()
     })
