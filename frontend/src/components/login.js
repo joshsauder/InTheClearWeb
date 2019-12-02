@@ -86,11 +86,11 @@ class Login extends Component {
                             <form onSubmit={this.onSubmit}>
                                 <div className="form-group">
                                     <label htmlFor="username">Username</label>
-                                    <input name="username" className="form-control" defaultValue={this.state.username} onChange={this.handleInputChange}></input>
+                                    <input name="username" className="form-control" value={this.state.username} onChange={this.handleInputChange}></input>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="password">Password</label>
-                                    <input name="password" type="password" className="form-control" defaultValue={this.state.password} onChange={this.handleInputChange}></input>
+                                    <input name="password" type="password" className="form-control" value={this.state.password} onChange={this.handleInputChange}></input>
                                 </div>
                                 <Button type="submit">Submit</Button>
                                 <Button type="button" onClick={this.handleNewUser} className="ml-2">Register</Button>
