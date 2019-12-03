@@ -3,7 +3,6 @@ import Enzyme, { shallow, mount } from 'enzyme';
 import TripStops from '../components/TripStops';
 import 'jest-enzyme'
 import Adapter from 'enzyme-adapter-react-16';
-
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Test Trip Stops', () => {
@@ -19,7 +18,7 @@ describe('Test Trip Stops', () => {
         name: "Apple HQ"
     }
 
-    test("Renders", () => {
+    test("Test Render", () => {
         const tripStopsComponent = shallow(<TripStops show={false} start={startCoordinates} end={endCoordinates} />)
 
         expect(tripStopsComponent.exists()).toBe(true);
@@ -31,5 +30,17 @@ describe('Test Trip Stops', () => {
 
         //assert one item... init state doesnt render destination
         expect(tripStopsComponent.find('.boxedItem').length).toEqual(1)
+    })
+
+    test("Test Submit Button", () => {
+
+        const mockFn = jest.fn()
+        const tripStopsComponent = shallow(<TripStops show={true} start={startCoordinates} end={endCoordinates} callback={mockFn}/>)
+
+        tripStopsComponent.find("Button").simulate("Click")
+
+        expect(mockFn).toHaveBeenCalled();
+
+
     })
 })

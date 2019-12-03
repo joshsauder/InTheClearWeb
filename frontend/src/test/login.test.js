@@ -9,7 +9,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 describe("Login Component", () => {
 
-    test("Renders", () => {
+    test("Test Render", () => {
         const loginComponent = shallow(<App />)
 
         expect(loginComponent.exists()).toBe(true);
