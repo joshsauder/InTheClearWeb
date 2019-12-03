@@ -11,11 +11,10 @@ describe('Test City Data', () => {
 
     test("Renders", () => {
         var tripData = new TripsModel()
-        const render = shallow(<CityData cityData={tripData} />)
+        const cityDataComponent = shallow(<CityData cityData={tripData} />)
 
-        expect(render.exists()).toBe(true);
+        expect(cityDataComponent.exists()).toBe(true);
 
-        render.unmount()
     })
 
     test("City Data Given", () => {
@@ -30,21 +29,21 @@ describe('Test City Data', () => {
         tripData.duration = 100
         tripData.distance = 100
 
-        const render = mount(<CityData cityData={tripData} />)
+        const cityDataComponent = mount(<CityData cityData={tripData} />)
 
         //card for trip overview and for each location
-        expect(render.find(".card-body").length).toEqual(3)
+        expect(cityDataComponent.find(".card-body").length).toEqual(3)
     })
 
     test("No City Data", () => {
 
         var tripData = new TripsModel()
 
-        const render = mount(<CityData cityData={tripData} />)
+        const cityDataComponent = mount(<CityData cityData={tripData} />)
 
         //no bootstrap cards, should be a spinner showing
-        expect(render.find(".card-body").length).toEqual(0)
-        expect(render.find(".spinner-border").length).toEqual(1)
+        expect(cityDataComponent.find(".card-body").length).toEqual(0)
+        expect(cityDataComponent.find(".spinner-border").length).toEqual(1)
     })
 
 })

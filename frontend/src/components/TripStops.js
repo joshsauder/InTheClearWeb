@@ -208,8 +208,7 @@ class TripStops extends Component {
                         {minTime !== "" &&
                         <div className="row boxedItem mb-2">
                             <span className="spanText mr-2">{this.props.end.name}</span>
-                            <span className="spanText">Departure Time: {minTime}</span>
-                            
+                            <span className="spanText">Arrival Time: {minTime}</span>                          
                         </div>
                         }
                         <div className="row mt-5">

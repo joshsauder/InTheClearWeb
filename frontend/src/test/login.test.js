@@ -10,46 +10,42 @@ Enzyme.configure({ adapter: new Adapter() });
 describe("Login Component", () => {
 
     test("Renders", () => {
-        const render = shallow(<App />)
+        const loginComponent = shallow(<App />)
 
-        expect(render.exists()).toBe(true);
+        expect(loginComponent.exists()).toBe(true);
 
-        render.unmount()
     })
     
     test('Render on init', () => {
 
-        const render = shallow(<App />)
+        const loginComponent = shallow(<App />)
         const login = <label htmlFor="username">Username</label>
     
-        expect(render).toContainReact(login);
+        expect(loginComponent).toContainReact(login);
 
-        render.unmount()
     })
 
     test("User text is inputted", () => {
-        const render = shallow(<App />)
+        const loginComponent = shallow(<App />)
 
-        render.find("input").at(0).simulate("change", {
+        loginComponent.find("input").at(0).simulate("change", {
             target: {name: "username", value: "test"}
         });
 
-        render.find("input").at(1).simulate("change", {
+        loginComponent.find("input").at(1).simulate("change", {
             target: {name: "password", value: "test"}
         });
 
-        expect(render.find("input").at(0).props().value).toEqual("test")
-        expect(render.find("input").at(1).props().value).toEqual("test")
+        expect(loginComponent.find("input").at(0).props().value).toEqual("test")
+        expect(loginComponent.find("input").at(1).props().value).toEqual("test")
 
-        render.unmount()
     })
 
     test("Change to sign-up", () => {
-        const render = shallow(<App />)
-        render.find('Button').at(1).simulate("click", {preventDefault: () => {}})
+        const loginComponent = shallow(<App />)
+        loginComponent.find('Button').at(1).simulate("click", {preventDefault: () => {}})
 
-        expect(render.find("input").length).toEqual(4)
+        expect(loginComponent.find("input").length).toEqual(4)
 
-        render.unmount()
     })
 })
