@@ -1,11 +1,14 @@
 import React, {Component, createRef} from 'react';
 import '../App.css';
+import '../style/GoogleMaps.css'
 import GooglePlaces from './GooglePlaces';
 import PolylineGenerator from './PolylineGenerator';
 import CityData from './CityData';
 import TripStops from './TripStops';
 import {TripsModel} from '../models/trips';
 import Axios from 'axios';
+import {Button} from 'react-bootstrap'
+import googleMapsImg from '../images/icons8-google-maps-48.png'
 
 class GoogleMap extends PolylineGenerator {
 
@@ -152,6 +155,7 @@ class GoogleMap extends PolylineGenerator {
               { this.state.loaded ? <GooglePlaces callbackStart={this.callbackStart} callbackEnd={this.callbackEnd} /> : null }
               { this.state.showCityData ? <CityData cityData={this.state.tripData}/> : null}
               { this.state.loaded ? <TripStops show={this.state.showStopModal} hide={modalClose} start={this.state.tripData.startLocation} end={this.state.tripData.endLocation} callback={this.showDirections} /> : null }
+              { this.state.tripData.distance == 0 ? <Button className="btn-social"><img src={googleMapsImg}></img></Button> : null}
           </div>
         );
       }
