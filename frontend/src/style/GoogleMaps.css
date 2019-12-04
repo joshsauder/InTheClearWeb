@@ -2,5 +2,10 @@
     color: white;
     padding: 5px !important;
     border-radius: 50% !important;
-    position: relative;
+}
+
+.fix-right{
+    position: fixed !important;
+    right: 20px;
+    bottom: 20px;
 }
