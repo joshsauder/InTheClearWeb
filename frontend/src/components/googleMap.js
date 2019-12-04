@@ -146,8 +146,22 @@ class GoogleMap extends PolylineGenerator {
 
       }
 
+      determineUrl = () => {
+        let url = `https://www.google.com/maps/dir/?api=1&origin=${this.state.tripData.startLocation.name}&destination=${this.state.tripData.endLocation.name}&travelmode=driving`
+
+        let waypoints = ""
+        this.state.tripData.tripData.forEach(stop => {
+          waypoints += stop.name + "%7C"
+        })
+
+        if(waypoints !== ""){url += waypoints.substring(0, waypoints.length()-3)}
+
+        return url;
+      }
+
 
       render() {
+        let googleMapsUrl = this.determineUrl()
         let modalClose = () => this.setState({ showStopModal: false });
         return (
           <div>
@@ -155,7 +169,7 @@ class GoogleMap extends PolylineGenerator {
               { this.state.loaded ? <GooglePlaces callbackStart={this.callbackStart} callbackEnd={this.callbackEnd} /> : null }
               { this.state.showCityData ? <CityData cityData={this.state.tripData}/> : null}
               { this.state.loaded ? <TripStops show={this.state.showStopModal} hide={modalClose} start={this.state.tripData.startLocation} end={this.state.tripData.endLocation} callback={this.showDirections} /> : null }
-              { this.state.tripData.distance == 0 ? <Button className="btn-social fix-right"><img src={googleMapsImg}></img></Button> : null}
+              { this.state.tripData.distance !== 0 ? <Button className="btn-social fix-right" href={googleMapsUrl}><img src={googleMapsImg}></img></Button> : null}
           </div>
         );
       }
