@@ -26,20 +26,6 @@ describe('Test Trip Stops', () => {
 
     })
 
-    test("Test Route View Render", () => {
-        const date = [new Date()]
-        const tripStopsComponent = shallow(<RouteDataView start={startCoordinates} end={endCoordinates} date={date} minDate={[]} />)
-        expect(tripStopsComponent.exists()).toBe(true);
-    })
-
-    test("Test Intial State", () => {
-        const date = [new Date()]
-        const tripStopsComponent = shallow(<RouteDataView show={true} start={startCoordinates} end={endCoordinates} date={date} minDate={date}/>)
-
-        //both start and end should render
-        expect(tripStopsComponent.find('.boxedItem').length).toEqual(2)
-    })
-
     test("Test Submit Button", () => {
 
         const mockFn = jest.fn()
@@ -49,5 +35,35 @@ describe('Test Trip Stops', () => {
 
         expect(mockFn).toHaveBeenCalled();
 
+    })
+
+    test("Test Route View Render", () => {
+        const date = [new Date()]
+        const tripStopsComponent = shallow(<RouteDataView start={startCoordinates} end={endCoordinates} date={date} minDate={[]} />)
+        expect(tripStopsComponent.exists()).toBe(true);
+    })
+
+    test("Test Initial State", () => {
+        const date = [new Date()]
+        const tripStopsComponent = shallow(<RouteDataView show={true} start={startCoordinates} end={endCoordinates} date={date} minDate={[]}/>)
+
+        //Destination should not render until min dates are determined
+        expect(tripStopsComponent.find('.boxedItem').length).toEqual(1)
+    })
+
+    test("Test When Min Date is Determined", () => {
+        const date = [new Date()]
+        const tripStopsComponent = shallow(<RouteDataView show={true} start={startCoordinates} end={endCoordinates} date={date} minDate={date}/>)
+
+        //both start and end should render
+        expect(tripStopsComponent.find('.boxedItem').length).toEqual(2)
+    })
+
+    test("Test When Stop is Given", () => {
+        const date = [new Date(), new Date()]
+        const tripStopsComponent = mount(<RouteDataView show={true} start={startCoordinates} end={endCoordinates} date={date} minDate={date} stops={[startCoordinates]}/>)
+
+        //both start and end should render
+        expect(tripStopsComponent.find('.boxedItem').length).toEqual(3)
     })
 })
