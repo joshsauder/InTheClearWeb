@@ -1,6 +1,6 @@
 import React from 'react';
 import {Modal, Button} from "react-bootstrap"
-import '../style/TripStops.css'
+import '../../style/TripStops.css'
 import 'flatpickr/dist/themes/material_green.css'
 
 
@@ -14,7 +14,7 @@ export default function TripStopsModal(props){
             {props.children}
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={this.onSubmit}>Set Stops</Button>
+                <Button onClick={props.onSubmit}>Set Stops</Button>
             </Modal.Footer>
         </Modal>
     )

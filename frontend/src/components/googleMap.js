@@ -4,7 +4,7 @@ import '../style/GoogleMaps.css'
 import GooglePlaces from './GooglePlaces';
 import PolylineGenerator from './PolylineGenerator';
 import CityData from './CityData';
-import TripStops from './TripStops';
+import TripStopsContainer from './TripStops/TripStopsContainer';
 import {TripsModel} from '../models/trips';
 import Axios from 'axios';
 import {Button} from 'react-bootstrap'
@@ -162,7 +162,7 @@ class GoogleMap extends PolylineGenerator {
         })
 
         if(waypoints !== "&waypoints="){url += waypoints.substring(0, waypoints.length - 3)}
-        
+
         return url;
       }
 
@@ -175,7 +175,7 @@ class GoogleMap extends PolylineGenerator {
             <div className="map" ref={this.GoogleMapsRef} />
               { this.state.loaded ? <GooglePlaces callbackStart={this.callbackStart} callbackEnd={this.callbackEnd} /> : null }
               { this.state.showCityData ? <CityData cityData={this.state.tripData}/> : null}
-              { this.state.loaded ? <TripStops show={this.state.showStopModal} hide={modalClose} start={this.state.tripData.startLocation} end={this.state.tripData.endLocation} callback={this.showDirections} /> : null }
+              { this.state.loaded ? <TripStopsContainer show={this.state.showStopModal} hide={modalClose} start={this.state.tripData.startLocation} end={this.state.tripData.endLocation} callback={this.showDirections} /> : null }
               { this.state.tripData.distance !== 0 ? <a className="btn-social fix-right" target="_blank" href={googleMapsUrl}><img src={googleMapsImg}></img></a> : null}
           </div>
         );
