@@ -22,8 +22,6 @@ class Login extends Component {
         this.setState({
             [target.name]: target.value
         })
-        console.log(target.name)
-        console.log(target.value)
     }
 
     onSubmit = (event) => {
