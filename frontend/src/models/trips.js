@@ -17,5 +17,6 @@ export class TripsModel {
             lng: 0,
             name: ""
         }
+        this.stops = []
     }
 }

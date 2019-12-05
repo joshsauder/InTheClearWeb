@@ -74,16 +74,21 @@ class GoogleMap extends PolylineGenerator {
           })
           this.polylineArray = []
           var bounds = new window.google.maps.LatLngBounds();
+
+          //set stops
+          var tripData = Object.assign({}, this.state.tripData)
+          tripData.stops = Object.assign([], stops)
+
           //get directions with times
           var directionsData = await this.createPolylineAndWeatherData(stops, this.googleMaps, bounds, dates)
   
           this.googleMaps.fitBounds(directionsData[0])
-          var tripData = Object.assign({}, this.state.tripData)
 
           //set trip data
           tripData.tripData = directionsData[1]
           tripData.duration = directionsData[2]
           tripData.distance = directionsData[3]
+
           this.postStops(tripData.tripData)
           this.setState({
             tripData: tripData
@@ -149,13 +154,15 @@ class GoogleMap extends PolylineGenerator {
       determineUrl = () => {
         let url = `https://www.google.com/maps/dir/?api=1&origin=${this.state.tripData.startLocation.name}&destination=${this.state.tripData.endLocation.name}&travelmode=driving`
 
-        let waypoints = ""
-        this.state.tripData.tripData.forEach(stop => {
-          waypoints += stop.name + "%7C"
+        let waypoints = "&waypoints="
+        this.state.tripData.stops.forEach((stop, index) => {
+            if(index !== 0 && index !== this.state.tripData.stops.length -1){
+              waypoints += stop.name + "%7C"
+            }
         })
 
-        if(waypoints !== ""){url += waypoints.substring(0, waypoints.length()-3)}
-
+        if(waypoints !== "&waypoints="){url += waypoints.substring(0, waypoints.length - 3)}
+        
         return url;
       }
 
@@ -169,7 +176,7 @@ class GoogleMap extends PolylineGenerator {
               { this.state.loaded ? <GooglePlaces callbackStart={this.callbackStart} callbackEnd={this.callbackEnd} /> : null }
               { this.state.showCityData ? <CityData cityData={this.state.tripData}/> : null}
               { this.state.loaded ? <TripStops show={this.state.showStopModal} hide={modalClose} start={this.state.tripData.startLocation} end={this.state.tripData.endLocation} callback={this.showDirections} /> : null }
-              { this.state.tripData.distance !== 0 ? <Button className="btn-social fix-right" href={googleMapsUrl}><img src={googleMapsImg}></img></Button> : null}
+              { this.state.tripData.distance !== 0 ? <a className="btn-social fix-right" target="_blank" href={googleMapsUrl}><img src={googleMapsImg}></img></a> : null}
           </div>
         );
       }
