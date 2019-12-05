@@ -2,12 +2,13 @@ import React, {Component} from 'react';
 import {Modal, Button} from "react-bootstrap"
 import '../style/TripStops.css'
 import 'flatpickr/dist/themes/material_green.css'
-import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import Flatpickr from 'react-flatpickr'
+import axios from '../../../server/node_modules/axios';
+import TripStopsModal from './TripStopsPresentation';
+import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc';
 import dragImg from '../images/align-justify-solid.svg';
 import trashImg from '../images/trash-alt-solid.svg';
-import axios from '../../../server/node_modules/axios';
 
 const DragHandle = sortableHandle(() => <span className="col-1 mt-2"><img className="dragImage" src={dragImg}></img></span>);
 const TrashHandle = ({onRemove, index}) => <button className="col-1 mr-1" onClick={() => onRemove(index)}><img src={trashImg} className="dragImage" /></button>
@@ -55,6 +56,7 @@ const SortableList = sortableContainer(({items, onRemove, date, minTimes, handle
       </div>
   );
 });
+
 
 class TripStops extends Component {
 
@@ -193,11 +195,7 @@ class TripStops extends Component {
         var options = { weekday: 'short', hour: 'numeric', minute: 'numeric', timeZoneName: 'short'}
         var minTime = this.state.minDate[this.state.minDate.length-1] ? this.state.minDate[this.state.minDate.length-1].toLocaleDateString('en-US', options) : ""
         return(
-            <Modal className="modalPurple" show = {this.props.show} onHide={this.props.hide}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Trip Stops</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+            <TripStopsModal className="modalPurple" show = {this.props.show} onHide={this.props.hide} submit={this.onSubmit}>
                     <div className="container">
                         <h4 className="row">Current Route</h4>
                         <div className="row boxedItem mb-2">
@@ -226,11 +224,7 @@ class TripStops extends Component {
                             <input className="form-control" id="stopLocation" type="text" size="50" placeholder="Add Trip Stop" autoComplete="on" runat="server" />
                         </div>
                     </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={this.onSubmit}>Set Stops</Button>
-                </Modal.Footer>
-            </Modal>
+            </TripStopsModal>
         )
     }
 }
