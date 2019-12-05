@@ -82,7 +82,10 @@ class TripStops extends Component {
             window.google.maps.event.addListener(this.autocompleteStop, 'place_changed', this.handlePlacesStopSelect)
             //get inital travel times
             this.getTravelTimes()
+        }
 
+        if(this.props.show && this.props.start !== prevProps.start || this.props.end !== prevProps.end){
+            this.setInitialState()
         }
 
         if(this.props.show && prevState.stops != this.state.stops){
@@ -90,6 +93,14 @@ class TripStops extends Component {
             this.getTravelTimes()
         }
 
+    }
+
+    setInitialState = () => {
+        this.setState({
+            stops: [],
+            minDate: [],
+            travelTimes: [],
+        })
     }
 
     setInitialDate = () => {
