@@ -141,7 +141,7 @@ class TripStopsContainer extends Component {
 
     render(){
         return(
-            <TripStopsModal className="modalPurple" show = {this.props.show} onHide={this.props.hide} submit={this.onSubmit}>
+            <TripStopsModal show = {this.props.show} onHide={this.props.hide} submit={this.onSubmit}>
                 <RouteDataView
                     start={this.props.start}
                     end={this.props.end}
