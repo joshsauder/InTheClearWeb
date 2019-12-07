@@ -1,14 +1,15 @@
 import React, {Component, createRef} from 'react';
-import '../App.css';
-import '../style/GoogleMaps.css'
 import GooglePlaces from './GooglePlaces';
 import PolylineGenerator from './PolylineGenerator';
 import CityData from './CityData';
 import TripStopsContainer from './TripStops/TripStopsContainer';
 import {TripsModel} from '../models/trips';
-import Axios from 'axios';
 import {Button} from 'react-bootstrap'
+import Axios from 'axios';
 import googleMapsImg from '../images/icons8-google-maps-48.png'
+import '../App.css';
+import '../style/GoogleMaps.css'
+import timeImg from '../images/time.png'
 
 class GoogleMap extends PolylineGenerator {
 
@@ -166,6 +167,10 @@ class GoogleMap extends PolylineGenerator {
         return url;
       }
 
+      editTrip = () => {
+        console.log("hit")
+      }
+
 
       render() {
         let googleMapsUrl = this.determineUrl()
@@ -175,8 +180,20 @@ class GoogleMap extends PolylineGenerator {
             <div className="map" ref={this.GoogleMapsRef} />
               { this.state.loaded ? <GooglePlaces callbackStart={this.callbackStart} callbackEnd={this.callbackEnd} /> : null }
               { this.state.showCityData ? <CityData cityData={this.state.tripData}/> : null}
-              { this.state.loaded ? <TripStopsContainer show={this.state.showStopModal} hide={modalClose} start={this.state.tripData.startLocation} end={this.state.tripData.endLocation} callback={this.showDirections} /> : null }
-              { this.state.tripData.distance !== 0 ? <a className="btn-social fix-right" target="_blank" href={googleMapsUrl}><img src={googleMapsImg}></img></a> : null}
+              { this.state.loaded ? 
+                <TripStopsContainer 
+                show={this.state.showStopModal} 
+                hide={modalClose} 
+                start={this.state.tripData.startLocation} 
+                end={this.state.tripData.endLocation} 
+                callback={this.showDirections} /> 
+                : null }
+              { this.state.tripData.distance == 0 ? 
+                <div className="fix-right btn-group-vertical">
+                  <Button className="btn-social p-2 mb-2" onClick={this.editTrip} title="Edit Trip Data"><img className="img-button" src={timeImg} /></Button>
+                  <a className="btn btn-social p-2" target="_blank" href={googleMapsUrl} title="Export to Google Maps"><img className="img-button" src={googleMapsImg}></img></a> 
+                </div>
+                : null}
           </div>
         );
       }

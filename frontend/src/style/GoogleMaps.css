@@ -1,6 +1,6 @@
 .btn-social {
-    color: white;
-    background-color: #7B16F5;
+    background-color: #EEEEEE !important;
+    border-color: #EEEEEE !important;
     padding: 5px !important;
     border-radius: 50% !important;
 }
@@ -9,4 +9,9 @@
     position: fixed !important;
     right: 20px;
     bottom: 20px;
+}
+
+.img-button {
+    height: 45px;
+    width: 45px; 
 }
