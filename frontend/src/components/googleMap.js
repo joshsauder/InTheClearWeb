@@ -168,7 +168,7 @@ class GoogleMap extends PolylineGenerator {
       }
 
       editTrip = () => {
-        console.log("hit")
+        this.setState({ showStopModal: true});
       }
 
 
@@ -188,7 +188,7 @@ class GoogleMap extends PolylineGenerator {
                 end={this.state.tripData.endLocation} 
                 callback={this.showDirections} /> 
                 : null }
-              { this.state.tripData.distance == 0 ? 
+              { this.state.tripData.distance > 0 ? 
                 <div className="fix-right btn-group-vertical">
                   <Button className="btn-social p-2 mb-2" onClick={this.editTrip} title="Edit Trip Data"><img className="img-button" src={timeImg} /></Button>
                   <a className="btn btn-social p-2" target="_blank" href={googleMapsUrl} title="Export to Google Maps"><img className="img-button" src={googleMapsImg}></img></a> 
