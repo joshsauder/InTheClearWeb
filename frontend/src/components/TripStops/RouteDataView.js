@@ -59,6 +59,7 @@ class RouteDataView extends Component {
         super(props)
     }
 
+    //cant pass start and end to sortable list since these items will not be able to be sorted
     render(){
         var options = { weekday: 'short', hour: 'numeric', minute: 'numeric', timeZoneName: 'short'}
         var minTime = this.props.minDate[this.props.minDate.length-1] ? this.props.minDate[this.props.minDate.length-1].toLocaleDateString('en-US', options) : ""
