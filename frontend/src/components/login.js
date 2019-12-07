@@ -93,6 +93,16 @@ class Login extends Component {
                                     <input name="password" type="password" className="form-control" value={this.state.password} onChange={this.handleInputChange}></input>
                                 </div>
                                 <Button type="submit">Submit</Button>
+                                <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
+                                <div id="appleid-signin" data-color="black" data-border="true" data-type="sign in"></div>
+                                <script type="text/javascript">
+                                    AppleID.auth.init({
+                                        clientId : 'com.birdhouse.intheclear',
+                                        scope : 'both',
+                                        redirectURI: '/api/user/auth',
+                                        state : 'OH'
+                                    });
+                                </script>
                                 <Button type="button" onClick={this.handleNewUser} className="ml-2">Register</Button>
                             </form>
                             :
