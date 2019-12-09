@@ -45,16 +45,7 @@ class Login extends Component {
             password: this.state.password
         }
 
-        Axios.post('api/user/auth', loginObj, {withCredentials: true})
-        .then(res => {
-            if(res.status == 200){
-                //go to main page since access is granted
-                this.props.history.push('/')
-            }
-        }).catch(err => {
-            alert("Error logging in! Please try again.")
-        })
-        
+        this.signInCurrentUser(loginObj);
         
     }
 
@@ -83,6 +74,18 @@ class Login extends Component {
         })
     }
 
+    signInCurrentUser = (userObj) => {
+        return Axios.post('api/user/auth', loginObj, {withCredentials: true})
+        .then(res => {
+            if(res.status == 200){
+                //go to main page since access is granted
+                this.props.history.push('/')
+            }
+        }).catch(err => {
+            alert("Error logging in! Please try again.")
+        })
+    }
+
     handleNewUser = (event) => {
         //prevent default to prevent form submission
         event.preventDefault()
@@ -98,7 +101,7 @@ class Login extends Component {
             email: profile.getEmail()
         }
 
-        this.submitNewUser(userObj)
+        this.signInCurrentUser(userObj)
         
     }
 
