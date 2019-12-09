@@ -6,7 +6,7 @@ const SALT_FACTOR = 10
 var userSchema = new Schema({
     name: String,
     username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String, required: false },
     email: String,
     createdAt: Date,
     updatedAt: Date
@@ -23,7 +23,7 @@ userSchema.pre('save', function(next){
     if(!user.createdAt){ user.createdAt = date }
 
     //process and hash password
-    if(!user.isModified('password')) {return next()}
+    if(!user.password || !user.isModified('password')) {return next()}
 
     genSalt(SALT_FACTOR, function(err, salt) {
         if (err) return next(err);

@@ -23,7 +23,7 @@ class Login extends Component {
             'scope': 'profile email',
             'width': 200,
             'height': 50,
-            'longtitle': true,
+            'longtitle': false,
             'theme': 'dark',
             'onsuccess': this.onSignIn,
         });
@@ -90,7 +90,6 @@ class Login extends Component {
         var profile = googleUser.getBasicProfile();
         console.log(profile.getName())
         console.log(profile.getGivenName())
-        console.log(profile.getFamilyName())
         console.log(profile.getEmail())
     }
 
