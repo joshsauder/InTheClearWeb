@@ -21,9 +21,9 @@ class Login extends Component {
     componentDidMount() {
         gapi.signin2.render('my-signin2', {
             'scope': 'profile email',
-            'width': 200,
+            'width': 240,
             'height': 50,
-            'longtitle': false,
+            'longtitle': true,
             'theme': 'dark',
             'onsuccess': this.onSignIn,
         });
@@ -68,7 +68,11 @@ class Login extends Component {
             email: this.state.email
         }
 
-        Axios.post('api/user', userObj)
+        this.submitNewUser(userObj);
+    }
+
+    postNewUser = (userObj) => {
+        return Axios.post('api/user', userObj)
         .then(res => {
             if(res.status == 200){
                 //show login form
@@ -88,9 +92,14 @@ class Login extends Component {
 
     onSignIn (googleUser) {
         var profile = googleUser.getBasicProfile();
-        console.log(profile.getName())
-        console.log(profile.getGivenName())
-        console.log(profile.getEmail())
+
+        const userObj = {
+            name = profile.getName(),
+            email: profile.getEmail()
+        }
+
+        this.submitNewUser(userObj)
+        
     }
 
     render(){
