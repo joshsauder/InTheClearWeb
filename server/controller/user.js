@@ -84,3 +84,7 @@ exports.checkAuth = function(req, res){
     }
 }
 
+exports.signInThirdParty = function (req, res){
+    console.log(req.body)
+}
+

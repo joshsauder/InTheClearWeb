@@ -1,4 +1,5 @@
 /* global gapi */
+/* global AppleID */
 import React, {Component} from 'react'
 import {Card, Button} from 'react-bootstrap'
 import LoginContainer from './loginContainer'
@@ -26,6 +27,12 @@ class Login extends Component {
             'longtitle': true,
             'theme': 'dark',
             'onsuccess': this.onSignIn,
+        });
+        AppleID.auth.init({
+            clientId : 'com.intheclear.birdhouseWeb',
+            scope : 'email',
+            redirectURI: 'http://localhost:3400/api/user/thirdParty',
+            state : 'Apple'
         });
     }
 
@@ -74,7 +81,7 @@ class Login extends Component {
         })
     }
 
-    signInCurrentUser = (userObj) => {
+    signInCurrentUser = (loginObj) => {
         return Axios.post('api/user/auth', loginObj, {withCredentials: true})
         .then(res => {
             if(res.status == 200){
@@ -93,16 +100,15 @@ class Login extends Component {
         this.setState({login: false})
     }
 
-    onSignIn (googleUser) {
+    onSignIn = (googleUser) => {
         var profile = googleUser.getBasicProfile();
 
         const userObj = {
-            name = profile.getName(),
+            name: profile.getName(),
             email: profile.getEmail()
         }
 
-        this.signInCurrentUser(userObj)
-        
+        console.log(userObj)    
     }
 
     render(){
@@ -125,7 +131,8 @@ class Login extends Component {
                                 </div>
                                 <Button type="submit">Submit</Button>
                                 <Button type="button" onClick={this.handleNewUser} className="ml-2">Register</Button>
-                                <div id="my-signin2" data-onsuccess={this.onSignIn}></div>
+                                <div id="my-signin2"></div>
+                                <div id="appleid-signin" data-color="black" data-border="true" data-type="sign in"></div>
                             </form>
                             :
                             <form onSubmit={this.submitNewUser}>
