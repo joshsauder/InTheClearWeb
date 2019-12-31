@@ -10,13 +10,6 @@ class Login extends Component {
 
     constructor(props){
         super(props)
-        this.state = {
-            name: "",
-            username: "",
-            password: "",
-            email: "",
-            login: true
-        }
     }
 
     componentDidMount() {
@@ -37,72 +30,7 @@ class Login extends Component {
         });
     }
 
-    handleInputChange = (event) => {
-        const target = event.target
-        this.setState({
-            [target.name]: target.value
-        })
-    }
-
-    onSubmit = (event) => {
-
-        event.preventDefault();
-
-        const loginObj = {
-            username: this.state.username, 
-            password: this.state.password
-        }
-
-        this.signInCurrentUser(loginObj);
-        
-    }
-
-    submitNewUser = (event) => {
-        event.preventDefault();
-
-        const userObj = {
-            name: this.state.name,
-            username: this.state.username, 
-            password: this.state.password,
-            email: this.state.email
-        }
-
-        this.submitNewUser(userObj);
-    }
-
-    postNewUser = (userObj) => {
-        return Axios.post('api/user', userObj)
-        .then(res => {
-            if(res.status == 200){
-                //show login form
-                this.setState({login: true})
-            }
-        }).catch(err => {
-            alert("There was an issue signing you up! Please try again.")
-        })
-    }
-
-    signInCurrentUser = (loginObj) => {
-        return Axios.post('api/user/auth', loginObj, {withCredentials: true})
-        .then(res => {
-            if(res.status == 200){
-                //go to main page since access is granted
-                this.props.history.push('/')
-            }
-        }).catch(err => {
-            alert("Error logging in! Please try again.")
-        })
-    }
-
-    handleNewUser = (event) => {
-        //prevent default to prevent form submission
-        event.preventDefault()
-        //show register form
-        this.setState({login: false})
-    }
-
     onSignIn = (googleUser) => {
-        var profile = googleUser.getBasicProfile();
 
         const loginObj = {
             token: googleUser.getAuthResponse().id_token
@@ -125,45 +53,10 @@ class Login extends Component {
             <div className="container">
                 <div className="row justify-content-md-center mt-5">
                     <Card className="col-5">
-                        <Card.Header className="headerFont">{this.state.login ? "Login" : "Register" }</Card.Header>
+                        <Card.Header className="headerFont text-center">Login</Card.Header>
                         <Card.Body>
-                        {this.state.login ?
-                            <form onSubmit={this.onSubmit}>
-                                <div className="form-group">
-                                    <label htmlFor="username">Username</label>
-                                    <input name="username" className="form-control" value={this.state.username} onChange={this.handleInputChange}></input>
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="password">Password</label>
-                                    <input name="password" type="password" className="form-control" value={this.state.password} onChange={this.handleInputChange}></input>
-                                </div>
-                                <Button type="submit">Submit</Button>
-                                <Button type="button" onClick={this.handleNewUser} className="ml-2">Register</Button>
-                                <div id="my-signin2"></div>
-                                <div id="appleid-signin" data-color="black" data-border="true" data-type="sign in"></div>
-                            </form>
-                            :
-                            <form onSubmit={this.submitNewUser}>
-                                <div className="form-group">
-                                    <label htmlFor="username">Name</label>
-                                    <input name="name" className="form-control" defaultValue={this.state.name} onChange={this.handleInputChange}></input>
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="username">Username</label>
-                                    <input name="username" className="form-control" defaultValue={this.state.username} onChange={this.handleInputChange}></input>
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="password">Password</label>
-                                    <input name="password" className="form-control" defaultValue={this.state.password} onChange={this.handleInputChange}></input>
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="email">Email Adress</label>
-                                    <input name="email" className="form-control" defaultValue={this.state.password} onChange={this.handleInputChange}></input>
-                                    <small className="form-text text-muted">We will never share nor spam your Email Address</small>
-                                </div>
-                                <Button type="submit">Submit</Button>
-                            </form>
-                        }
+                            <div id="my-signin2" className="mb-2"></div>
+                            <div id="appleid-signin" className="signin-button" data-color="black" data-border="true" data-type="sign in"></div>                           
                         </Card.Body>
                     </Card>
                 </div>

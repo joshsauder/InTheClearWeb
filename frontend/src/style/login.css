@@ -37,3 +37,8 @@ label {
     max-height: 50vh;
     overflow: scroll
 }
+
+.signin-button {
+    width: 240px;
+    height: 50px;
+}
