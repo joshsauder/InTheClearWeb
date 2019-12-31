@@ -1,8 +1,10 @@
 const mongoose = require('mongoose')
 const User = require('../model/user')
 const jwt = require('jsonwebtoken')
-
 const secret = process.env.JWT_SECRET
+
+const {OAuth2Client} = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 exports.createUser = function(req, res){
 
@@ -69,6 +71,8 @@ exports.checkAuth = function(req, res){
     req.headers['x-access-token'] ||
     req.cookies.token;
 
+    console.log(token)
+
     //verify token is there and valid
     if(!token){
         res.status(401).send("No token... Unauthorized.")
@@ -84,7 +88,48 @@ exports.checkAuth = function(req, res){
     }
 }
 
-exports.signInThirdParty = function (req, res){
-    console.log(req.body)
+exports.signInGoogle = function(req, res){
+    client.verifyIdToken({
+        idToken: req.body.token,
+        audience: process.env.GOOGLE_CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+    }).then(function(ticket){
+        const payload = ticket.getPayload();
+        const userObj = {
+            email: payload.email,
+            name: payload.name,
+            id: payload.sub
+        }
+        return processUser(userObj)
+    }).then(function(token){
+        res.cookie('token', token, { httpOnly: true })
+        res.json({api_KEY: process.env.GOOGLE_MAPS_FRONTEND_KEY})
+    }).catch(function(err){
+        console.log(err)
+        res.status(500).send("Issue with Sign in")
+    })
 }
 
+async function processUser(userId){
+    let userAuth = new User(userId);
+
+    await User.findOne({ email: userAuth.email}, function(err, user){
+        if(err) {throw err}
+        else if(!user){
+            //save the new user
+            userAuth.save((err) => {
+                if(err){
+                    throw err
+                }
+            })
+        }
+    })
+
+    const payload = {email: userAuth.email}
+    //create token
+    const token = jwt.sign(payload, secret, {
+        expiresIn: '1h'
+    });
+    return token
+}

@@ -98,9 +98,7 @@ class Login extends Component {
         var profile = googleUser.getBasicProfile();
 
         const loginObj = {
-            name: profile.getName(),
-            userName: profile.getName(),
-            email: profile.getEmail()
+            token: googleUser.getAuthResponse().id_token
         }
 
         return Axios.post('api/user/thirdParty', loginObj, {withCredentials: true})
