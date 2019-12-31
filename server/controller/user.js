@@ -74,8 +74,6 @@ exports.checkAuth = function(req, res){
     req.headers['x-access-token'] ||
     req.cookies.token;
 
-    console.log(token)
-
     //verify token is there and valid
     if(!token){
         res.status(401).send("No token... Unauthorized.")
@@ -127,18 +125,17 @@ exports.signInApple = async function(req, res){
     const tokens = await appleSignin.getAuthorizationToken(req.query.code, {
         clientID: process.env.APPLE_CLIENT_ID,
         clientSecret: clientSecret,
-        redirectUri: "http://localhost:3000/auth/apple/callback"
+        redirectUri: `http://${req.get('host')}/api/user/auth/apple`
     });
 
     if (!tokens.id_token) return res.sendStatus(500);
 
-    appleSignin.verifyIdToken(tokens.id_token).then(function(){
+    appleSignin.verifyIdToken(tokens.id_token).then(function(result){
         
-        const info = req.query.user
         const userObj = {
-            name: `${info.firstName} ${info.lastName}`,
-            email: info.email,
-            id: tokens.id_token
+            name: `${tokens.id_token.user.firstName} ${tokens.id_token.user.lastName}`,
+            email: tokens.id_token.email,
+            id: tokens.id_token.sub
         }
         return processUser(userObj)
 

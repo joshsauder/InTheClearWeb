@@ -28,6 +28,13 @@ class Login extends Component {
             'theme': 'dark',
             'onsuccess': this.onSignIn,
         });
+
+        AppleID.auth.init({
+            clientId : 'com.intheclear.birdhouseWeb',
+            scope : 'email name',
+            redirectURI: 'http://52.23.206.119:80/api/user/auth/apple',
+            state : 'state'
+        });
     }
 
     handleInputChange = (event) => {
@@ -101,7 +108,7 @@ class Login extends Component {
             token: googleUser.getAuthResponse().id_token
         }
 
-        return Axios.post('api/user/thirdParty', loginObj, {withCredentials: true})
+        return Axios.post('api/user/auth/google', loginObj, {withCredentials: true})
         .then(res => {
             if(res.status == 200){
                 //go to main page since access is granted
@@ -133,6 +140,7 @@ class Login extends Component {
                                 <Button type="submit">Submit</Button>
                                 <Button type="button" onClick={this.handleNewUser} className="ml-2">Register</Button>
                                 <div id="my-signin2"></div>
+                                <div id="appleid-signin" data-color="black" data-border="true" data-type="sign in"></div>
                             </form>
                             :
                             <form onSubmit={this.submitNewUser}>
