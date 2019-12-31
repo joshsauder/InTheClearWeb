@@ -1,10 +1,13 @@
-const mongoose = require('mongoose')
-const User = require('../model/user')
-const jwt = require('jsonwebtoken')
+const mongoose = require('mongoose');
+const User = require('../model/user');
+const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET
+const path = require('path');
 
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+const appleSignIn = require('apple-signin');
 
 exports.createUser = function(req, res){
 
@@ -109,6 +112,46 @@ exports.signInGoogle = function(req, res){
         console.log(err)
         res.status(500).send("Issue with Sign in")
     })
+}
+
+exports.signInApple = async function(req, res){
+    if (!req.query.code) return res.sendStatus(500);
+
+    const clientSecret = appleSignIn.getClientSecret({
+        clientID: process.env.APPLE_CLIENT_ID,
+        teamId: process.env.APPLE_TEAM_ID,
+        keyIdentifier: process.env.APPLE_KEY_IDENTIFIER,
+        privateKeyPath: path.join(__dirname, "../AuthKey.p8")
+    });
+
+    const tokens = await appleSignin.getAuthorizationToken(req.query.code, {
+        clientID: process.env.APPLE_CLIENT_ID,
+        clientSecret: clientSecret,
+        redirectUri: "http://localhost:3000/auth/apple/callback"
+    });
+
+    if (!tokens.id_token) return res.sendStatus(500);
+
+    appleSignin.verifyIdToken(tokens.id_token).then(function(){
+        
+        const info = req.query.user
+        const userObj = {
+            name: `${info.firstName} ${info.lastName}`,
+            email: info.email,
+            id: tokens.id_token
+        }
+        return processUser(userObj)
+
+    }).then(function(token){
+        res.cookie('token', token, { httpOnly: true })
+        res.json({api_KEY: process.env.GOOGLE_MAPS_FRONTEND_KEY})
+    }).catch(function(err){
+        console.log(err)
+        res.status(500).send("Issue with Sign in")
+    })
+
+    
+
 }
 
 async function processUser(userId){
