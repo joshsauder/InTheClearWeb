@@ -28,12 +28,6 @@ class Login extends Component {
             'theme': 'dark',
             'onsuccess': this.onSignIn,
         });
-        AppleID.auth.init({
-            clientId : 'com.intheclear.birdhouseWeb',
-            scope : 'email',
-            redirectURI: 'http://localhost:3400/api/user/thirdParty',
-            state : 'Apple'
-        });
     }
 
     handleInputChange = (event) => {
@@ -103,12 +97,21 @@ class Login extends Component {
     onSignIn = (googleUser) => {
         var profile = googleUser.getBasicProfile();
 
-        const userObj = {
+        const loginObj = {
             name: profile.getName(),
+            userName: profile.getName(),
             email: profile.getEmail()
         }
 
-        console.log(userObj)    
+        return Axios.post('api/user/thirdParty', loginObj, {withCredentials: true})
+        .then(res => {
+            if(res.status == 200){
+                //go to main page since access is granted
+                this.props.history.push('/')
+            }
+        }).catch(err => {
+            alert("Error logging in! Please try again.")
+        })  
     }
 
     render(){
@@ -132,7 +135,6 @@ class Login extends Component {
                                 <Button type="submit">Submit</Button>
                                 <Button type="button" onClick={this.handleNewUser} className="ml-2">Register</Button>
                                 <div id="my-signin2"></div>
-                                <div id="appleid-signin" data-color="black" data-border="true" data-type="sign in"></div>
                             </form>
                             :
                             <form onSubmit={this.submitNewUser}>
