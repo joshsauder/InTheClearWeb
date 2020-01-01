@@ -56,7 +56,7 @@ class Login extends Component {
                     <Card className="col-5">
                         <Card.Header className="headerFont">Login</Card.Header>
                         <Card.Body>
-                            <div id="my-signin2"></div>
+                            <div id="my-signin2" className="mb-2"></div>
                             <div id="appleid-signin" className="signin-button" data-color="black" data-border="true" data-type="sign in"></div>
                         </Card.Body>
                     </Card>
