@@ -44,8 +44,8 @@ exports.signInGoogle = function(req, res){
         const userObj = {
             email: payload.email,
             name: {
-                first: payload.given_name,
-                last: payload.family_name
+                firstName: payload.given_name,
+                lastName: payload.family_name
             },
             id: payload.sub
         }

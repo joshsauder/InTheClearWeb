@@ -21,7 +21,7 @@ userSchema.pre('save', function(next){
     this.updatedAt = date;
     if(!user.createdAt){ user.createdAt = date }
 
-    //process and hash password
+    //Not used as passwords are not stored (see comparePassword comments)
     if(!user.password || !user.isModified('password')) {return next()}
 
     genSalt(SALT_FACTOR, function(err, salt) {
@@ -38,6 +38,10 @@ userSchema.pre('save', function(next){
 });
 
 
+/*
+Not currently used as passwords are not being stored with Apple and Google Login
+Kept for future use
+*/
 userSchema.methods.comparePassword = function(candidatePassword, cb) {
     //compare submitted password with the actual password
     compare(candidatePassword, this.password, function(err, isMatch) {

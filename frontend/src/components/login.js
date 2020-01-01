@@ -31,13 +31,12 @@ class Login extends Component {
     }
 
     onSignIn = (googleUser) => {
-        var profile = googleUser.getBasicProfile();
 
         const loginObj = {
             token: googleUser.getAuthResponse().id_token
         }
 
-        return Axios.post('api/user/auth/google', loginObj, {withCredentials: true})
+        Axios.post('api/user/auth/google', loginObj, {withCredentials: true})
         .then(res => {
             if(res.status == 200){
                 //go to main page since access is granted
