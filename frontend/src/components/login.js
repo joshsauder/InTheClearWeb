@@ -31,6 +31,7 @@ class Login extends Component {
     }
 
     onSignIn = (googleUser) => {
+        var profile = googleUser.getBasicProfile();
 
         const loginObj = {
             token: googleUser.getAuthResponse().id_token
@@ -53,10 +54,10 @@ class Login extends Component {
             <div className="container">
                 <div className="row justify-content-md-center mt-5">
                     <Card className="col-5">
-                        <Card.Header className="headerFont text-center">Login</Card.Header>
+                        <Card.Header className="headerFont">{this.state.login ? "Login" : "Register" }</Card.Header>
                         <Card.Body>
-                            <div id="my-signin2" className="mb-2"></div>
-                            <div id="appleid-signin" className="signin-button" data-color="black" data-border="true" data-type="sign in"></div>                           
+                            <div id="my-signin2"></div>
+                            <div id="appleid-signin" className="signin-button" data-color="black" data-border="true" data-type="sign in"></div>
                         </Card.Body>
                     </Card>
                 </div>

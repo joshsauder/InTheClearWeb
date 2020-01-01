@@ -10,9 +10,6 @@ router.post('/directions/info', getCityNamesAndWeather)
 router.post('/directions/tripTimes', getTripTimes)
 
 //user sign in api calls
-router.post('/user', createUser)
-router.post('/user/auth', signInUser)
-router.put('/user/:username', updateUser)
 router.get('/user/auth', checkAuth)
 router.post('/user/auth/google', signInGoogle)
 router.get('/user/auth/apple', signInApple)
