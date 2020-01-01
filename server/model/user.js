@@ -4,7 +4,7 @@ const { genSalt, hash, compare } = require('bcrypt');
 const SALT_FACTOR = 10
 
 var userSchema = new Schema({
-    name: String,
+    name: JSON,
     email: {type: String, unique: true, required: true},
     id: {type: String, required: true, unique: true},
     createdAt: Date,

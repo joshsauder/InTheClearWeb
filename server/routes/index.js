@@ -1,6 +1,6 @@
 const express = require('express')
 const { getDirections, getCityNamesAndWeather, getTripTimes } = require('../controller/directions')
-const { createUser, signInUser, updateUser, checkAuth, signInGoogle, signInApple } = require('../controller/user')
+const {checkAuth, signInGoogle, signInApple } = require('../controller/user')
 const { addLocation } = require('../controller/location')
 const router = express.Router()
 

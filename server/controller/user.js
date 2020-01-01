@@ -42,7 +42,10 @@ exports.signInGoogle = function(req, res){
         const payload = ticket.getPayload();
         const userObj = {
             email: payload.email,
-            name: payload.name,
+            name: {
+                first: payload.given_name,
+                last: payload.family_name
+            },
             id: payload.sub
         }
         return processUser(userObj)
@@ -76,7 +79,10 @@ exports.signInApple = async function(req, res){
     appleSignin.verifyIdToken(tokens.id_token).then(function(result){
         
         const userObj = {
-            name: `${tokens.id_token.user.firstName} ${tokens.id_token.user.lastName}`,
+            name: {
+                first: tokens.id_token.user.firstName,
+                last: tokens.id_token.user.lastName
+            },
             email: tokens.id_token.email,
             id: tokens.id_token.sub
         }
