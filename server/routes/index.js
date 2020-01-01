@@ -12,7 +12,7 @@ router.post('/directions/tripTimes', getTripTimes)
 //user sign in api calls
 router.get('/user/auth', checkAuth)
 router.post('/user/auth/google', signInGoogle)
-router.get('/user/auth/apple', signInApple)
+router.post('/user/auth/apple', signInApple)
 
 router.post('/locations', addLocation)
 

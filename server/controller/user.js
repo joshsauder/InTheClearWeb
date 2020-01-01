@@ -1,13 +1,14 @@
-const mongoose = require('mongoose');
 const User = require('../model/user');
 const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET
-const path = require('path');
+const fs = require('fs')
 
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-const appleSignIn = require('apple-signin');
+const AppleAuth = require('apple-auth');
+
+let auth = new AppleAuth(fs.readFileSync('./config/appleConfig.json'), fs.readFileSync('./config/AuthKey.p8').toString(), 'text');
 
 exports.checkAuth = function(req, res){
 
@@ -59,44 +60,27 @@ exports.signInGoogle = function(req, res){
 }
 
 exports.signInApple = async function(req, res){
-    if (!req.query.code) return res.sendStatus(500);
+    try {
+        const response = await auth.accessToken(req.body.code);
+        const idToken = jwt.decode(response.id_token);
 
-    const clientSecret = appleSignIn.getClientSecret({
-        clientID: process.env.APPLE_CLIENT_ID,
-        teamId: process.env.APPLE_TEAM_ID,
-        keyIdentifier: process.env.APPLE_KEY_IDENTIFIER,
-        privateKeyPath: path.join(__dirname, "../AuthKey.p8")
-    });
+        const user = {};
+        user.id = idToken.sub;
 
-    const tokens = await appleSignin.getAuthorizationToken(req.query.code, {
-        clientID: process.env.APPLE_CLIENT_ID,
-        clientSecret: clientSecret,
-        redirectUri: `http://${req.get('host')}/api/user/auth/apple`
-    });
-
-    if (!tokens.id_token) return res.sendStatus(500);
-
-    appleSignin.verifyIdToken(tokens.id_token).then(function(result){
-        
-        const userObj = {
-            name: {
-                first: tokens.id_token.user.firstName,
-                last: tokens.id_token.user.lastName
-            },
-            email: tokens.id_token.email,
-            id: tokens.id_token.sub
+        if (idToken.email) user.email = idToken.email;
+        if (req.body.user) {
+            const { name } = JSON.parse(req.body.user);
+            user.name = name;
         }
-        return processUser(userObj)
 
-    }).then(function(token){
+        let token = await processUser(user)
         res.cookie('token', token, { httpOnly: true })
+        res.redirect('http://localhost:3000')
         res.json({api_KEY: process.env.GOOGLE_MAPS_FRONTEND_KEY})
-    }).catch(function(err){
-        console.log(err)
-        res.status(500).send("Issue with Sign in")
-    })
-
-    
+    } catch (ex) {
+        console.error(ex);
+        res.send("An error occurred!");
+    }
 
 }
 

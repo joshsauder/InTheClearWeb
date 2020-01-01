@@ -24,8 +24,8 @@ class Login extends Component {
 
         AppleID.auth.init({
             clientId : 'com.intheclear.birdhouseWeb',
-            scope : 'email name',
-            redirectURI: 'http://52.23.206.119:80/api/user/auth/apple',
+            scope : 'name email',
+            redirectURI: 'https://intheclearbackend.herokuapp.com/api/user/auth/apple',
             state : 'state'
         });
     }
@@ -54,7 +54,7 @@ class Login extends Component {
             <div className="container">
                 <div className="row justify-content-md-center mt-5">
                     <Card className="col-5">
-                        <Card.Header className="headerFont">{this.state.login ? "Login" : "Register" }</Card.Header>
+                        <Card.Header className="headerFont">Login</Card.Header>
                         <Card.Body>
                             <div id="my-signin2"></div>
                             <div id="appleid-signin" className="signin-button" data-color="black" data-border="true" data-type="sign in"></div>

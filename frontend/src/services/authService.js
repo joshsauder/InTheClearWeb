@@ -14,7 +14,7 @@ export default function withAuth(AuthComponent){
         }
 
         componentDidMount() {
-            Axios.get('/api/user/auth', {withCredentials: true})
+            Axios.get('https://intheclearbackend.herokuapp.com/api/user/auth', {withCredentials: true})
             .then(res=> {
                 if(res.status === 200){
                     this.setState({loading: false})

@@ -27,4 +27,4 @@ yarn-error.log*
 frontend/.env
 process.env
 .env
-server/AuthKey.p8
+server/config/*

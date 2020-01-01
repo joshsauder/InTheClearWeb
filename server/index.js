@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser')
 var port = process.env.PORT || 3400;
 
 const corsOptions = {
-    origin: 'http://intheclear.s3-website-us-east-1.amazonaws.com',
+    origin: 'http://localhost:3000',
     credentials: true
 }
 
