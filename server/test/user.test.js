@@ -14,7 +14,7 @@ describe('User', () => {
     describe("Test Add User", () =>{
 
         afterEach((done) => {
-            user.findOneAndDelete({"name": "testUser"})
+            user.findOneAndDelete({"email": "test@gmail.com"})
             .then(() => done())
         });
 
@@ -24,11 +24,14 @@ describe('User', () => {
         */
         it( 'Save new user', (done) =>{
 
+            //create test user
             const testUser = {
-                name: "testUser",
-                username: "testUser",
-                password: "test",
-                email: "test@gmail.com"
+                name: {
+                    firstName: "test",
+                    lastName: "user"
+                },
+                email: "test@gmail.com",
+                password: "test"
             }
             chai.request(app)
             .post('/api/user')
@@ -45,9 +48,10 @@ describe('User', () => {
         */
         it('Save user without required', (done) => {
             const testUser = {
-                name: "testUser",
-                username: "testUser",
-                email: "test@gmail.com"
+                name: {
+                    firstName: "test",
+                    lastName: "user"
+                }             
             }
             chai.request(app)
             .post('/api/user')
@@ -63,10 +67,13 @@ describe('User', () => {
 
         //create test user
         const testUser = {
-            name: "testUser",
-            username: "testUser",
+            name: {
+                firstName: "test",
+                lastName: "user"
+            },
             password: "test",
-            email: "test@gmail.com"
+            email: "test@gmail.com",
+            id: "12356"
         }
 
         before((done) => {
@@ -75,7 +82,7 @@ describe('User', () => {
         })
 
         after((done) => {
-            user.findOneAndDelete({"name": "testUser"})
+            user.findOneAndDelete({"email": "test@gmail.com"})
             .then(() => done())
         })
 
@@ -85,7 +92,7 @@ describe('User', () => {
         */
         it('Test auth with correct password', (done) => {
             const testSignInUser = {
-                username: "testUser",
+                email: "test@gmail.com",
                 password: "test"
             }
 
@@ -107,7 +114,7 @@ describe('User', () => {
         it('Test auth with incorrect password', (done) => {
 
             const testSignInUser = {
-                username: "testUser",
+                email: "testUser",
                 password: "incorrect",
             }
 
@@ -120,82 +127,43 @@ describe('User', () => {
                 done();
             })
         })
-    })
 
-    describe("Test Update User", () => {
+        it('Test Removal of Cookie', (done) => {
 
-        //create test user
-        const testUser = {
-            name: "testUser",
-            username: "testUser",
-            password: "test",
-            email: "test@gmail.com"
-        }
-
-        before((done) => {
-            user.create(testUser)
-            .then(() => done())
-        })
-
-        after((done) => {
-            user.findOneAndDelete({"name": "testUser"})
-            .then(() => done())
-        })
-
-        /*
-        Test update username
-        */
-        it('Test update user password', (done) => {
-
-            const updatedTestUser = {
-                name: "testUser",
-                username: "testUser",
-                password: "test3",
-                email: "test@gmail.com"
-            }
-            
-            chai.request(app)
-            .put('/api/user/testUser')
-            .send(updatedTestUser)
-            .end((err, res) => {
-                res.should.have.status(200)
-                done();
-            })
-        })
- 
-        /*
-        Test update username since username is given a request param
-        */
-        it('Test Update Username', (done) => {
-            const updatedTestUser = {
-                name: "testUser",
-                username: "testUsers",
-                password: "test3",
-                email: "test@gmail.com"
+            const testSignInUser = {
+                email: "test@gmail.com",
+                password: "test"
             }
 
             chai.request(app)
-            .put('/api/user/testUser')
-            .send(updatedTestUser)
+            .post('/api/user/auth')
+            .send(testSignInUser)
             .end((err, res) => {
-                res.should.have.status(200)
-                done();
+                chai.request(app)
+                .get('/app/user/auth/logout')
+                .end((err, res) => {
+                    res.should.have.status(200)
+                    chai.expect(res).to.not.have.cookie('token')
+                    done();
+                })
             })
         })
-
     })
 
     describe('Test Password Hashing', () => {
          //create test user
-         const testUser = {
-            name: "testUser",
-            username: "testUser",
+        const testUser = {
+            name: {
+                firstName: "test",
+                lastName: "user"
+            },
             password: "test",
-            email: "test@gmail.com"
+            email: "test@gmail.com",
+            id: "1235"
         }
 
         after((done) => {
-            user.findOneAndDelete({"name": "testUser"})
+            user.findOneAndDelete({"email": "test@gmail.com"})
             .then(() => done())
         })
 
