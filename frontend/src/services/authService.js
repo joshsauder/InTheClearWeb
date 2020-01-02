@@ -9,7 +9,9 @@ export default function withAuth(AuthComponent){
             super()
             this.state = {
                 redirect: false,
-                loading: true
+                loading: true,
+                id: "",
+                name: ""
             }
         }
 
@@ -17,7 +19,7 @@ export default function withAuth(AuthComponent){
             Axios.get('/api/user/auth', {withCredentials: true})
             .then(res=> {
                 if(res.status === 200){
-                    this.setState({loading: false})
+                    this.setState({loading: false, id: res.data.id, name: res.data.name})
                 }else {
                     const error = new Error(res.error);
                     throw error;
@@ -37,7 +39,7 @@ export default function withAuth(AuthComponent){
             }
             return(
                 <React.Fragment>
-                    <AuthComponent {...this.props} />
+                    <AuthComponent {...this.props} id={this.state.id} name={this.state.name} />
                 </React.Fragment>
             )
         }

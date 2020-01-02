@@ -21,8 +21,7 @@ class GoogleMap extends PolylineGenerator {
           startMarker: null,
           endMarker: null,
           tripData: new TripsModel(),
-          showStopModal: false,
-          userID: ""
+          showStopModal: false
         }
         this.showDirections = this.showDirections.bind(this);
         this.polylineArray = []
@@ -105,7 +104,7 @@ class GoogleMap extends PolylineGenerator {
           return {
             city: trip.city,
             condition: trip.weather.Description,
-            userId: this.state.userID
+            userId: this.props.userId
           }
         })
         Axios.post('/api/locations', data).catch(err => {
