@@ -1,6 +1,6 @@
 const express = require('express')
 const { getDirections, getCityNamesAndWeather, getTripTimes } = require('../controller/directions')
-const {checkAuth, signInGoogle, signInApple, createUser, signInUser } = require('../controller/user')
+const {checkAuth, signInGoogle, signInApple, createUser, signInUser, logout } = require('../controller/user')
 const { addLocation } = require('../controller/location')
 const router = express.Router()
 
@@ -15,6 +15,7 @@ router.post('/user/auth', signInUser)
 router.get('/user/auth', checkAuth)
 router.post('/user/auth/google', signInGoogle)
 router.post('/user/auth/apple', signInApple)
+router.get('/user/auth/logout', logout)
 
 //location routes
 router.post('/locations', addLocation)

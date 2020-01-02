@@ -11,7 +11,8 @@ class Login extends Component {
     constructor(props){
         super(props)
         this.state = {
-            name: "",
+            firstName: "",
+            lastName: "",
             password: "",
             email: "",
             login: true
@@ -46,7 +47,7 @@ class Login extends Component {
     onSubmit = (event) => {
         event.preventDefault();
         const loginObj = {
-            username: this.state.username, 
+            email: this.state.email, 
             password: this.state.password
         }
 
@@ -65,8 +66,10 @@ class Login extends Component {
         event.preventDefault();
 
         const userObj = {
-            name: this.state.name,
-            username: this.state.username, 
+            name: {
+                firstName: this.state.firstName,
+                lastName: this.state.lastName
+            },
             password: this.state.password,
             email: this.state.email
         }
@@ -109,9 +112,9 @@ class Login extends Component {
         return(
             <LoginContainer>
             <div className="container">
-                <div className="row justify-content-md-center mt-5">
-                    <Card className="col-5" style={{maxHeight: '70vh'}}>
-                        <Card.Header className="headerFont">Login</Card.Header>
+                <div className="row justify-content-md-center mt-4">
+                    <Card className="col-5" style={{maxHeight: '60vh'}}>
+                        <Card.Header className="headerFont">{this.state.login ? "Login" : "Register"}</Card.Header>
                         <Card.Body>
                             <div id="my-signin2" className="mb-2 d-flex justify-content-center" />
                             <div id="appleid-signin" className="signin-button mb-2 mx-auto " data-color="black" data-border="true" data-type="sign in" />
@@ -139,9 +142,15 @@ class Login extends Component {
                                         <label htmlFor="password">Password</label>
                                         <input name="password" className="form-control" value={this.state.password} onChange={this.handleInputChange} required></input>
                                     </div>
-                                    <div className="form-group">
-                                        <label htmlFor="name">Name</label>
-                                        <input name="name" className="form-control" value={this.state.name} onChange={this.handleInputChange} required></input>
+                                    <div className="form-row">
+                                        <div className="form-group col-md-6">
+                                            <label htmlFor="firstName">First Name</label>
+                                            <input name="firstName" className="form-control" value={this.state.firstName} onChange={this.handleInputChange} required></input>
+                                        </div>
+                                        <div className="form-group col-md-6">
+                                            <label htmlFor="lastName">Last Name</label>
+                                            <input name="lastName" className="form-control" value={this.state.lastName} onChange={this.handleInputChange} required></input>
+                                        </div>
                                     </div>
                                     <Button type="submit">Submit</Button>
                                     <Button type="button" onClick={(e) => handleNewUser(e, true)} className="ml-2">Login</Button>

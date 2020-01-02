@@ -27,19 +27,17 @@ exports.createUser = function(req, res){
 
 exports.signInUser = function(req, res){
 
-    let userAuth = new User(req.body);
-
     //find user
-    User.findOne({ username: userAuth.username}, function(err, user){
+    User.findOne({ email: req.body.email}, function(err, user){
         if(err) res.status(500).send("Server error")
         else if(!user){res.status(401).send("User not found")}
         else{
             //compare password
-            user.comparePassword(userAuth.password, function(err, isMatch){
+            user.comparePassword(req.body.password, function(err, isMatch){
                 if(!isMatch){ res.status(401).send("Incorrect Password") }
                 else{
 
-                    const payload = {username: userAuth.username}
+                    const payload = {id: user.id, name: user.name ? user.name : ""}
                     //create token
                     const token = jwt.sign(payload, secret, {
                         expiresIn: '1h'
@@ -125,7 +123,10 @@ exports.signInApple = async function(req, res){
         console.error(ex);
         res.send("An error occurred!");
     }
+}
 
+exports.logout = function(req, res){
+    res.clearCookie('token').end()
 }
 
 async function processUser(userId){

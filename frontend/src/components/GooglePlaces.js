@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import UserInfo from './UserInfo';
 import '../App.css';
 import '../style/GooglePlaces.css';
 import Jumbotron from 'react-bootstrap/Jumbotron';
@@ -71,7 +72,10 @@ class GooglePlaces extends Component {
           return (
           <div className="row container">
             <Jumbotron className="directionsJumbotron ml-md-2 mt-md-2 col-5">
-                <img className="mx-auto d-block img-logo mb-1" alt="logo" src={logo}></img>
+                <div className="row justify-content-between">
+                    <img className="d-block img-logo-places mb-1 ml-3" alt="logo" src={logo}></img>
+                    <UserInfo name={this.props.name} />
+                </div>
                 <div className="input-group mb-1 mt-4">
                     <input className="form-control" id="locationStart" type="text" size="50" placeholder="Start Location" autoComplete="on" runat="server" />
                 </div>
