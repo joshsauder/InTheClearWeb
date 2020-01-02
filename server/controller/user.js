@@ -1,4 +1,5 @@
 const User = require('../model/user');
+const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET
 const fs = require('fs')
@@ -9,6 +10,49 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const AppleAuth = require('apple-auth');
 
 let auth = new AppleAuth(fs.readFileSync('./config/appleConfig.json'), fs.readFileSync('./config/AuthKey.p8').toString(), 'text');
+
+exports.createUser = function(req, res){
+
+    let newUser = new User(req.body);
+    newUser.id = mongoose.Types.ObjectId()
+    //save the new user
+    newUser.save((err) => {
+        if(err){
+            res.status(400).send("Error creating user")
+        }
+        else {res.send("success")}
+    })
+
+}
+
+exports.signInUser = function(req, res){
+
+    let userAuth = new User(req.body);
+
+    //find user
+    User.findOne({ username: userAuth.username}, function(err, user){
+        if(err) res.status(500).send("Server error")
+        else if(!user){res.status(401).send("User not found")}
+        else{
+            //compare password
+            user.comparePassword(userAuth.password, function(err, isMatch){
+                if(!isMatch){ res.status(401).send("Incorrect Password") }
+                else{
+
+                    const payload = {username: userAuth.username}
+                    //create token
+                    const token = jwt.sign(payload, secret, {
+                        expiresIn: '1h'
+                    });
+                    res.cookie('token', token, { httpOnly: true })
+                    //send frontend api key on callback since the key will be exposed in .env on frontend.
+                    //https://create-react-app.dev/docs/adding-custom-environment-variables/
+                    res.json({api_KEY: process.env.GOOGLE_MAPS_FRONTEND_KEY})
+                }
+            })
+        }
+    })
+}
 
 exports.checkAuth = function(req, res){
 
