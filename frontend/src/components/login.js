@@ -100,20 +100,21 @@ class Login extends Component {
     }
 
     render(){
-        handleNewUser = (event) => {
+
+        let handleNewUser = (event, bool) => {
             event.preventDefault()
-            this.setState({login: false})
+            this.setState({login: bool})
         }
-        
+
         return(
             <LoginContainer>
             <div className="container">
                 <div className="row justify-content-md-center mt-5">
-                    <Card className="col-5">
+                    <Card className="col-5" style={{maxHeight: '70vh'}}>
                         <Card.Header className="headerFont">Login</Card.Header>
                         <Card.Body>
-                            <div id="my-signin2" className="mb-2"></div>
-                            <div id="appleid-signin" className="signin-button" data-color="black" data-border="true" data-type="sign in"></div>
+                            <div id="my-signin2" className="mb-2 d-flex justify-content-center" />
+                            <div id="appleid-signin" className="signin-button mb-2 mx-auto " data-color="black" data-border="true" data-type="sign in" />
                             {this.state.login ?
                                 <form onSubmit={this.onSubmit}>
                                     <div className="form-group">
@@ -125,24 +126,25 @@ class Login extends Component {
                                         <input name="password" type="password" className="form-control" value={this.state.password} onChange={this.handleInputChange} required></input>
                                     </div>
                                     <Button type="submit">Submit</Button>
-                                    <Button type="button" onClick={this.handleNewUser} className="ml-2">Register</Button>
+                                    <Button type="button" onClick={(e) => handleNewUser(e, false)} className="ml-2">Register</Button>
                                 </form>
                                 :
                                 <form onSubmit={this.submitNewUser}>
                                     <div className="form-group">
                                         <label htmlFor="email">Email Adress</label>
-                                        <input name="email" className="form-control" defaultValue={this.state.password} onChange={this.handleInputChange} required></input>
-                                        <small className="form-text text-muted">We will never share nor spam your Email Address</small>
+                                        <input name="email" className="form-control" value={this.state.email} onChange={this.handleInputChange} required></input>
+                                        <small className="form-text">We will never share nor spam your Email Address</small>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="password">Password</label>
-                                        <input name="password" className="form-control" defaultValue={this.state.password} onChange={this.handleInputChange} required></input>
+                                        <input name="password" className="form-control" value={this.state.password} onChange={this.handleInputChange} required></input>
                                     </div>
                                     <div className="form-group">
-                                        <label htmlFor="username">Name</label>
-                                        <input name="name" className="form-control" defaultValue={this.state.name} onChange={this.handleInputChange} required></input>
+                                        <label htmlFor="name">Name</label>
+                                        <input name="name" className="form-control" value={this.state.name} onChange={this.handleInputChange} required></input>
                                     </div>
                                     <Button type="submit">Submit</Button>
+                                    <Button type="button" onClick={(e) => handleNewUser(e, true)} className="ml-2">Login</Button>
                                 </form>
                             }
                         </Card.Body>
