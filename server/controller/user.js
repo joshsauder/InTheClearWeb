@@ -26,8 +26,8 @@ exports.checkAuth = function(req, res){
             if(err){
                 res.status(401).send("Invalid Token... Unauthorized.")
             }else {
-                req.username = decoded.username
-                res.send("Authenticated!")
+                req.email = decoded.email
+                res.json({id: decoded.id, name: decoded.name})
             }
         });
     }
@@ -99,7 +99,7 @@ async function processUser(userId){
         }
     })
 
-    const payload = {email: userAuth.email}
+    const payload = {id: userAuth.id, name: userAuth.name ? userAuth.name : ""}
     //create token
     const token = jwt.sign(payload, secret, {
         expiresIn: '1h'

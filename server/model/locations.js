@@ -4,7 +4,7 @@ const schema = mongoose.Schema;
 var locationSchema = new schema({
     city: String,
     condition: String,
-    severe: Number,
+    userId: String,
     createdAt: Date
 })
 
