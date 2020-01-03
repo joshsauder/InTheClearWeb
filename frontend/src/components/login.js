@@ -26,13 +26,13 @@ class Login extends Component {
             'height': 50,
             'longtitle': true,
             'theme': 'dark',
-            'onsuccess': this.onSignIn,
+            'onsuccess': (user) => {this.onSignIn(user)},
         });
 
         AppleID.auth.init({
             clientId : 'com.intheclear.birdhouseWeb',
             scope : 'name email',
-            redirectURI: 'https://intheclearbackend.herokuapp.com/api/user/auth/apple',
+            redirectURI: 'http://ec2-52-206-198-221.compute-1.amazonaws.com/api/user/auth/apple',
             state : 'state'
         });
     }
@@ -50,6 +50,8 @@ class Login extends Component {
             email: this.state.email, 
             password: this.state.password
         }
+
+        console.log("hit")
 
         Axios.post('api/user/auth', loginObj, {withCredentials: true})
         .then(res => {
@@ -85,7 +87,7 @@ class Login extends Component {
         })
     }
 
-    onSignIn = (googleUser) => {
+    onSignIn(googleUser) {
 
         const loginObj = {
             token: googleUser.getAuthResponse().id_token
