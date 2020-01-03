@@ -1,5 +1,6 @@
 /* global gapi */
 /* global AppleID */
+
 import React, {Component} from 'react'
 import {Card, Button} from 'react-bootstrap'
 import LoginContainer from './loginContainer'
@@ -53,7 +54,7 @@ class Login extends Component {
 
         console.log("hit")
 
-        Axios.post('api/user/auth', loginObj, {withCredentials: true})
+        Axios.post('/api/user/auth', loginObj, {withCredentials: true})
         .then(res => {
             if(res.status == 200){
                 //go to main page since access is granted
@@ -76,7 +77,7 @@ class Login extends Component {
             email: this.state.email
         }
 
-        Axios.post('api/user', userObj)
+        Axios.post('/api/user', userObj)
         .then(res => {
             if(res.status == 200){
                 //show login form
