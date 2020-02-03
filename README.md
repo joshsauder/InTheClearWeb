@@ -1,6 +1,6 @@
 # In The Clear Web App
 
-### A web-app that will give the user all the features of the [iOS App](https://itunes.apple.com/us/app/in-the-clear/id1458058092?ls=1&mt=8). Note, this app is still in development.
+### A web-app that will give the user all the features of the [iOS App](https://itunes.apple.com/us/app/in-the-clear/id1458058092?ls=1&mt=8). This is the first version of the app; the current version is being built using the .Net Core. The source code for the second version can be viewed [here](https://github.com/joshsauder/InTheClearWebV2).
 
 ## Tech Stack
 1. [ReactJS](https://reactjs.org) - Javascript Framework
