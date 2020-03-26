@@ -2,6 +2,10 @@
 
 ### A web-app that will give the user all the features of the [iOS App](https://itunes.apple.com/us/app/in-the-clear/id1458058092?ls=1&mt=8). Note, this app is still in development.
 
+## License
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+
 ## Tech Stack
 1. [ReactJS](https://reactjs.org) - Javascript Framework
 2. [Bootstrap](https://getbootstrap.com) - CSS Framework
