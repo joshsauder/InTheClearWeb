@@ -1,6 +1,6 @@
 # In The Clear Web App
 
-### A web-app that will give the user all the features of the [iOS App](https://itunes.apple.com/us/app/in-the-clear/id1458058092?ls=1&mt=8). This is the first version of the app; the current version is being built using the .Net Core. The source code for the second version can be viewed [here](https://github.com/joshsauder/InTheClearWebV2).
+A web-app that will give the user all the features of the [iOS App](https://itunes.apple.com/us/app/in-the-clear/id1458058092?ls=1&mt=8). This is the first version of the app; the current version is being built using the .Net Core. The source code for the second version can be viewed [here](https://github.com/joshsauder/InTheClearWebV2).
 
 ## License
 
@@ -14,4 +14,4 @@
 5. [Docker](https://www.docker.com) - Deployment Tool
 6. [Google Maps API](https://developers.google.com/maps/documentation) - Mapping Service
 
-### The AWS Lambda functions, that are used in the iOS app, are also being utilized in this project. Currently, there are two Lambda functions that handle all weather and reverse geocoding requests. The following [link](https://github.com/joshsauder/InTheClearBackend) will take you to the In The Clear Backend Github Repo.
+The AWS Lambda functions, that are used in the iOS app, are also being utilized in this project. Currently, there are two Lambda functions that handle all weather and reverse geocoding requests. The following [link](https://github.com/joshsauder/InTheClearBackend) will take you to the In The Clear Backend Github Repo.
