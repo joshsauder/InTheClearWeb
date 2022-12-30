@@ -27,7 +27,7 @@
     "google-auth-library": "^5.7.0",
     "graphql": "^14.5.8",
     "jsonwebtoken": "^8.5.1",
-    "mocha": "^6.2.2",
+    "mocha": "^10.2.0",
     "mongodb": "^3.3.3",
     "mongoose": "^5.7.7"
   },
